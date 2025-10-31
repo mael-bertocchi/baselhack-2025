@@ -1,6 +1,7 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
 import healthRoutes from "@modules/health/health.routes";
+import dbPlugin from "@plugins/database";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
@@ -21,6 +22,8 @@ async function startApp(): Promise<void> {
         bodyLimit: 10 * 1024 * 1024,
         connectionTimeout: 10 * 1000
     });
+
+    await app.register(dbPlugin);
 
     app.setErrorHandler((err: unknown, request: FastifyRequest, reply: FastifyReply) => {
         if (err instanceof RequestError) {
