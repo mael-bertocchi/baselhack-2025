@@ -1,0 +1,37 @@
+name: Build backend
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main
+    paths:
+      - .github/workflows/build-backend.yml
+      - code/backend/**
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache-dependency-path: code/backend/package-lock.json
+          cache: npm
+
+      - name: Install dependencies
+        working-directory: code/backend
+        run: npm ci
+
+      - name: Build
+        working-directory: code/backend
+        run: npm run build
