@@ -7,6 +7,7 @@ import { FastifyInstance } from 'fastify';
  */
 async function topicsRoutes(app: FastifyInstance): Promise<void> {
     app.get('/', topicsController.getAllTopics);
+    app.get('/:id', topicsController.getTopicById);
 }
 
 export default topicsRoutes;
