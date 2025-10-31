@@ -25,13 +25,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          cache-dependency-path: backend/package-lock.json
+          cache-dependency-path: code/backend/package-lock.json
           cache: npm
 
       - name: Install dependencies
-        working-directory: backend
+        working-directory: code/backend
         run: npm ci
 
       - name: Build
-        working-directory: backend
+        working-directory: code/backend
         run: npm run build
