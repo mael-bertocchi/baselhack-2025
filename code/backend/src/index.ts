@@ -1,6 +1,7 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
 import healthRoutes from "@modules/health/health.routes";
+import topicsRoutes from "@modules/topics/topics.routes";
 import dbPlugin from "@plugins/database";
 import rateLimiterPlugin from "@plugins/rate-limiter";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
@@ -45,6 +46,7 @@ async function startApp(): Promise<void> {
     });
 
     await app.register(healthRoutes, { prefix: `${API_VERSION}/health` });
+    await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics` });
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {
         reply.status(404).send({
