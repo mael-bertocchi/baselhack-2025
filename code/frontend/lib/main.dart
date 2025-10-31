@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
         }
         return const Locale('en');
       },
-      initialRoute: AppRoutes.initial,
+      initialRoute: AppRoutes.login,
       routes: AppRoutes.routes,
     );
   }
