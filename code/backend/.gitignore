@@ -1,0 +1,8 @@
+# Local outputs
+node_modules/
+build/
+
+# Environment files
+.env.development
+.env.production
+.env
