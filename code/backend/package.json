@@ -22,8 +22,10 @@
   },
   "homepage": "https://github.com/mael-bertocchi/baselhack-2025#readme",
   "dependencies": {
+    "@fastify/mongodb": "^9.0.2",
     "dotenv": "^17.2.3",
     "fastify": "^5.6.1",
+    "fastify-plugin": "^5.1.0",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {

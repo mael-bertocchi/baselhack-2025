@@ -53,6 +53,7 @@ function validateBoolean(name: string, value: Maybe<string>): boolean {
  */
 const environment: Environment = {
     PORT: validateNumber('PORT', process.env.PORT),
+    DB_URI: validateVariable('DB_URI', process.env.DB_URI)
 };
 
 export default environment;
