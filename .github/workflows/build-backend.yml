@@ -9,7 +9,7 @@ on:
     branches:
       - main
     paths:
-      - code/.github/workflows/build-backend.yml
+      - .github/workflows/build-backend.yml
       - code/backend/**
 
 jobs:
