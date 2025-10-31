@@ -1,0 +1,11 @@
+# Minimal dependencies inferred
+python-dotenv
+mistralai
+pydantic
+fastapi
+
+# Optional for ASGI support
+uvicorn[standard]
+
+# Optional for simple HTTP testing scripts
+requests

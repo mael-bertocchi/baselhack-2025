@@ -1,0 +1,11 @@
+# Environment files
+.env.development
+.env.production
+.env.local
+.env
+
+# Python virtual environment
+.venv/
+
+# Python cache files
+__pycache__/
