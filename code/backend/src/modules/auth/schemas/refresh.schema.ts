@@ -1,13 +1,8 @@
 export const refreshSchema = {
     body: {
         type: 'object',
-        required: ['accessToken', 'refreshToken'],
+        required: ['refreshToken'],
         properties: {
-            accessToken: {
-                type: 'string',
-                minLength: 8,
-                description: 'Current access token'
-            },
             refreshToken: {
                 type: 'string',
                 minLength: 8,

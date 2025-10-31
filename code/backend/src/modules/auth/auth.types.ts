@@ -4,6 +4,8 @@ export interface SigninBody {
 }
 
 export interface SignupBody {
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     confirmPassword: string;
