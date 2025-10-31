@@ -1,8 +1,10 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
 import healthRoutes from "@modules/health/health.routes";
+import authRoutes from "@modules/auth/auth.route";
 import dbPlugin from "@plugins/database";
 import rateLimiterPlugin from "@plugins/rate-limiter";
+import jwtPlugin from "@plugins/jwt";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
@@ -26,6 +28,7 @@ async function startApp(): Promise<void> {
 
     await app.register(rateLimiterPlugin);
     await app.register(dbPlugin);
+    await app.register(jwtPlugin);
 
     app.setErrorHandler((err: unknown, request: FastifyRequest, reply: FastifyReply) => {
         if (err instanceof RequestError) {
@@ -45,6 +48,7 @@ async function startApp(): Promise<void> {
     });
 
     await app.register(healthRoutes, { prefix: `${API_VERSION}/health` });
+	await app.register(authRoutes, { prefix: `${API_VERSION}/auth` });
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {
         reply.status(404).send({
