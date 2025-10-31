@@ -1,0 +1,12 @@
+{
+  "@@locale": "fr",
+  "appTitle": "BaselHack Frontend",
+  "@appTitle": {
+    "description": "Title for the application"
+  },
+
+  "detailsTitle": "Détails",
+  "@detailsTitle": {
+    "description": "Title for details pages"
+  }
+}
