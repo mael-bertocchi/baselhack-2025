@@ -53,7 +53,10 @@ function validateBoolean(name: string, value: Maybe<string>): boolean {
  */
 const environment: Environment = {
     PORT: validateNumber('PORT', process.env.PORT),
-    DB_URI: validateVariable('DB_URI', process.env.DB_URI)
+    DB_URI: validateVariable('DB_URI', process.env.DB_URI),
+    JWT_ACCESS_EXPIRES_IN: validateVariable('JWT_ACCESS_EXPIRES_IN', process.env.JWT_ACCESS_EXPIRES_IN),
+    JWT_REFRESH_EXPIRES_IN: validateVariable('JWT_REFRESH_EXPIRES_IN', process.env.JWT_REFRESH_EXPIRES_IN),
+    JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET)
 };
 
 export default environment;
