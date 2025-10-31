@@ -1,0 +1,14 @@
+I want you to act as a product designer and AI developer for a consensus-building tool for Endress+Hauser. The goal is to help teams gather diverse opinions, analyze them using AI, and generate a meaningful consensus.
+
+Here are the requirements:
+- Collect opinions from multiple participants on any topic.
+- Use AI to identify common themes, conflicting viewpoints, and areas of agreement.
+- Produce a clear summary reflecting the collective wisdom of the group.
+
+Please provide:
+- A high-level concept for the tool (web app, bot, mobile app, or something innovative).
+- How the AI would analyze and synthesize opinions.
+- How users would interact with the system.
+- Possible features to make it engaging and inclusive.
+
+Think creatively but focus on making the tool practical for large teams with diverse perspectives.
