@@ -13,10 +13,10 @@ export type TopicStatus = 'open' | 'closed' | 'archived';
 export interface Topic {
     title: string; /*!> Title of the discussion topic */
     description: string; /*!> Description providing context */
-    start_date: Date; /*!> Date when the topic becomes active */
-    end_date: Date; /*!> Date when the topic closes */
-    created_at: Date; /*!> Timestamp when the topic was created */
-    updated_at: Date; /*!> Timestamp of the last topic update */
+    startDate: Date; /*!> Date when the topic becomes active */
+    endDate: Date; /*!> Date when the topic closes */
+    createdAt: Date; /*!> Timestamp when the topic was created */
+    updatedAt: Date; /*!> Timestamp of the last topic update */
     status: TopicStatus; /*!> The current state of the topic */
-    author_id: string; /*!> Identifier of the user who created the topic */
+    authorId: string; /*!> Identifier of the user who created the topic */
 };
