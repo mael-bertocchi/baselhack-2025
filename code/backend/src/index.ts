@@ -4,9 +4,11 @@ import authRoutes from "@modules/auth/auth.route";
 import topicsRoutes from "@modules/topics/topics.routes";
 import healthRoutes from "@modules/health/health.routes";
 import corsPlugin from "@plugins/cors";
+import authRoutes from "@modules/auth/auth.route";
 import dbPlugin from "@plugins/database";
 import jwtPlugin from "@plugins/jwt";
 import rateLimiterPlugin from "@plugins/rate-limiter";
+import jwtPlugin from "@plugins/jwt";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
