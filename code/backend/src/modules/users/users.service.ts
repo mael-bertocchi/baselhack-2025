@@ -4,6 +4,7 @@ import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
 import { User } from '@modules/users/users.model';
 import { AuthenticatedUser } from '@modules/auth/auth.types';
+import { PasswordBody } from './users.types';
 
 /**
  * @function getUsersCollection
@@ -35,6 +36,10 @@ async function getCurrentUser(authUser: AuthenticatedUser, fastify: FastifyInsta
     return user;
 }
 
+/**
+ * @function getUsers
+ * @description Return all user on the db
+ */
 async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
@@ -43,8 +48,21 @@ async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
     return users;
 }
 
+/**
+ * @function changePassword
+ * @description Change the password of the user who he want to change
+ */
+async function changePassword(id: string, data: PasswordBody, fastify: FastifyInstance) {
+    const usersCollection = getUsersCollection(fastify);
+
+    const user: WithId<User> | null = await usersCollection.findOne({ _id: new (fastify.mongo).ObjectId(id) });
+
+    
+    return user;
+}
 
 export default {
     getCurrentUser,
-    getUsers
+    getUsers,
+    changePassword
 };
