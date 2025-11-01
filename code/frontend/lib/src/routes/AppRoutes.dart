@@ -3,7 +3,7 @@ import 'package:frontend/src/pages/Dashboard/DashboardPage.dart';
 import 'package:frontend/src/pages/Login/LoginPage.dart';
 import 'package:frontend/src/pages/Unauthorized/UnauthorizedPage.dart';
 import 'package:frontend/src/pages/NotFound/NotFoundPage.dart';
-import 'package:frontend/src/pages/CreateTopic/CreateTopicPageWrapper.dart';
+import 'package:frontend/src/pages/CreateTopic/CreateTopicPage.dart';
 import 'package:frontend/src/routes/ProtectedRoutes.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
@@ -29,8 +29,8 @@ class AppRoutes {
           requiredRoles: [Role.user, Role.manager, Role.administrator],
         ),
     createTopic: (context) => ProtectedRoute(
-          builder: (ctx) => const CreateTopicPageWrapper(),
-          requiredRoles: [Role.administrator],
+          builder: (ctx) => const CreateTopicPage(),
+          requiredRoles: [Role.manager, Role.administrator],
         ),
   };
 

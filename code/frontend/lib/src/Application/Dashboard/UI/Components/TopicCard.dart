@@ -323,11 +323,25 @@ class _TopicCardState extends State<TopicCard> {
                   color: AppColors.textSecondary,
                   height: 1.6,
                 ),
-                maxLines: 2,
+                maxLines: 6,
                 overflow: TextOverflow.ellipsis,
               ),
               const Spacer(),
               const SizedBox(height: 20),
+
+              // // Long Description
+              // Text(
+              //   widget.topic.description,
+              //   style: const TextStyle(
+              //     fontSize: 14,
+              //     color: AppColors.textSecondary,
+              //     height: 1.6,
+              //   ),
+              //   maxLines: 5,
+              //   overflow: TextOverflow.ellipsis,
+              // ),
+              // const Spacer(),
+              // const SizedBox(height: 20),
 
               // Footer avec auteur et bouton
               Row(

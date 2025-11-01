@@ -157,7 +157,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
     final displayStatus = widget.topic.statusDisplay.toLowerCase();
     switch (displayStatus) {
       case 'active':
-        return const Color(0xFF0891B2); // Cyan
+        return const Color(0xFF7C3AED);
       case 'closed':
         return const Color(0xFF14B8A6);
       case 'scheduled':
@@ -173,7 +173,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
     final displayStatus = widget.topic.statusDisplay.toLowerCase();
     switch (displayStatus) {
       case 'active':
-        return const Color(0xFFCFFAFE); // Cyan très clair
+        return const Color.fromARGB(255, 242, 234, 255); // Cyan très clair
       case 'closed':
         return const Color(0xFFCCFBF1);
       case 'scheduled':
@@ -198,48 +198,45 @@ class TopicDetailViewState extends State<TopicDetailView> {
         backgroundColor: AppColors.white,
         elevation: 0,
         toolbarHeight: 70,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: AppColors.blue,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: Text(
-                  'C',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: AppColors.blue,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Center(
+            child: Text(
+          'C',
+          style: TextStyle(
+            color: AppColors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
             ),
-            const SizedBox(width: 12),
-            const Text(
-              'Consensus Hub',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Text(
+          'Consensus Hub',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
+        ),
           ],
         ),
         actions: [
           IconButton(
-            icon: const CircleAvatar(
-              backgroundColor: AppColors.background,
-              child: Icon(Icons.person, color: AppColors.textSecondary),
-            ),
-            onPressed: () {},
+        icon: const CircleAvatar(
+          backgroundColor: AppColors.background,
+          child: Icon(Icons.person, color: AppColors.textSecondary),
+        ),
+        onPressed: () {},
           ),
           const SizedBox(width: 16),
         ],
@@ -308,22 +305,22 @@ class TopicDetailViewState extends State<TopicDetailView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Bordure cyan à gauche
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 4,
-                            height: 600,
-                            decoration: BoxDecoration(
-                              color: AppColors.blueLight,
-                              borderRadius: BorderRadius.circular(2),
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              width: 4,
+                              decoration: BoxDecoration(
+                                color: AppColors.blueLight,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 24),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                            const SizedBox(width: 24),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                 // Badge de statut
               Container(
                 padding: const EdgeInsets.symmetric(
@@ -426,6 +423,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                           ),
                         ],
                       ),
+                      ),
                     ],
                   ),
                 ),
@@ -445,8 +443,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
                     boxShadow: [
                       BoxShadow(
                         color: AppColors.blueLight,
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
+                        blurRadius: 5,
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
