@@ -33,11 +33,14 @@ async function getTopicById(request: FastifyRequest<{ Params: TopicParams }>, re
  * @description Delete a topic by the id given on the url
  */
 async function deleteTopicById(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
-    const result = await topicsService.deleteTopicById(request.params.id, request.server);
+    if (request.authUser?.payload.role === 'User') {
+        throw new Error('Only administrators can delete topics');
+    }
+
+    await topicsService.deleteTopicById(request.params.id, request.server);
 
     reply.status(200).send({
         message: 'Successfully deleted topic',
-        data: result
     });
 }
 
@@ -59,6 +62,10 @@ async function createTopic(request: FastifyRequest<{ Body: CreateBody }>, reply:
  * @description Modify an existing topic
  */
 async function modifyTopic(request: FastifyRequest<{ Params: TopicParams, Body: CreateBody }>, reply: FastifyReply): Promise<void> {
+    if (request.authUser?.payload.role === 'User') {
+        throw new Error('Only administrators can delete topics');
+    }
+
     const result = await topicsService.modifyTopic(request.params.id, request.body, request.server);
 
     reply.status(200).send({

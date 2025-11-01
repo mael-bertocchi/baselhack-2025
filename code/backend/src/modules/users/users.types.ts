@@ -7,3 +7,7 @@ export interface PasswordBody {
 export interface RoleBody {
     role: UserRole
 }
+
+export interface UserParams {
+    id: string;
+}
