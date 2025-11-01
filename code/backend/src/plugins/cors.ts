@@ -9,6 +9,7 @@ import environment from '@core/environment';
  */
 async function corsPlugin(fastify: FastifyInstance): Promise<void> {
     const allowedOrigins = environment.CORS_ALLOWED_ORIGINS;
+    const normalizeOrigin = (origin: string): string => origin.replace(/\/$/, '');
 
     await fastify.register(fastifyCors, {
         origin: (origin, cb) => {
@@ -17,7 +18,9 @@ async function corsPlugin(fastify: FastifyInstance): Promise<void> {
                 return cb(null, true);
             }
 
-            if (allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+            const normalizedOrigin = normalizeOrigin(origin);
+
+            if (allowedOrigins.includes('*') || allowedOrigins.includes(normalizedOrigin)) {
                 return cb(null, true);
             }
 

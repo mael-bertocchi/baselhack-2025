@@ -51,13 +51,18 @@ function validateBoolean(name: string, value: Maybe<string>): boolean {
  * @constant environment
  * @description Contains the validated environment variables for the application
  */
+const normalizeOrigin = (origin: string): string => origin.replace(/\/$/, '');
+
 const environment: Environment = {
     PORT: validateNumber('PORT', process.env.PORT),
     DB_URI: validateVariable('DB_URI', process.env.DB_URI),
     JWT_ACCESS_EXPIRES_IN: validateVariable('JWT_ACCESS_EXPIRES_IN', process.env.JWT_ACCESS_EXPIRES_IN),
     JWT_REFRESH_EXPIRES_IN: validateVariable('JWT_REFRESH_EXPIRES_IN', process.env.JWT_REFRESH_EXPIRES_IN),
     JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET),
-    CORS_ALLOWED_ORIGINS: (process.env.CORS_ALLOWED_ORIGINS ?? 'http://localhost:5173').split(',').map((origin) => origin.trim()).filter((origin) => origin.length > 0)
+    CORS_ALLOWED_ORIGINS: (process.env.CORS_ALLOWED_ORIGINS ?? 'http://localhost:5173')
+        .split(',')
+        .map((origin) => normalizeOrigin(origin.trim()))
+        .filter((origin) => origin.length > 0)
 };
 
 export default environment;
