@@ -3,11 +3,9 @@ import 'package:frontend/l10n/app_localizations.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 import 'package:frontend/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
-import 'package:frontend/src/Application/Dashboard/UI/TopicDetail/UI/TopicDetailView.dart';
-import 'package:frontend/src/pages/UpdateTopic/UpdateTopicPage.dart';
+import '../../../widgets/SharedAppBar.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
-import 'Components/ProfileMenu.dart';
 import 'Components/DeleteConfirmationDialog.dart';
 import '../Api/DashboardService.dart';
 
@@ -29,10 +27,6 @@ class _DashboardViewState extends State<DashboardView> {
   
   // Variables de filtre et tri
   String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Scheduled', 'Archived'
-  
-  // Profile menu
-  OverlayEntry? _profileMenuOverlay;
-  final GlobalKey _profileButtonKey = GlobalKey();
 
   @override
   void initState() {
@@ -89,70 +83,19 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void dispose() {
     _searchController.dispose();
-    _removeProfileMenu();
     super.dispose();
-  }
-
-  void _toggleProfileMenu() {
-    if (_profileMenuOverlay != null) {
-      _removeProfileMenu();
-    } else {
-      _showProfileMenu();
-    }
-  }
-
-  void _showProfileMenu() {
-    final RenderBox? renderBox = _profileButtonKey.currentContext?.findRenderObject() as RenderBox?;
-    if (renderBox == null) return;
-
-    final offset = renderBox.localToGlobal(Offset.zero);
-    final size = renderBox.size;
-
-    _profileMenuOverlay = OverlayEntry(
-      builder: (context) => Stack(
-        children: [
-          // Backdrop to close menu when clicking outside
-          Positioned.fill(
-            child: GestureDetector(
-              onTap: _removeProfileMenu,
-              child: Container(
-                color: Colors.transparent,
-              ),
-            ),
-          ),
-          // Profile menu
-          Positioned(
-            top: offset.dy + size.height + 8,
-            right: MediaQuery.of(context).size.width - offset.dx - size.width,
-            child: Material(
-              color: Colors.transparent,
-              child: ProfileMenu(
-                onClose: _removeProfileMenu,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-
-    Overlay.of(context).insert(_profileMenuOverlay!);
-  }
-
-  void _removeProfileMenu() {
-    _profileMenuOverlay?.remove();
-    _profileMenuOverlay = null;
   }
 
   void _navigateToCreateTopic() {
     Navigator.of(context).pushNamed(AppRoutes.createTopic);
   }
 
-  void _navigateToEditTopic(Topic topic) {
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => UpdateTopicPage(topic: topic),
-      ),
-    ).then((_) => _loadTopics()); // Reload topics after edit
+  void _navigateToTopicDetails(String topicId) {
+    Navigator.of(context).pushNamed('/topics/$topicId');
+  }
+
+  void _navigateToEditTopic(String topicId) {
+    Navigator.of(context).pushNamed('/topics/$topicId/edit').then((_) => _loadTopics()); // Reload topics after edit
   }
 
   Future<void> _deleteTopic(Topic topic) async {
@@ -389,53 +332,7 @@ class _DashboardViewState extends State<DashboardView> {
     final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        toolbarHeight: 70,
-        title: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: AppColors.blue,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: Text(
-                  'C',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 12),
-            SelectableText(
-              l10n.appTitle,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            key: _profileButtonKey,
-            icon: const CircleAvatar(
-              backgroundColor: AppColors.background,
-              child: Icon(Icons.person, color: AppColors.textSecondary),
-            ),
-            onPressed: _toggleProfileMenu,
-          ),
-          const SizedBox(width: 16),
-        ],
-      ),
+      appBar: SharedAppBar(),
       body: SelectionArea(
         child: _isLoading
             ? const Center(
@@ -492,9 +389,17 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                   )
                 : SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final horizontalPadding = constraints.maxWidth * 0.1;
+            return Padding(
+              padding: EdgeInsets.only(
+                left: horizontalPadding,
+                right: horizontalPadding,
+                top: 32.0,
+                bottom: 32.0,
+              ),
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // En-tête avec titre et sous-titre
@@ -684,16 +589,8 @@ class _DashboardViewState extends State<DashboardView> {
                       return TopicCard(
                         topic: topic,
                         showActions: showActions,
-                        onViewTopic: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => TopicDetailView(
-                                topic: topic,
-                              ),
-                            ),
-                          );
-                        },
-                        onEditTopic: showActions ? () => _navigateToEditTopic(topic) : null,
+                        onViewTopic: () => _navigateToTopicDetails(topic.id!),
+                        onEditTopic: showActions ? () => _navigateToEditTopic(topic.id!) : null,
                         onDeleteTopic: showActions ? () => _deleteTopic(topic) : null,
                       );
                     },
@@ -701,7 +598,9 @@ class _DashboardViewState extends State<DashboardView> {
                 },
               ),
             ],
-          ),
+              ),
+            );
+          },
         ),
         ),
       ),

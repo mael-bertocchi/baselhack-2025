@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Application/UpdateTopic/UI/UpdateTopicView.dart';
+import 'package:frontend/src/Application/TopicDetail/UI/TopicDetailView.dart';
 
-class UpdateTopicPage extends StatelessWidget {
-  const UpdateTopicPage({super.key});
+/// Page wrapper for Topic Details page
+/// This maintains consistency with the application's page structure
+/// Extracts the topic ID from route arguments
+class TopicDetailsPage extends StatelessWidget {
+  const TopicDetailsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +20,6 @@ class UpdateTopicPage extends StatelessWidget {
       );
     }
     
-    return UpdateTopicView(topicId: topicId);
+    return TopicDetailView(topicId: topicId);
   }
 }
