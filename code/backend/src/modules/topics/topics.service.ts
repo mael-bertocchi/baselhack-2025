@@ -26,11 +26,26 @@ async function getAllTopics(fastify: FastifyInstance) {
 
     const topics: WithId<Topic>[] = await topicsCollection.find({}).toArray();
 
-    return {
-        topics
-    };
+    return topics;
+}
+
+/**
+ * @function getAllTopics
+ * @description Get all topics
+ */
+async function getTopicById(id: string, fastify: FastifyInstance) {
+    const topicsCollection = getTopicsCollection(fastify);
+
+    const topic: WithId<Topic> | null = await topicsCollection.findOne({ _id: new (fastify.mongo).ObjectId(id) });
+
+    if (!topic) {
+        throw new RequestError('Topic not found', 404);
+    }
+
+    return topic;
 }
 
 export default {
-    getAllTopics
+    getAllTopics,
+    getTopicById
 };

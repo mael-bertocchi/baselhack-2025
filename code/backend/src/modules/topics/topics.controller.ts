@@ -4,13 +4,13 @@ import topicsService from './topics.service';
 
 /**
  * @function getAllTopics
- * @description Return the list of the all topics.
+ * @description Return the list of all the topics.
  */
 async function getAllTopics(request: FastifyRequest, reply: FastifyReply): Promise<void> {
     const result = await topicsService.getAllTopics(request.server);
 
     reply.status(200).send({
-        message: 'All topics.',
+        message: 'Successfully retrieved topics',
         data: result
     });
 }
@@ -19,15 +19,13 @@ async function getAllTopics(request: FastifyRequest, reply: FastifyReply): Promi
  * @function getTopicById
  * @description Return the Topic by the id given on the url
  */
-function getTopicById(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): void {
-    const { id } = request.params;
+async function getTopicById(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.getTopicById(request.params.id, request.server);
+
 
     reply.status(200).send({
-        message: `Topic with id: ${id}`,
-        data: {
-            id,
-            uptime: process.uptime()
-        }
+        message: 'Successfully retrieved topic',
+        data: result
     });
 }
 
