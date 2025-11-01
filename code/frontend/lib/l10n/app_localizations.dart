@@ -100,7 +100,7 @@ abstract class AppLocalizations {
   /// Title for the application
   ///
   /// In en, this message translates to:
-  /// **'BaselHack Frontend'**
+  /// **'Consensus Hub'**
   String get appTitle;
 
   /// Title for details pages
@@ -108,6 +108,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Details'**
   String get detailsTitle;
+
+  /// Logout button
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// Language selector label
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// Default user label
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get user;
+
+  /// Administrator role
+  ///
+  /// In en, this message translates to:
+  /// **'Administrator'**
+  String get administrator;
+
+  /// Manager role
+  ///
+  /// In en, this message translates to:
+  /// **'Manager'**
+  String get manager;
+
+  /// Search placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search topics...'**
+  String get searchTopics;
+
+  /// All topics filter
+  ///
+  /// In en, this message translates to:
+  /// **'All Topics'**
+  String get allTopics;
+
+  /// Active status
+  ///
+  /// In en, this message translates to:
+  /// **'Active'**
+  String get active;
+
+  /// Closed status
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get closed;
+
+  /// Scheduled status
+  ///
+  /// In en, this message translates to:
+  /// **'Scheduled'**
+  String get scheduled;
+
+  /// Archived status
+  ///
+  /// In en, this message translates to:
+  /// **'Archived'**
+  String get archived;
+
+  /// Create topic button
+  ///
+  /// In en, this message translates to:
+  /// **'Create Topic'**
+  String get createTopic;
+
+  /// No topics message
+  ///
+  /// In en, this message translates to:
+  /// **'No topics found'**
+  String get noTopicsFound;
+
+  /// Search help message
+  ///
+  /// In en, this message translates to:
+  /// **'Try adjusting your search terms'**
+  String get tryAdjustingSearch;
+
+  /// Error message title
+  ///
+  /// In en, this message translates to:
+  /// **'Error Loading Topics'**
+  String get errorLoadingTopics;
+
+  /// Try again button
+  ///
+  /// In en, this message translates to:
+  /// **'Try Again'**
+  String get tryAgain;
+
+  /// Loading message
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// Logout error message
+  ///
+  /// In en, this message translates to:
+  /// **'Logout failed: {error}'**
+  String logoutFailed(String error);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

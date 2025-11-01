@@ -1,6 +1,6 @@
 {
   "@@locale": "de",
-  "appTitle": "BaselHack Frontend",
+  "appTitle": "Konsens Hub",
   "@appTitle": {
     "description": "Title for the application"
   },
@@ -8,5 +8,100 @@
   "detailsTitle": "Details",
   "@detailsTitle": {
     "description": "Title for details pages"
+  },
+
+  "logout": "Abmelden",
+  "@logout": {
+    "description": "Logout button"
+  },
+
+  "language": "Sprache",
+  "@language": {
+    "description": "Language selector label"
+  },
+
+  "user": "Benutzer",
+  "@user": {
+    "description": "Default user label"
+  },
+
+  "administrator": "Administrator",
+  "@administrator": {
+    "description": "Administrator role"
+  },
+
+  "manager": "Manager",
+  "@manager": {
+    "description": "Manager role"
+  },
+
+  "searchTopics": "Themen suchen...",
+  "@searchTopics": {
+    "description": "Search placeholder"
+  },
+
+  "allTopics": "Alle Themen",
+  "@allTopics": {
+    "description": "All topics filter"
+  },
+
+  "active": "Aktiv",
+  "@active": {
+    "description": "Active status"
+  },
+
+  "closed": "Geschlossen",
+  "@closed": {
+    "description": "Closed status"
+  },
+
+  "scheduled": "Geplant",
+  "@scheduled": {
+    "description": "Scheduled status"
+  },
+
+  "archived": "Archiviert",
+  "@archived": {
+    "description": "Archived status"
+  },
+
+  "createTopic": "Thema erstellen",
+  "@createTopic": {
+    "description": "Create topic button"
+  },
+
+  "noTopicsFound": "Keine Themen gefunden",
+  "@noTopicsFound": {
+    "description": "No topics message"
+  },
+
+  "tryAdjustingSearch": "Versuchen Sie, Ihre Suchbegriffe anzupassen",
+  "@tryAdjustingSearch": {
+    "description": "Search help message"
+  },
+
+  "errorLoadingTopics": "Fehler beim Laden der Themen",
+  "@errorLoadingTopics": {
+    "description": "Error message title"
+  },
+
+  "tryAgain": "Erneut versuchen",
+  "@tryAgain": {
+    "description": "Try again button"
+  },
+
+  "loading": "Wird geladen...",
+  "@loading": {
+    "description": "Loading message"
+  },
+
+  "logoutFailed": "Abmeldung fehlgeschlagen: {error}",
+  "@logoutFailed": {
+    "description": "Logout error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }
