@@ -1,7 +1,7 @@
 import { Result } from './../../../node_modules/arg/index.d';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import usersService from './users.service';
-import { PasswordBody } from './users.types';
+import { PasswordBody, RoleBody } from './users.types';
 
 /**
  * @function getCurrentUser
@@ -53,8 +53,28 @@ async function changePassword(
     });
 }
 
+async function changeRole(
+    request: FastifyRequest<{
+        Body: RoleBody,
+        Params: { id: string }
+    }>, 
+    reply: FastifyReply
+): Promise<void> {
+    const result = await usersService.changeRole(
+        request.params.id,
+        request.body, 
+        request.server
+    );
+
+    reply.status(200).send({
+        message: 'Successfully changed the role of user',
+        data: result
+    });
+}
+
 export default {
     getCurrentUser,
     getUsers,
-    changePassword
+    changePassword,
+    changeRole
 };
