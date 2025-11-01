@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../pages/SurveyDetail/SurveyDetailPage.dart';
 import '../../../routes/AppRoutes.dart';
 import '../../Login/Api/AuthService.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
+import 'Components/ProfileMenu.dart';
 import '../Api/DashboardService.dart';
 
 class DashboardView extends StatefulWidget {
@@ -25,6 +27,10 @@ class _DashboardViewState extends State<DashboardView> {
   
   // Variables de filtre et tri
   String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Scheduled', 'Archived'
+  
+  // Profile menu
+  OverlayEntry? _profileMenuOverlay;
+  final GlobalKey _profileButtonKey = GlobalKey();
 
   @override
   void initState() {
@@ -95,11 +101,63 @@ class _DashboardViewState extends State<DashboardView> {
   @override
   void dispose() {
     _searchController.dispose();
+    _removeProfileMenu();
     super.dispose();
   }
 
+  void _toggleProfileMenu() {
+    if (_profileMenuOverlay != null) {
+      _removeProfileMenu();
+    } else {
+      _showProfileMenu();
+    }
+  }
+
+  void _showProfileMenu() {
+    final RenderBox? renderBox = _profileButtonKey.currentContext?.findRenderObject() as RenderBox?;
+    if (renderBox == null) return;
+
+    final offset = renderBox.localToGlobal(Offset.zero);
+    final size = renderBox.size;
+
+    _profileMenuOverlay = OverlayEntry(
+      builder: (context) => Stack(
+        children: [
+          // Backdrop to close menu when clicking outside
+          Positioned.fill(
+            child: GestureDetector(
+              onTap: _removeProfileMenu,
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          ),
+          // Profile menu
+          Positioned(
+            top: offset.dy + size.height + 8,
+            right: MediaQuery.of(context).size.width - offset.dx - size.width,
+            child: Material(
+              color: Colors.transparent,
+              child: ProfileMenu(
+                onClose: _removeProfileMenu,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    Overlay.of(context).insert(_profileMenuOverlay!);
+  }
+
+  void _removeProfileMenu() {
+    _profileMenuOverlay?.remove();
+    _profileMenuOverlay = null;
+  }
+
   // Widget pour la barre de recherche
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return SizedBox(
       height: 56, // Hauteur fixe
       child: TextField(
@@ -109,7 +167,7 @@ class _DashboardViewState extends State<DashboardView> {
           fontSize: 16,
         ),
         decoration: InputDecoration(
-          hintText: 'Search topics...',
+          hintText: l10n.searchTopics,
           hintStyle: TextStyle(
             color: AppColors.textSecondary.withOpacity(0.6),
             fontSize: 16,
@@ -164,12 +222,13 @@ class _DashboardViewState extends State<DashboardView> {
   }
 
   // Widget pour le filtre de statut (design amélioré avec chips)
-  Widget _buildStatusFilter() {
+  Widget _buildStatusFilter(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final statuses = [
-      {'value': 'all', 'label': 'All', 'icon': Icons.grid_view},
-      {'value': 'Active', 'label': 'Active', 'icon': Icons.play_circle_outline},
-      {'value': 'Scheduled', 'label': 'Scheduled', 'icon': Icons.schedule},
-      {'value': 'Closed', 'label': 'Closed', 'icon': Icons.check_circle_outline},
+      {'value': 'all', 'label': l10n.allTopics, 'icon': Icons.grid_view},
+      {'value': 'Active', 'label': l10n.active, 'icon': Icons.play_circle_outline},
+      {'value': 'Scheduled', 'label': l10n.scheduled, 'icon': Icons.schedule},
+      {'value': 'Closed', 'label': l10n.closed, 'icon': Icons.check_circle_outline},
     ];
 
     return Container(
@@ -265,6 +324,7 @@ class _DashboardViewState extends State<DashboardView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
@@ -292,9 +352,9 @@ class _DashboardViewState extends State<DashboardView> {
               ),
             ),
             const SizedBox(width: 12),
-            const SelectableText(
-              'Consensus Hub',
-              style: TextStyle(
+            SelectableText(
+              l10n.appTitle,
+              style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: AppColors.textPrimary,
@@ -304,11 +364,12 @@ class _DashboardViewState extends State<DashboardView> {
         ),
         actions: [
           IconButton(
+            key: _profileButtonKey,
             icon: const CircleAvatar(
               backgroundColor: AppColors.background,
               child: Icon(Icons.person, color: AppColors.textSecondary),
             ),
-            onPressed: () {},
+            onPressed: _toggleProfileMenu,
           ),
           const SizedBox(width: 16),
         ],
@@ -334,7 +395,7 @@ class _DashboardViewState extends State<DashboardView> {
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Error Loading Topics',
+                            l10n.errorLoadingTopics,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w700,
@@ -354,7 +415,7 @@ class _DashboardViewState extends State<DashboardView> {
                           ElevatedButton.icon(
                             onPressed: _loadTopics,
                             icon: const Icon(Icons.refresh),
-                            label: const Text('Retry'),
+                            label: Text(l10n.tryAgain),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.blue,
                               foregroundColor: AppColors.white,
@@ -477,21 +538,21 @@ class _DashboardViewState extends State<DashboardView> {
                       children: [
                         // Barre de recherche
                         Expanded(
-                          child: _buildSearchBar(),
+                          child: _buildSearchBar(context),
                         ),
                         const SizedBox(width: 16),
                         
                         // Filtre par statut
-                        _buildStatusFilter(),
+                        _buildStatusFilter(context),
                       ],
                     );
                   } else {
                     // Version mobile - empilé verticalement
                     return Column(
                       children: [
-                        _buildSearchBar(),
+                        _buildSearchBar(context),
                         const SizedBox(height: 16),
-                        _buildStatusFilter(),
+                        _buildStatusFilter(context),
                       ],
                     );
                   }
@@ -513,7 +574,7 @@ class _DashboardViewState extends State<DashboardView> {
                         ),
                         const SizedBox(height: 16),
                         SelectableText(
-                          'No topics found',
+                          l10n.noTopicsFound,
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -522,7 +583,7 @@ class _DashboardViewState extends State<DashboardView> {
                         ),
                         const SizedBox(height: 8),
                         SelectableText(
-                          'Try adjusting your search terms',
+                          l10n.tryAdjustingSearch,
                           style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.textTertiary,
@@ -581,9 +642,9 @@ class _DashboardViewState extends State<DashboardView> {
               foregroundColor: AppColors.white,
               elevation: 4,
               icon: const Icon(Icons.add, size: 24),
-              label: const Text(
-                'Create Topic',
-                style: TextStyle(
+              label: Text(
+                l10n.createTopic,
+                style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
