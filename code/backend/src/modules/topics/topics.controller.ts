@@ -68,6 +68,19 @@ async function getSummaryTopic(request: FastifyRequest<{ Params: TopicParams }>,
 }
 
 /**
+ * @function getSubmissions
+ * @description Return the list of all submissions for a topic
+ */
+async function getSubmissions(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.getSubmissions(request.params.id, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully retrieved submissions',
+        data: result
+    });
+}
+
+/**
  * @function sendSubmission
  * @description Return the Topic by the id given on the url
  */
@@ -84,7 +97,8 @@ export default {
     getAllTopics,
     getTopicById,
     createTopic,
+    modifyTopic,
     getSummaryTopic,
-    sendSubmission,
-    modifyTopic
+    getSubmissions,
+    sendSubmission
 };

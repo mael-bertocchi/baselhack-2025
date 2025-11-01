@@ -167,8 +167,20 @@ function getSubmissionCollection(fastify: FastifyInstance): Collection<Submissio
 }
 
 /**
+ * @function getSubmissions
+ * @description Get submissions of a topic
+ */
+async function getSubmissions(id: string, fastify: FastifyInstance) {
+    const submissionCollection = getSubmissionCollection(fastify);
+
+    const submissions = submissionCollection.find({ topicId: id }).toArray();
+
+    return submissions;
+}
+
+/**
  * @function sendSubmission
- * @description send Submission to an ID
+ * @description Send submission to a topic
  */
 async function sendSubmission(id: string, data: SubmissionBody, fastify: FastifyInstance) {
     const submissionCollection = getSubmissionCollection(fastify);
@@ -196,7 +208,8 @@ export default {
     getAllTopics,
     getTopicById,
     createTopic,
+    modifyTopic,
     getSummaryById,
-    sendSubmission,
-    modifyTopic
+    getSubmissions,
+    sendSubmission
 };

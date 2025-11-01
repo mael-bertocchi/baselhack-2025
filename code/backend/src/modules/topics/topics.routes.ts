@@ -17,7 +17,8 @@ async function topicsRoutes(app: FastifyInstance): Promise<void> {
         }, topicsController.modifyTopic);
     app.get('/:id', topicsController.getTopicById);
     app.get('/:id/summary', topicsController.getSummaryTopic);
-    app.post('/:id/submission', {
+    app.get('/:id/submissions', topicsController.getSubmissions);
+    app.post('/:id/submissions', {
             schema: submissionSchema
     }, topicsController.sendSubmission);
 }
