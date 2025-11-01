@@ -7,6 +7,8 @@ import '../../Dashboard/UI/Components/TopicCard.dart';
 import 'Idea.dart';
 import '../../Dashboard/Api/TopicSubmissionService.dart';
 import '../../Dashboard/Api/DashboardService.dart';
+import '../../Dashboard/Api/TopicResultService.dart';
+import '../../Login/Api/AuthService.dart';
 
 // Alias temporaire pour rétrocompatibilité
 typedef Survey = Topic;
@@ -27,11 +29,14 @@ class TopicDetailViewState extends State<TopicDetailView> {
   final TextEditingController _ideaController = TextEditingController();
   final TopicSubmissionService _submissionService = TopicSubmissionService();
   final DashboardApiService _dashboardService = DashboardApiService();
+  final TopicResultService _topicResultService = TopicResultService();
   
   Topic? _topic;
   List<Idea> _ideas = [];
+  TopicResult? _aiSummary;
   bool _isLoading = true;
   bool _isSubmitting = false;
+  bool _isAnalyzing = false;
   String? _error;
   
   static const int maxIdeaLength = 1000;
@@ -63,12 +68,16 @@ class TopicDetailViewState extends State<TopicDetailView> {
         return;
       }
       
-      // Load submissions
-      final submissions = await _submissionService.getSubmissions(widget.topicId);
+      // Load submissions and AI summary in parallel
+      final results = await Future.wait([
+        _submissionService.getSubmissions(widget.topicId),
+        _topicResultService.getTopicResult(widget.topicId).catchError((_) => null),
+      ]);
       
       setState(() {
         _topic = topic;
-        _ideas = submissions;
+        _ideas = results[0] as List<Idea>;
+        _aiSummary = results[1] as TopicResult?;
         _isLoading = false;
       });
     } catch (e) {
@@ -95,6 +104,47 @@ class TopicDetailViewState extends State<TopicDetailView> {
   void dispose() {
     _ideaController.dispose();
     super.dispose();
+  }
+
+  Future<void> _triggerAIAnalysis() async {
+    setState(() {
+      _isAnalyzing = true;
+    });
+
+    try {
+      final result = await _topicResultService.analyzeTopic(widget.topicId);
+
+      setState(() {
+        _aiSummary = result;
+        _isAnalyzing = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('AI analysis completed successfully!'),
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Color(0xFF14B8A6),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isAnalyzing = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to analyze topic: ${e.toString()}'),
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color(0xFFEF4444),
+          ),
+        );
+      }
+    }
   }
 
   Future<void> _submitIdea() async {
@@ -591,6 +641,168 @@ class TopicDetailViewState extends State<TopicDetailView> {
               ),
               const SizedBox(height: 40),
 
+              // AI-Generated Summary Card
+              if (_aiSummary != null)
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color(0xFFF0F9FF),
+                        Color(0xFFE0F2FE),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: AppColors.blue.withValues(alpha: 0.3),
+                      width: 2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.blue.withValues(alpha: 0.1),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColors.blue.withValues(alpha: 0.1),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.auto_awesome,
+                                color: AppColors.blue,
+                                size: 28,
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'AI-Generated Summary',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                  ),
+                                  SizedBox(height: 4),
+                                  Text(
+                                    'Automated analysis of all submitted ideas and patterns',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 24),
+                        const Divider(color: Color(0xFFBFDBFE)),
+                        const SizedBox(height: 24),
+                        MarkdownBody(
+                          data: _aiSummary!.content,
+                          selectable: true,
+                          styleSheet: MarkdownStyleSheet(
+                            p: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.textSecondary,
+                              height: 1.6,
+                            ),
+                            strong: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                            h1: const TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                            h2: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                            h3: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.textPrimary,
+                            ),
+                            listBullet: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.blue,
+                            ),
+                            blockquote: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.textSecondary,
+                              fontStyle: FontStyle.italic,
+                            ),
+                            blockquoteDecoration: BoxDecoration(
+                              color: Colors.white.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(4),
+                              border: const Border(
+                                left: BorderSide(
+                                  color: AppColors.blue,
+                                  width: 4,
+                                ),
+                              ),
+                            ),
+                            code: TextStyle(
+                              fontSize: 15,
+                              backgroundColor: Colors.white.withValues(alpha: 0.7),
+                              color: AppColors.blue,
+                              fontFamily: 'monospace',
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withValues(alpha: 0.7),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                size: 18,
+                                color: AppColors.blue,
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  'Last updated: ${_formatDate(_aiSummary!.updatedAt)}',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (_aiSummary != null) const SizedBox(height: 40),
+
               // Section Share Your Idea
               if (_topic!.isActive) ...[
                 Container(
@@ -716,7 +928,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                           ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: _isSubmitting 
-                                ? AppColors.blueLight.withOpacity(0.6)
+                                ? AppColors.blueLight.withValues(alpha: 0.6)
                                 : AppColors.blueLight,
                             foregroundColor: AppColors.white,
                             padding: const EdgeInsets.symmetric(
@@ -912,6 +1124,34 @@ class TopicDetailViewState extends State<TopicDetailView> {
           },
         ),
       ),
+      floatingActionButton: _buildFloatingActionButton(),
+    );
+  }
+
+  Widget? _buildFloatingActionButton() {
+    final currentUser = AuthService.instance.currentUser;
+    final isAdminOrManager = currentUser?.role == Role.administrator || 
+                              currentUser?.role == Role.manager;
+    
+    if (!isAdminOrManager || _topic == null) {
+      return null;
+    }
+
+    return FloatingActionButton.extended(
+      onPressed: _isAnalyzing ? null : _triggerAIAnalysis,
+      backgroundColor: _isAnalyzing ? AppColors.textSecondary : AppColors.blue,
+      foregroundColor: AppColors.white,
+      icon: _isAnalyzing
+          ? const SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+              ),
+            )
+          : const Icon(Icons.auto_awesome),
+      label: Text(_isAnalyzing ? 'Analyzing...' : 'Generate AI Summary'),
     );
   }
 
