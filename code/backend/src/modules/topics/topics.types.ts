@@ -15,5 +15,5 @@ export interface CreateBody {
 }
 
 export interface SubmissionBody {
-    text: string; /*!> The textual content of the submission */
+    text: string;
 }

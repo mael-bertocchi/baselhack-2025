@@ -1,7 +1,7 @@
 import { RequestError } from '@core/errors';
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { Topic, TopicStatus, Summary, Submission} from '@modules/topics/topics.model';
+import { Topic, TopicStatus, Summary, Submission } from '@modules/topics/topics.model';
 import { CreateBody, SubmissionBody } from './topics.types';
 
 /**
@@ -54,33 +54,73 @@ async function createTopic(data: CreateBody, fastify: FastifyInstance) {
     const topicsCollection = getTopicsCollection(fastify);
 
     const now = new Date();
-    const newTopic = {
+    const startDate = new Date(data.startDate);
+    const endDate = new Date(data.endDate);
+    const topic = {
         title: data.title,
         short_description: data.short_description,
         description: data.description,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
-        status: new Date(data.startDate) > now ? 'scheduled' : 'open' as TopicStatus,
+        startDate,
+        endDate,
+        status: now >= endDate ? 'closed' : (startDate > now ? 'scheduled' : 'open') as TopicStatus,
         authorId: data.authorId,
         createdAt: now,
         updatedAt: now,
     }
 
-    const result = await topicsCollection.insertOne(newTopic);
+    const result = await topicsCollection.insertOne(topic);
 
-    const topic = await topicsCollection.findOne({ _id: result.insertedId });
-
-    if (!topic) {
+    if (!result.acknowledged) {
         throw new RequestError('Failed to create topic', 500);
     }
 
-    return topic;
+    const newTopic = await topicsCollection.findOne({ _id: result.insertedId });
+
+    return newTopic;
+}
+
+/**
+ * @function modifyTopic
+ * @description Modify an existing topic
+ */
+async function modifyTopic(id: string, data: CreateBody, fastify: FastifyInstance) {
+    const topicsCollection = getTopicsCollection(fastify);
+
+    const topic: WithId<Topic> | null = await topicsCollection.findOne({ _id: new fastify.mongo.ObjectId(id) });
+
+    if (!topic) {
+        throw new RequestError('Topic not found', 404);
+    }
+
+    const now = new Date();
+    const startDate = new Date(data.startDate);
+    const endDate = new Date(data.endDate);
+    const newTopic = {
+        title: data.title,
+        short_description: data.short_description,
+        description: data.description,
+        startDate,
+        endDate,
+        status: now >= endDate ? 'closed' : (startDate > now ? 'scheduled' : 'open') as TopicStatus,
+        authorId: data.authorId,
+        updatedAt: now,
+    }
+
+    const result = await topicsCollection.updateOne({ _id: new fastify.mongo.ObjectId(id) }, {
+        $set: newTopic
+    });
+
+    if (!result.acknowledged) {
+        throw new RequestError('Failed to update topic', 500);
+    }
+
+    const updatedTopic: WithId<Topic> | null = await topicsCollection.findOne({ _id: new fastify.mongo.ObjectId(id) });
+
+    return updatedTopic;
 }
 
 /**
  * @function getSummaryCollection
- * @param fastify 
- * @returns db collection
  * @description Return the summary collection of the table on db
  */
 function getSummaryCollection(fastify: FastifyInstance): Collection<Topic> {
@@ -112,7 +152,7 @@ async function getSummaryById(id: string, fastify: FastifyInstance) {
 
 /**
  * @function getSubmissionCollection
- * @param fastify 
+ * @param fastify
  * @returns db collection
  * @description Return the submission collection of the table on db
  */
@@ -128,7 +168,7 @@ function getSubmissionCollection(fastify: FastifyInstance): Collection<Submissio
 
 /**
  * @function sendSubmission
- * @description send Submission to an ID 
+ * @description send Submission to an ID
  */
 async function sendSubmission(id: string, data: SubmissionBody, fastify: FastifyInstance) {
     const submissionCollection = getSubmissionCollection(fastify);
@@ -157,5 +197,6 @@ export default {
     getTopicById,
     createTopic,
     getSummaryById,
-    sendSubmission
+    sendSubmission,
+    modifyTopic
 };

@@ -42,6 +42,19 @@ async function createTopic(request: FastifyRequest<{ Body: CreateBody }>, reply:
 }
 
 /**
+ * @function modifyTopic
+ * @description Modify an existing topic
+ */
+async function modifyTopic(request: FastifyRequest<{ Params: TopicParams, Body: CreateBody }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.modifyTopic(request.params.id, request.body, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully updated the topic',
+        data: result
+    });
+}
+
+/**
  * @function getSummaryTopic
  * @description Return the Topic by the id given on the url
  */
@@ -72,5 +85,6 @@ export default {
     getTopicById,
     createTopic,
     getSummaryTopic,
-    sendSubmission
+    sendSubmission,
+    modifyTopic
 };

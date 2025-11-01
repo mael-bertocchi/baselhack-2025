@@ -12,6 +12,9 @@ async function topicsRoutes(app: FastifyInstance): Promise<void> {
     app.post('/', {
             schema: createSchema
         }, topicsController.createTopic);
+    app.put('/:id', {
+            schema: createSchema
+        }, topicsController.modifyTopic);
     app.get('/:id', topicsController.getTopicById);
     app.get('/:id/summary', topicsController.getSummaryTopic);
     app.post('/:id/submission', {
