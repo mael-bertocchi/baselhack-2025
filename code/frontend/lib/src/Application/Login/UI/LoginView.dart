@@ -26,7 +26,8 @@ class LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: Center(
+      body: SelectionArea(
+        child: Center(
         child: CustomCard.elevated(
           width: 540,
           padding: const EdgeInsets.all(48),
@@ -43,7 +44,7 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 24),
 
-              const Text(
+              const SelectableText(
                 'Welcome to Consensus Hub',
                 style: TextStyle(
                   fontSize: 28,
@@ -53,7 +54,7 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 8),
 
-              const Text(
+              const SelectableText(
                 'Sign in to your account to share your insights',
                 style: TextStyle(
                   fontSize: 15,
@@ -125,6 +126,7 @@ class LoginViewState extends State<LoginView> {
               const SizedBox(height: 24),
             ],
           ),
+        ),
         ),
       ),
     );
