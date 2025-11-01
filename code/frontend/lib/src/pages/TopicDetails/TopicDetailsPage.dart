@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/Application/TopicDetail/UI/TopicDetailView.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 /// Page wrapper for Topic Details page
 /// This maintains consistency with the application's page structure
@@ -15,7 +16,7 @@ class TopicDetailsPage extends StatelessWidget {
     if (topicId == null) {
       return Scaffold(
         body: Center(
-          child: Text('Error: Topic ID not provided'),
+          child: Text(AppLocalizations.of(context)!.errorTopicIdNotProvided),
         ),
       );
     }

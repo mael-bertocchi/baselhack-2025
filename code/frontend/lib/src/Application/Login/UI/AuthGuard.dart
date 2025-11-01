@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/routes/AppRoutes.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import '../Api/AuthService.dart';
 
 /// A wrapper widget that checks authentication before showing content.
@@ -116,24 +117,24 @@ class _AuthGuardState extends State<AuthGuard> {
                   color: Colors.grey,
                 ),
                 const SizedBox(height: 16),
-                const Text(
-                  'Access Denied',
-                  style: TextStyle(
+                Text(
+                  AppLocalizations.of(context)!.accessDenied,
+                  style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
-                  'You do not have permission to access this content.',
-                  style: TextStyle(color: Colors.grey),
+                Text(
+                  AppLocalizations.of(context)!.noPermission,
+                  style: const TextStyle(color: Colors.grey),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
                   },
-                  child: const Text('Go to Dashboard'),
+                  child: Text(AppLocalizations.of(context)!.goToDashboard),
                 ),
               ],
             ),

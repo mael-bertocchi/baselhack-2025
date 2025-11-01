@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/routes/AppRoutes.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 /// Page displayed when user has insufficient permissions
 /// Redirects to dashboard if authenticated, login if not
@@ -9,11 +10,12 @@ class UnauthorizedPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final isAuthenticated = AuthService.instance.isAuthenticated;
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Access Denied'),
+        title: Text(l10n.accessDenied),
         automaticallyImplyLeading: false,
       ),
       body: Center(
@@ -26,18 +28,18 @@ class UnauthorizedPage extends StatelessWidget {
               color: Colors.grey,
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Access Denied',
-              style: TextStyle(
+            Text(
+              l10n.accessDenied,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 8),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: Text(
-                'You do not have permission to access this page.',
+                l10n.noPermission,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.grey,
@@ -54,7 +56,7 @@ class UnauthorizedPage extends StatelessWidget {
                 );
               },
               icon: Icon(isAuthenticated ? Icons.home : Icons.login),
-              label: Text(isAuthenticated ? 'Go to Dashboard' : 'Go to Login'),
+              label: Text(isAuthenticated ? l10n.goToDashboard : l10n.goToLogin),
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 32,

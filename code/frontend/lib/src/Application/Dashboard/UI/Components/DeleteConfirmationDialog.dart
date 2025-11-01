@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../theme/AppColors.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class DeleteConfirmationDialog extends StatelessWidget {
   final String title;
@@ -17,6 +18,7 @@ class DeleteConfirmationDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
@@ -65,9 +67,9 @@ class DeleteConfirmationDialog extends StatelessWidget {
               vertical: 12,
             ),
           ),
-          child: const Text(
-            'Cancel',
-            style: TextStyle(
+          child: Text(
+            l10n.cancel,
+            style: const TextStyle(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w600,
               fontSize: 16,
@@ -88,14 +90,14 @@ class DeleteConfirmationDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
           ),
-          child: const Row(
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(Icons.delete_outline, size: 20),
-              SizedBox(width: 8),
+              const Icon(Icons.delete_outline, size: 20),
+              const SizedBox(width: 8),
               Text(
-                'Delete',
-                style: TextStyle(
+                l10n.delete,
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
                 ),

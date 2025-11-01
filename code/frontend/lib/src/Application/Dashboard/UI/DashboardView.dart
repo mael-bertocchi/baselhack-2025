@@ -403,18 +403,18 @@ class _DashboardViewState extends State<DashboardView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // En-tête avec titre et sous-titre
-              const SelectableText(
-                'Welcome Back!',
-                style: TextStyle(
+              SelectableText(
+                l10n.welcomeBack,
+                style: const TextStyle(
                   fontSize: 36,
                   fontWeight: FontWeight.w900,
                   color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
-              const SelectableText(
-                'Share your diverse perspectives and help shape better decisions together',
-                style: TextStyle(
+              SelectableText(
+                l10n.sharePerspectives,
+                style: const TextStyle(
                   fontSize: 16,
                   color: AppColors.textSecondary,
                 ),
@@ -431,7 +431,7 @@ class _DashboardViewState extends State<DashboardView> {
                       children: [
                         Expanded(
                           child: StatCard(
-                            label: 'Active Topics',
+                            label: l10n.activeTopics,
                             value: '5',
                             icon: Icons.trending_up,
                             iconColor: AppColors.blue,
@@ -441,7 +441,7 @@ class _DashboardViewState extends State<DashboardView> {
                         const SizedBox(width: 24),
                         Expanded(
                           child: StatCard(
-                            label: 'Your Contributions',
+                            label: l10n.yourContributions,
                             value: '12',
                             icon: Icons.chat_bubble_outline,
                             iconColor: AppColors.pink,
@@ -451,7 +451,7 @@ class _DashboardViewState extends State<DashboardView> {
                         const SizedBox(width: 24),
                         Expanded(
                           child: StatCard(
-                            label: 'Total Participants',
+                            label: l10n.totalParticipants,
                             value: '847',
                             icon: Icons.people_outline,
                             iconColor: AppColors.blue,
@@ -464,7 +464,7 @@ class _DashboardViewState extends State<DashboardView> {
                     return Column(
                       children: [
                         StatCard(
-                          label: 'Active Topics',
+                          label: l10n.activeTopics,
                           value: '5',
                           icon: Icons.trending_up,
                           iconColor: AppColors.blue,
@@ -472,7 +472,7 @@ class _DashboardViewState extends State<DashboardView> {
                         ),
                         const SizedBox(height: 16),
                         StatCard(
-                          label: 'Your Contributions',
+                          label: l10n.yourContributions,
                           value: '12',
                           icon: Icons.chat_bubble_outline,
                           iconColor: AppColors.pink,
@@ -480,7 +480,7 @@ class _DashboardViewState extends State<DashboardView> {
                         ),
                         const SizedBox(height: 16),
                         StatCard(
-                          label: 'Total Participants',
+                          label: l10n.totalParticipants,
                           value: '847',
                           icon: Icons.people_outline,
                           iconColor: AppColors.blue,

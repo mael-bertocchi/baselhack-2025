@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
 import '../../../widgets/SharedAppBar.dart';
@@ -70,8 +71,10 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
       final topic = await _dashboardService.getTopicById(widget.topicId);
       
       if (topic == null) {
+        if (!mounted) return;
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
-          _loadError = 'Topic not found';
+          _loadError = l10n.topicNotFound;
           _isLoading = false;
         });
         return;
@@ -88,8 +91,10 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _loadError = 'Failed to load topic: ${e.toString()}';
+        _loadError = l10n.failedToLoadTopic(e.toString());
         _isLoading = false;
       });
     }
@@ -116,57 +121,58 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
   bool _validate() {
     _clearErrors();
     bool isValid = true;
+    final l10n = AppLocalizations.of(context)!;
 
     // Validate title
     if (_titleController.text.trim().isEmpty) {
-      setState(() => _titleError = 'Title is required');
+      setState(() => _titleError = l10n.titleRequired);
       isValid = false;
     } else if (_titleController.text.trim().length < 3) {
-      setState(() => _titleError = 'Title must be at least 3 characters');
+      setState(() => _titleError = l10n.titleMinLength);
       isValid = false;
     } else if (_titleController.text.trim().length > 255) {
-      setState(() => _titleError = 'Title must not exceed 255 characters');
+      setState(() => _titleError = l10n.titleMaxLength);
       isValid = false;
     }
 
     // Validate short description
     if (_shortDescriptionController.text.trim().isEmpty) {
-      setState(() => _shortDescriptionError = 'Short description is required');
+      setState(() => _shortDescriptionError = l10n.shortDescriptionRequired);
       isValid = false;
     } else if (_shortDescriptionController.text.trim().length < 5) {
-      setState(() => _shortDescriptionError = 'Short description must be at least 5 characters');
+      setState(() => _shortDescriptionError = l10n.shortDescriptionMinLength);
       isValid = false;
     } else if (_shortDescriptionController.text.trim().length > 500) {
-      setState(() => _shortDescriptionError = 'Short description must not exceed 500 characters');
+      setState(() => _shortDescriptionError = l10n.shortDescriptionMaxLength);
       isValid = false;
     }
 
     // Validate description
     if (_descriptionController.text.trim().isEmpty) {
-      setState(() => _descriptionError = 'Description is required');
+      setState(() => _descriptionError = l10n.descriptionRequired);
       isValid = false;
     } else if (_descriptionController.text.trim().length < 10) {
-      setState(() => _descriptionError = 'Description must be at least 10 characters');
+      setState(() => _descriptionError = l10n.descriptionMinLength);
       isValid = false;
     } else if (_descriptionController.text.trim().length > 2500) {
-      setState(() => _descriptionError = 'Description must not exceed 2500 characters');
+      setState(() => _descriptionError = l10n.descriptionMaxLength);
       isValid = false;
     }
 
     // Validate dates
     if (_startDate == null) {
-      setState(() => _startDateError = 'Start date is required');
+      setState(() => _startDateError = l10n.startDateRequired);
       isValid = false;
     }
 
     if (_endDate == null) {
-      setState(() => _endDateError = 'End date is required');
+      setState(() => _endDateError = l10n.endDateRequired);
       isValid = false;
     }
 
     if (_startDate != null && _endDate != null) {
       if (_endDate!.isBefore(_startDate!)) {
-        setState(() => _endDateError = 'End date must be after start date');
+        setState(() => _endDateError = l10n.endDateAfterStart);
         isValid = false;
       }
     }
@@ -195,19 +201,20 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
       );
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         // Show success message
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 12),
-                Text('Topic updated successfully!'),
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 12),
+                Text(l10n.topicUpdatedSuccessfully),
               ],
             ),
-            backgroundColor: Color(0xFF10B981),
+            backgroundColor: const Color(0xFF10B981),
             behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 3),
+            duration: const Duration(seconds: 3),
           ),
         );
 
@@ -216,6 +223,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Row(
@@ -223,7 +231,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                 const Icon(Icons.error_outline, color: Colors.white),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text('Failed to update topic: ${e.toString()}'),
+                  child: Text(l10n.failedToUpdateTopic(e.toString())),
                 ),
               ],
             ),
@@ -254,29 +262,30 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
         _endDate != _topic!.endDate;
 
     if (hasChanges) {
+      final l10n = AppLocalizations.of(context)!;
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
-          title: const Text(
-            'Discard changes?',
-            style: TextStyle(
+          title: Text(
+            l10n.discardChanges,
+            style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 20,
             ),
           ),
-          content: const Text(
-            'You have unsaved changes. Are you sure you want to leave?',
-            style: TextStyle(fontSize: 16),
+          content: Text(
+            l10n.unsavedChangesMessage,
+            style: const TextStyle(fontSize: 16),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text(
-                'Continue Editing',
-                style: TextStyle(
+              child: Text(
+                l10n.continueEditing,
+                style: const TextStyle(
                   color: AppColors.textSecondary,
                   fontWeight: FontWeight.w600,
                 ),
@@ -299,9 +308,9 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
-              child: const Text(
-                'Discard',
-                style: TextStyle(fontWeight: FontWeight.w600),
+              child: Text(
+                l10n.discard,
+                style: const TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
           ],
@@ -314,6 +323,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SharedAppBar(
@@ -337,9 +347,9 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                           color: AppColors.pink,
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          'Error Loading Topic',
-                          style: TextStyle(
+                        Text(
+                          l10n.errorLoadingTopic,
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -358,7 +368,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                         ElevatedButton.icon(
                           onPressed: _loadTopicData,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Try Again'),
+                          label: Text(l10n.tryAgain),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.blue,
                             foregroundColor: AppColors.white,
@@ -419,22 +429,22 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                             ),
                           ),
                           const SizedBox(width: 16),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'Update Discussion Topic',
-                                  style: TextStyle(
+                                  l10n.updateDiscussionTopic,
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
-                                SizedBox(height: 4),
+                                const SizedBox(height: 4),
                                 Text(
-                                  'Modify the details of this discussion topic',
-                                  style: TextStyle(
+                                  l10n.modifyDetailsMessage,
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     color: AppColors.textSecondary,
                                   ),
@@ -463,8 +473,8 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                         children: [
                           // Title field
                           CustomTextField(
-                            label: 'Title',
-                            hint: 'Enter a clear and concise title',
+                            label: l10n.title,
+                            hint: l10n.titleHint,
                             controller: _titleController,
                             maxLength: 255,
                             errorText: _titleError,
@@ -475,8 +485,8 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
 
                           // Short description field
                           CustomTextField(
-                            label: 'Short Description',
-                            hint: 'Brief overview of the topic (shown in cards)',
+                            label: l10n.shortDescription,
+                            hint: l10n.shortDescriptionHint,
                             controller: _shortDescriptionController,
                             maxLines: 3,
                             maxLength: 500,
@@ -488,8 +498,8 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
 
                           // Description field
                           CustomTextField(
-                            label: 'Full Description',
-                            hint: 'Detailed information about the topic',
+                            label: l10n.fullDescription,
+                            hint: l10n.fullDescriptionHint,
                             controller: _descriptionController,
                             maxLines: 8,
                             maxLength: 2500,
@@ -500,9 +510,9 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                           const SizedBox(height: 24),
 
                           // Date pickers
-                          const Text(
-                            'Duration',
-                            style: TextStyle(
+                          Text(
+                            l10n.duration,
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textPrimary,
@@ -514,7 +524,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                             children: [
                               Expanded(
                                 child: DateTimePickerField(
-                                  label: 'Start Date',
+                                  label: l10n.startDate,
                                   initialDate: _startDate,
                                   firstDate: DateTime.now().subtract(const Duration(days: 365)),
                                   onDateSelected: (date) {
@@ -530,7 +540,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                               const SizedBox(width: 16),
                               Expanded(
                                 child: DateTimePickerField(
-                                  label: 'End Date',
+                                  label: l10n.endDate,
                                   initialDate: _endDate,
                                   firstDate: _startDate ?? DateTime.now(),
                                   onDateSelected: (date) {
@@ -566,9 +576,9 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                             ),
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(
+                            child: Text(
+                              l10n.cancel,
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.textSecondary,
@@ -602,14 +612,14 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                                       ),
                                     ),
                                   )
-                                : const Row(
+                                : Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(Icons.save_outlined, size: 20),
-                                      SizedBox(width: 8),
+                                      const Icon(Icons.save_outlined, size: 20),
+                                      const SizedBox(width: 8),
                                       Text(
-                                        'Update Topic',
-                                        style: TextStyle(
+                                        l10n.updateTopic,
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                         ),

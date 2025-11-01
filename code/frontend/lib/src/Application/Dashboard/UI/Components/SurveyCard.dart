@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../../../theme/AppColors.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 /// Type représentant le statut d'un topic
 enum TopicStatus {
@@ -221,8 +222,35 @@ class _TopicCardState extends State<TopicCard> {
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
   }
 
+  String _getStatusDisplayText(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    // Utilise directement le statut défini
+    switch (widget.topic.status) {
+      case TopicStatus.open:
+        final now = DateTime.now();
+        final today = DateTime(now.year, now.month, now.day);
+        final start = DateTime(widget.topic.startDate.year, widget.topic.startDate.month, widget.topic.startDate.day);
+        final end = DateTime(widget.topic.endDate.year, widget.topic.endDate.month, widget.topic.endDate.day);
+        
+        // Si la date de début n'est pas encore arrivée
+        if (today.isBefore(start)) {
+          return l10n.scheduled;
+        }
+        // Si la date de fin est dépassée
+        if (today.isAfter(end)) {
+          return l10n.closed;
+        }
+        return l10n.active;
+      case TopicStatus.closed:
+        return l10n.closed;
+      case TopicStatus.archived:
+        return l10n.archived;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return MouseRegion(
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
@@ -264,7 +292,7 @@ class _TopicCardState extends State<TopicCard> {
                       borderRadius: BorderRadius.circular(6),
                     ),
                     child: Text(
-                      widget.topic.statusDisplay,
+                      _getStatusDisplayText(context),
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w600,
@@ -274,7 +302,7 @@ class _TopicCardState extends State<TopicCard> {
                   ),
                   // Afficher les dates
                   Text(
-                    'Until ${_formatDate(widget.topic.endDate)}',
+                    '${l10n.until} ${_formatDate(widget.topic.endDate)}',
                     style: const TextStyle(
                       fontSize: 12,
                       color: AppColors.textSecondary,

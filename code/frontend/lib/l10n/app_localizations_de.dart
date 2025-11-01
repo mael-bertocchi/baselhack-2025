@@ -63,6 +63,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get tryAgain => 'Erneut versuchen';
 
   @override
+  String get welcomeBack => 'Willkommen zurück!';
+
+  @override
+  String get sharePerspectives => 'Teilen Sie Ihre vielfältigen Perspektiven und helfen Sie mit, gemeinsam bessere Entscheidungen zu treffen';
+
+  @override
   String get loading => 'Wird geladen...';
 
   @override
@@ -192,4 +198,280 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get searchUsers => 'Suche nach Name, E-Mail oder Rolle...';
+
+  @override
+  String get welcomeToConsensusHub => 'Willkommen bei Consensus Hub';
+
+  @override
+  String get signInToAccount => 'Melden Sie sich bei Ihrem Konto an, um Ihre Erkenntnisse zu teilen';
+
+  @override
+  String get emailAddress => 'E-Mail-Adresse';
+
+  @override
+  String get emailPlaceholder => 'sie@beispiel.com';
+
+  @override
+  String get emailHelperText => 'Tipp: Verwenden Sie admin@endress.com für die Admin-Ansicht';
+
+  @override
+  String get passwordPlaceholder => 'Geben Sie Ihr Passwort ein';
+
+  @override
+  String get signIn => 'Anmelden';
+
+  @override
+  String get pleaseEnterEmail => 'Bitte geben Sie Ihre E-Mail-Adresse ein';
+
+  @override
+  String get pleaseEnterPassword => 'Bitte geben Sie Ihr Passwort ein';
+
+  @override
+  String loginFailed(String error) {
+    return 'Anmeldung fehlgeschlagen: $error';
+  }
+
+  @override
+  String get accessDenied => 'Zugriff verweigert';
+
+  @override
+  String get noPermission => 'Sie haben keine Berechtigung, auf diesen Inhalt zuzugreifen.';
+
+  @override
+  String get goToDashboard => 'Zum Dashboard gehen';
+
+  @override
+  String get topicNotFound => 'Thema nicht gefunden';
+
+  @override
+  String failedToLoadTopic(String error) {
+    return 'Fehler beim Laden des Themas: $error';
+  }
+
+  @override
+  String get ideaSubmittedSuccessfully => 'Idee erfolgreich eingereicht!';
+
+  @override
+  String failedToSubmitIdea(String error) {
+    return 'Fehler beim Einreichen der Idee: $error';
+  }
+
+  @override
+  String get shareYourIdea => 'Teilen Sie Ihre Idee';
+
+  @override
+  String get anonymousSubmissions => 'Alle Einreichungen sind anonym - Ihre Perspektive zählt!';
+
+  @override
+  String get yourIdea => 'Ihre Idee';
+
+  @override
+  String get ideaPlaceholder => 'Teilen Sie Ihre Gedanken, Ideen oder Bedenken... (Seien Sie konkret und konstruktiv)';
+
+  @override
+  String get multipleSubmissionsNote => 'Sie können mehrere Ideen einreichen. Alle Einreichungen sind anonym.';
+
+  @override
+  String get submitting => 'Wird gesendet...';
+
+  @override
+  String get submitIdea => 'Idee einreichen';
+
+  @override
+  String get allIdeas => 'Alle Ideen';
+
+  @override
+  String get retry => 'Wiederholen';
+
+  @override
+  String get noIdeasYet => 'Noch keine Ideen';
+
+  @override
+  String get beFirstToShare => 'Seien Sie der Erste, der seine Gedanken teilt!';
+
+  @override
+  String timeAgo(String time) {
+    return 'Vor $time';
+  }
+
+  @override
+  String get justNow => 'Gerade eben';
+
+  @override
+  String daysShort(int count) {
+    return '${count}T';
+  }
+
+  @override
+  String hoursShort(int count) {
+    return '${count}Std';
+  }
+
+  @override
+  String minutesShort(int count) {
+    return '${count}Min';
+  }
+
+  @override
+  String get startDate => 'Startdatum';
+
+  @override
+  String get endDate => 'Enddatum';
+
+  @override
+  String get topicCreatedSuccessfully => 'Thema erfolgreich erstellt!';
+
+  @override
+  String failedToCreateTopic(String error) {
+    return 'Fehler beim Erstellen des Themas: $error';
+  }
+
+  @override
+  String get discardChanges => 'Änderungen verwerfen?';
+
+  @override
+  String get unsavedChangesMessage => 'Sie haben nicht gespeicherte Änderungen. Möchten Sie wirklich fortfahren?';
+
+  @override
+  String get continueEditing => 'Bearbeitung fortsetzen';
+
+  @override
+  String get discard => 'Verwerfen';
+
+  @override
+  String get createNewDiscussionTopic => 'Neues Diskussionsthema erstellen';
+
+  @override
+  String get fillDetailsToStart => 'Füllen Sie die Details aus, um eine neue Community-Diskussion zu starten';
+
+  @override
+  String get title => 'Titel';
+
+  @override
+  String get titleHint => 'Geben Sie einen klaren und prägnanten Titel ein';
+
+  @override
+  String get shortDescription => 'Kurzbeschreibung';
+
+  @override
+  String get shortDescriptionHint => 'Kurzer Überblick über das Thema (in Karten angezeigt)';
+
+  @override
+  String get fullDescription => 'Vollständige Beschreibung';
+
+  @override
+  String get fullDescriptionHint => 'Detaillierte Informationen zum Thema';
+
+  @override
+  String get duration => 'Dauer';
+
+  @override
+  String get titleRequired => 'Titel ist erforderlich';
+
+  @override
+  String get titleMinLength => 'Titel muss mindestens 3 Zeichen lang sein';
+
+  @override
+  String get titleMaxLength => 'Titel darf 255 Zeichen nicht überschreiten';
+
+  @override
+  String get shortDescriptionRequired => 'Kurzbeschreibung ist erforderlich';
+
+  @override
+  String get shortDescriptionMinLength => 'Kurzbeschreibung muss mindestens 5 Zeichen lang sein';
+
+  @override
+  String get shortDescriptionMaxLength => 'Kurzbeschreibung darf 500 Zeichen nicht überschreiten';
+
+  @override
+  String get descriptionRequired => 'Beschreibung ist erforderlich';
+
+  @override
+  String get descriptionMinLength => 'Beschreibung muss mindestens 10 Zeichen lang sein';
+
+  @override
+  String get descriptionMaxLength => 'Beschreibung darf 2500 Zeichen nicht überschreiten';
+
+  @override
+  String get startDateRequired => 'Startdatum ist erforderlich';
+
+  @override
+  String get endDateRequired => 'Enddatum ist erforderlich';
+
+  @override
+  String get endDateAfterStart => 'Enddatum muss nach dem Startdatum liegen';
+
+  @override
+  String get userNotAuthenticated => 'Benutzer nicht authentifiziert';
+
+  @override
+  String get topicUpdatedSuccessfully => 'Thema erfolgreich aktualisiert!';
+
+  @override
+  String failedToUpdateTopic(String error) {
+    return 'Fehler beim Aktualisieren des Themas: $error';
+  }
+
+  @override
+  String get errorTopicIdNotProvided => 'Fehler: Themen-ID nicht angegeben';
+
+  @override
+  String get errorLoadingTopic => 'Fehler beim Laden des Themas';
+
+  @override
+  String get backToSurveys => 'Zurück zu Umfragen';
+
+  @override
+  String get detailedDescription => 'Detaillierte Beschreibung';
+
+  @override
+  String get topicOpens => 'Thema öffnet';
+
+  @override
+  String get topicCloses => 'Thema schließt';
+
+  @override
+  String get updateDiscussionTopic => 'Diskussionsthema aktualisieren';
+
+  @override
+  String get modifyDetailsMessage => 'Details dieses Diskussionsthemas ändern';
+
+  @override
+  String get goToLogin => 'Zur Anmeldung gehen';
+
+  @override
+  String get pageNotFound => 'Seite nicht gefunden';
+
+  @override
+  String get pageNotFoundMessage => 'Die gesuchte Seite existiert nicht.';
+
+  @override
+  String get createdBy => 'Erstellt von';
+
+  @override
+  String get from => 'Von';
+
+  @override
+  String get to => 'bis';
+
+  @override
+  String get lastUpdated => 'Zuletzt aktualisiert';
+
+  @override
+  String get timeline => 'Zeitleiste';
+
+  @override
+  String get created => 'Erstellt';
+
+  @override
+  String get until => 'Bis';
+
+  @override
+  String get activeTopics => 'Aktive Themen';
+
+  @override
+  String get yourContributions => 'Ihre Beiträge';
+
+  @override
+  String get totalParticipants => 'Gesamtteilnehmer';
 }

@@ -63,6 +63,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tryAgain => 'Try Again';
 
   @override
+  String get welcomeBack => 'Welcome Back!';
+
+  @override
+  String get sharePerspectives => 'Share your diverse perspectives and help shape better decisions together';
+
+  @override
   String get loading => 'Loading...';
 
   @override
@@ -192,4 +198,280 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get searchUsers => 'Search users by name, email or role...';
+
+  @override
+  String get welcomeToConsensusHub => 'Welcome to Consensus Hub';
+
+  @override
+  String get signInToAccount => 'Sign in to your account to share your insights';
+
+  @override
+  String get emailAddress => 'Email Address';
+
+  @override
+  String get emailPlaceholder => 'you@example.com';
+
+  @override
+  String get emailHelperText => 'Tip: Use admin@endress.com for admin view';
+
+  @override
+  String get passwordPlaceholder => 'Enter your password';
+
+  @override
+  String get signIn => 'Sign In';
+
+  @override
+  String get pleaseEnterEmail => 'Please enter your email';
+
+  @override
+  String get pleaseEnterPassword => 'Please enter your password';
+
+  @override
+  String loginFailed(String error) {
+    return 'Login failed: $error';
+  }
+
+  @override
+  String get accessDenied => 'Access Denied';
+
+  @override
+  String get noPermission => 'You do not have permission to access this content.';
+
+  @override
+  String get goToDashboard => 'Go to Dashboard';
+
+  @override
+  String get topicNotFound => 'Topic not found';
+
+  @override
+  String failedToLoadTopic(String error) {
+    return 'Failed to load topic: $error';
+  }
+
+  @override
+  String get ideaSubmittedSuccessfully => 'Idea submitted successfully!';
+
+  @override
+  String failedToSubmitIdea(String error) {
+    return 'Failed to submit idea: $error';
+  }
+
+  @override
+  String get shareYourIdea => 'Share Your Idea';
+
+  @override
+  String get anonymousSubmissions => 'All submissions are anonymous - your perspective matters!';
+
+  @override
+  String get yourIdea => 'Your Idea';
+
+  @override
+  String get ideaPlaceholder => 'Share your thoughts, ideas, or concerns... (Be specific and constructive)';
+
+  @override
+  String get multipleSubmissionsNote => 'You can submit multiple ideas. All submissions are anonymous.';
+
+  @override
+  String get submitting => 'Submitting...';
+
+  @override
+  String get submitIdea => 'Submit Idea';
+
+  @override
+  String get allIdeas => 'All Ideas';
+
+  @override
+  String get retry => 'Retry';
+
+  @override
+  String get noIdeasYet => 'No ideas yet';
+
+  @override
+  String get beFirstToShare => 'Be the first to share your thoughts!';
+
+  @override
+  String timeAgo(String time) {
+    return '$time ago';
+  }
+
+  @override
+  String get justNow => 'Just now';
+
+  @override
+  String daysShort(int count) {
+    return '${count}d';
+  }
+
+  @override
+  String hoursShort(int count) {
+    return '${count}h';
+  }
+
+  @override
+  String minutesShort(int count) {
+    return '${count}m';
+  }
+
+  @override
+  String get startDate => 'Start Date';
+
+  @override
+  String get endDate => 'End Date';
+
+  @override
+  String get topicCreatedSuccessfully => 'Topic created successfully!';
+
+  @override
+  String failedToCreateTopic(String error) {
+    return 'Failed to create topic: $error';
+  }
+
+  @override
+  String get discardChanges => 'Discard changes?';
+
+  @override
+  String get unsavedChangesMessage => 'You have unsaved changes. Are you sure you want to leave?';
+
+  @override
+  String get continueEditing => 'Continue Editing';
+
+  @override
+  String get discard => 'Discard';
+
+  @override
+  String get createNewDiscussionTopic => 'Create a New Discussion Topic';
+
+  @override
+  String get fillDetailsToStart => 'Fill in the details to start a new community discussion';
+
+  @override
+  String get title => 'Title';
+
+  @override
+  String get titleHint => 'Enter a clear and concise title';
+
+  @override
+  String get shortDescription => 'Short Description';
+
+  @override
+  String get shortDescriptionHint => 'Brief overview of the topic (shown in cards)';
+
+  @override
+  String get fullDescription => 'Full Description';
+
+  @override
+  String get fullDescriptionHint => 'Detailed information about the topic';
+
+  @override
+  String get duration => 'Duration';
+
+  @override
+  String get titleRequired => 'Title is required';
+
+  @override
+  String get titleMinLength => 'Title must be at least 3 characters';
+
+  @override
+  String get titleMaxLength => 'Title must not exceed 255 characters';
+
+  @override
+  String get shortDescriptionRequired => 'Short description is required';
+
+  @override
+  String get shortDescriptionMinLength => 'Short description must be at least 5 characters';
+
+  @override
+  String get shortDescriptionMaxLength => 'Short description must not exceed 500 characters';
+
+  @override
+  String get descriptionRequired => 'Description is required';
+
+  @override
+  String get descriptionMinLength => 'Description must be at least 10 characters';
+
+  @override
+  String get descriptionMaxLength => 'Description must not exceed 2500 characters';
+
+  @override
+  String get startDateRequired => 'Start date is required';
+
+  @override
+  String get endDateRequired => 'End date is required';
+
+  @override
+  String get endDateAfterStart => 'End date must be after start date';
+
+  @override
+  String get userNotAuthenticated => 'User not authenticated';
+
+  @override
+  String get topicUpdatedSuccessfully => 'Topic updated successfully!';
+
+  @override
+  String failedToUpdateTopic(String error) {
+    return 'Failed to update topic: $error';
+  }
+
+  @override
+  String get errorTopicIdNotProvided => 'Error: Topic ID not provided';
+
+  @override
+  String get errorLoadingTopic => 'Error Loading Topic';
+
+  @override
+  String get backToSurveys => 'Back to Surveys';
+
+  @override
+  String get detailedDescription => 'Detailed Description';
+
+  @override
+  String get topicOpens => 'Topic Opens';
+
+  @override
+  String get topicCloses => 'Topic Closes';
+
+  @override
+  String get updateDiscussionTopic => 'Update Discussion Topic';
+
+  @override
+  String get modifyDetailsMessage => 'Modify the details of this discussion topic';
+
+  @override
+  String get goToLogin => 'Go to Login';
+
+  @override
+  String get pageNotFound => 'Page Not Found';
+
+  @override
+  String get pageNotFoundMessage => 'The page you are looking for does not exist.';
+
+  @override
+  String get createdBy => 'Created by';
+
+  @override
+  String get from => 'From';
+
+  @override
+  String get to => 'to';
+
+  @override
+  String get lastUpdated => 'Last updated';
+
+  @override
+  String get timeline => 'Timeline';
+
+  @override
+  String get created => 'Created';
+
+  @override
+  String get until => 'Until';
+
+  @override
+  String get activeTopics => 'Active Topics';
+
+  @override
+  String get yourContributions => 'Your Contributions';
+
+  @override
+  String get totalParticipants => 'Total Participants';
 }
