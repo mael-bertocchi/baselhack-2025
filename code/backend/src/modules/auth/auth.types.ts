@@ -12,6 +12,12 @@ export interface SignupBody {
 }
 
 export interface RefreshBody {
-    accessToken: string;
-    refreshToken: string;
+    accessToken?: string;
+    refreshToken?: string;
+}
+
+export interface AuthenticatedUser {
+    id: string;
+    email: string;
+    payload: Record<string, unknown>;
 }

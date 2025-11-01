@@ -9,6 +9,7 @@ import dbPlugin from "@plugins/database";
 import jwtPlugin from "@plugins/jwt";
 import rateLimiterPlugin from "@plugins/rate-limiter";
 import jwtPlugin from "@plugins/jwt";
+import authGuardPlugin from "@plugins/auth-guard";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
@@ -34,6 +35,7 @@ async function startApp(): Promise<void> {
     await app.register(corsPlugin);
     await app.register(dbPlugin);
     await app.register(jwtPlugin);
+    await app.register(authGuardPlugin);
 
     app.setErrorHandler((err: unknown, request: FastifyRequest, reply: FastifyReply) => {
         if (err instanceof RequestError) {

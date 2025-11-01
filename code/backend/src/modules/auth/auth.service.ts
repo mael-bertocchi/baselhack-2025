@@ -123,6 +123,10 @@ async function signup(data: SignupBody, fastify: FastifyInstance) {
 async function refresh(data: RefreshBody, fastify: FastifyInstance) {
     const { refreshToken } = data;
 
+    if (!refreshToken) {
+        throw new RequestError('Refresh token is required', 400);
+    }
+
     const decoded = await verifyRefreshToken(refreshToken, fastify);
 
     if (!decoded) {
