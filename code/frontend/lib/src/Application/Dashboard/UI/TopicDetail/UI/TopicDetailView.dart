@@ -160,7 +160,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
         return const Color(0xFF0891B2); // Cyan
       case 'closed':
         return const Color(0xFF14B8A6);
-      case 'soon':
+      case 'scheduled':
         return const Color(0xFFEC4899);
       case 'archived':
         return const Color(0xFF6B7280);
@@ -176,7 +176,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
         return const Color(0xFFCFFAFE); // Cyan très clair
       case 'closed':
         return const Color(0xFFCCFBF1);
-      case 'soon':
+      case 'scheduled':
         return const Color(0xFFFCE7F3);
       case 'archived':
         return const Color(0xFFF3F4F6);
