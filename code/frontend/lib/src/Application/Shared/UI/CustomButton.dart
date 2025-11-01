@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
-import 'package:frontend/src/theme/AppColors.dart';
+import 'package:alignify/src/theme/AppColors.dart';
 
 /// Bouton personnalisé avec différents styles
 class CustomButton extends StatelessWidget {

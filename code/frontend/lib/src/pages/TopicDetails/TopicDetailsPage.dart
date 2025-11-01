@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Application/TopicDetail/UI/TopicDetailView.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/src/Application/TopicDetail/UI/TopicDetailView.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 
 /// Page wrapper for Topic Details page
 /// This maintains consistency with the application's page structure

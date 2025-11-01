@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../../../theme/AppColors.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 
 /// Type représentant le statut d'un topic
 enum TopicStatus {

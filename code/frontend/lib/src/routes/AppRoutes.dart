@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/pages/Dashboard/DashboardPage.dart';
-import 'package:frontend/src/pages/Login/LoginPage.dart';
-import 'package:frontend/src/pages/Unauthorized/UnauthorizedPage.dart';
-import 'package:frontend/src/pages/NotFound/NotFoundPage.dart';
-import 'package:frontend/src/pages/CreateTopic/CreateTopicPage.dart';
-import 'package:frontend/src/pages/TopicDetails/TopicDetailsPage.dart';
-import 'package:frontend/src/pages/UpdateTopic/UpdateTopicPage.dart';
-import 'package:frontend/src/pages/ManageAccounts/ManageAccountsPage.dart';
-import 'package:frontend/src/routes/ProtectedRoutes.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/pages/Dashboard/DashboardPage.dart';
+import 'package:alignify/src/pages/Login/LoginPage.dart';
+import 'package:alignify/src/pages/Unauthorized/UnauthorizedPage.dart';
+import 'package:alignify/src/pages/NotFound/NotFoundPage.dart';
+import 'package:alignify/src/pages/CreateTopic/CreateTopicPage.dart';
+import 'package:alignify/src/pages/TopicDetails/TopicDetailsPage.dart';
+import 'package:alignify/src/pages/UpdateTopic/UpdateTopicPage.dart';
+import 'package:alignify/src/pages/ManageAccounts/ManageAccountsPage.dart';
+import 'package:alignify/src/routes/ProtectedRoutes.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
 
 /// Centralized application routes for navigation
 /// All routes should be defined here for security and maintainability

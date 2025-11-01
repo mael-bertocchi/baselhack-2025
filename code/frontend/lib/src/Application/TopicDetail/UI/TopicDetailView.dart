@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
 import '../../Dashboard/UI/Components/TopicCard.dart';
@@ -315,7 +315,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
               : SingleChildScrollView(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final horizontalPadding = constraints.maxWidth * 0.1;
+            final isMobile = constraints.maxWidth < 600;
+            final horizontalPadding = isMobile ? 16.0 : constraints.maxWidth * 0.1;
             return Padding(
               padding: EdgeInsets.only(
                 left: horizontalPadding,

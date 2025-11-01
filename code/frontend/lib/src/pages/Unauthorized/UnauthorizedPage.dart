@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/routes/AppRoutes.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/src/routes/AppRoutes.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 
 /// Page displayed when user has insufficient permissions
 /// Redirects to dashboard if authenticated, login if not
@@ -19,9 +19,11 @@ class UnauthorizedPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
             const Icon(
               Icons.lock_outline,
               size: 80,
@@ -65,6 +67,7 @@ class UnauthorizedPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

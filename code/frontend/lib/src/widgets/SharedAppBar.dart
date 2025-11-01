@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/AppColors.dart';
 import '../Application/Dashboard/UI/Components/ProfileMenu.dart';
-import 'package:frontend/l10n/app_localizations.dart';
 
 /// Shared AppBar component used across the application
 /// Provides consistent branding and profile menu functionality
@@ -84,7 +83,9 @@ class _SharedAppBarState extends State<SharedAppBar> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+    final horizontalPadding = isMobile ? 16.0 : MediaQuery.of(context).size.width * 0.1;
     
     return AppBar(
       backgroundColor: AppColors.white,
@@ -92,50 +93,28 @@ class _SharedAppBarState extends State<SharedAppBar> {
       toolbarHeight: 70,
       automaticallyImplyLeading: false,
       leading: widget.leading,
-      title: LayoutBuilder(
-        builder: (context, constraints) {
-          return Padding(
-            padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.1,
+      title: Padding(
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding,
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                'assets/alignify_logo.png',
+                height: isMobile ? 80 : 130,
+                fit: BoxFit.cover,
+              ),
             ),
-            child: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.blue,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'C',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Text(
-                  widget.title ?? l10n.appTitle,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
+            const SizedBox(width: 12),
+          ],
+        ),
       ),
       actions: [
         Padding(
           padding: EdgeInsets.only(
-            right: MediaQuery.of(context).size.width * 0.1,
+            right: horizontalPadding,
           ),
           child: IconButton(
             key: _profileButtonKey,

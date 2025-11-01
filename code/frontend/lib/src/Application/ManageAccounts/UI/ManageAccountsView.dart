@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../Api/UserManagementService.dart';
 import '../../Login/Api/AuthService.dart';
@@ -322,9 +322,12 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
                   color: AppColors.blue,
                   child: LayoutBuilder(
                     builder: (context, constraints) {
+                      final isMobile = constraints.maxWidth < 600;
+                      final horizontalPadding = isMobile ? 16.0 : MediaQuery.of(context).size.width * 0.1;
+                      
                       return ListView.builder(
                         padding: EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.1,
+                          horizontal: horizontalPadding,
                           vertical: 20,
                         ),
                         itemCount: _filteredUsers!.length,
@@ -342,6 +345,9 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
   }
 
   Widget _buildUserCard(BuildContext context, UserAccount user, AppLocalizations l10n) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+    
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
@@ -357,7 +363,202 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
+        child: isMobile ? Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                // Avatar
+                CircleAvatar(
+                  backgroundColor: AppColors.background,
+                  radius: 28,
+                  child: Text(
+                    user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase(),
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                
+                // User info (name and email)
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        user.fullName,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        user.email,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: AppColors.textSecondary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            
+            // Role and date
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4),
+                  decoration: BoxDecoration(
+                    color: _getRoleColor(user.role).withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: _getRoleColor(user.role).withOpacity(0.3),
+                      width: 1,
+                    ),
+                  ),
+                  child: DropdownButton<Role>(
+                    value: user.role,
+                    underline: const SizedBox(),
+                    isDense: true,
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: _getRoleColor(user.role),
+                      size: 20,
+                    ),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: _getRoleColor(user.role),
+                    ),
+                    borderRadius: BorderRadius.circular(6),
+                    dropdownColor: AppColors.white,
+                    items: [
+                      DropdownMenuItem(
+                        value: Role.user,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.person,
+                              size: 16,
+                              color: _getRoleColor(Role.user),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              _getRoleDisplay(context, Role.user),
+                              style: TextStyle(
+                                color: _getRoleColor(Role.user),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: Role.manager,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.business_center,
+                              size: 16,
+                              color: _getRoleColor(Role.manager),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              _getRoleDisplay(context, Role.manager),
+                              style: TextStyle(
+                                color: _getRoleColor(Role.manager),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      DropdownMenuItem(
+                        value: Role.administrator,
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.admin_panel_settings,
+                              size: 16,
+                              color: _getRoleColor(Role.administrator),
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              _getRoleDisplay(context, Role.administrator),
+                              style: TextStyle(
+                                color: _getRoleColor(Role.administrator),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                    onChanged: (Role? newRole) {
+                      if (newRole != null && newRole != user.role) {
+                        _handleRoleChange(user, newRole, l10n);
+                      }
+                    },
+                  ),
+                ),
+                Text(
+                  '${l10n.joinedOn} ${_formatDate(user.createdAt)}',
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            
+            // Action buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton.icon(
+                  icon: const Icon(
+                    Icons.edit,
+                    color: AppColors.blue,
+                    size: 18,
+                  ),
+                  label: Text(
+                    l10n.changePassword,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.blue,
+                    ),
+                  ),
+                  onPressed: () => _showChangePasswordDialog(context, user, l10n),
+                ),
+                const SizedBox(width: 8),
+                TextButton.icon(
+                  icon: const Icon(
+                    Icons.delete,
+                    color: AppColors.pink,
+                    size: 18,
+                  ),
+                  label: Text(
+                    l10n.deleteUser,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.pink,
+                    ),
+                  ),
+                  onPressed: () => _showDeleteUserDialog(context, user, l10n),
+                ),
+              ],
+            ),
+          ],
+        ) : Row(
           children: [
             // Avatar
             CircleAvatar(

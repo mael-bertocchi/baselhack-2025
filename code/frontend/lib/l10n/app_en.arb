@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Consensus Hub",
+  "appTitle": "Alignify",
   "@appTitle": {
     "description": "Title for the application"
   },
@@ -330,7 +330,7 @@
     "description": "Search users placeholder"
   },
 
-  "welcomeToConsensusHub": "Welcome to Consensus Hub",
+  "welcomeToConsensusHub": "Welcome to Alignify",
   "@welcomeToConsensusHub": {
     "description": "Login page welcome title"
   },

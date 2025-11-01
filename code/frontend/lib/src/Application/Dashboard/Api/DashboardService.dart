@@ -1,9 +1,9 @@
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
-import 'package:frontend/src/routes/ApiRoutes.dart';
-import 'package:frontend/src/Application/Dashboard/UI/Components/TopicCard.dart';
+import 'package:alignify/src/routes/ApiRoutes.dart';
+import 'package:alignify/src/Application/Dashboard/UI/Components/TopicCard.dart';
 
 /// Service pour gérer les appels API du dashboard
 class DashboardApiService {

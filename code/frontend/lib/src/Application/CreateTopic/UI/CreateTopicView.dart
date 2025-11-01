@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
 import '../../../widgets/SharedAppBar.dart';
@@ -266,7 +266,8 @@ class _CreateTopicViewState extends State<CreateTopicView> {
         child: SingleChildScrollView(
           child: LayoutBuilder(
             builder: (context, constraints) {
-              final horizontalPadding = constraints.maxWidth * 0.1;
+              final isMobile = constraints.maxWidth < 600;
+              final horizontalPadding = isMobile ? 16.0 : constraints.maxWidth * 0.1;
               return Padding(
                 padding: EdgeInsets.only(
                   left: horizontalPadding,
@@ -400,40 +401,80 @@ class _CreateTopicViewState extends State<CreateTopicView> {
                           ),
                           const SizedBox(height: 16),
 
-                          Row(
-                            children: [
-                              Expanded(
-                                child: DateTimePickerField(
-                                  label: l10n.startDate,
-                                  initialDate: _startDate,
-                                  firstDate: DateTime.now(),
-                                  onDateSelected: (date) {
-                                    setState(() {
-                                      _startDate = date;
-                                      _startDateError = null;
-                                    });
-                                  },
-                                  errorText: _startDateError,
-                                  icon: Icons.event_available,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Expanded(
-                                child: DateTimePickerField(
-                                  label: l10n.endDate,
-                                  initialDate: _endDate,
-                                  firstDate: _startDate ?? DateTime.now(),
-                                  onDateSelected: (date) {
-                                    setState(() {
-                                      _endDate = date;
-                                      _endDateError = null;
-                                    });
-                                  },
-                                  errorText: _endDateError,
-                                  icon: Icons.event_busy,
-                                ),
-                              ),
-                            ],
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              final isMobile = constraints.maxWidth < 600;
+                              
+                              if (isMobile) {
+                                return Column(
+                                  children: [
+                                    DateTimePickerField(
+                                      label: l10n.startDate,
+                                      initialDate: _startDate,
+                                      firstDate: DateTime.now(),
+                                      onDateSelected: (date) {
+                                        setState(() {
+                                          _startDate = date;
+                                          _startDateError = null;
+                                        });
+                                      },
+                                      errorText: _startDateError,
+                                      icon: Icons.event_available,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    DateTimePickerField(
+                                      label: l10n.endDate,
+                                      initialDate: _endDate,
+                                      firstDate: _startDate ?? DateTime.now(),
+                                      onDateSelected: (date) {
+                                        setState(() {
+                                          _endDate = date;
+                                          _endDateError = null;
+                                        });
+                                      },
+                                      errorText: _endDateError,
+                                      icon: Icons.event_busy,
+                                    ),
+                                  ],
+                                );
+                              }
+                              
+                              return Row(
+                                children: [
+                                  Expanded(
+                                    child: DateTimePickerField(
+                                      label: l10n.startDate,
+                                      initialDate: _startDate,
+                                      firstDate: DateTime.now(),
+                                      onDateSelected: (date) {
+                                        setState(() {
+                                          _startDate = date;
+                                          _startDateError = null;
+                                        });
+                                      },
+                                      errorText: _startDateError,
+                                      icon: Icons.event_available,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: DateTimePickerField(
+                                      label: l10n.endDate,
+                                      initialDate: _endDate,
+                                      firstDate: _startDate ?? DateTime.now(),
+                                      onDateSelected: (date) {
+                                        setState(() {
+                                          _endDate = date;
+                                          _endDateError = null;
+                                        });
+                                      },
+                                      errorText: _endDateError,
+                                      icon: Icons.event_busy,
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
                           ),
                         ],
                       ),

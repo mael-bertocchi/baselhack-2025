@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Application/ManageAccounts/UI/ManageAccountsView.dart';
+import 'package:alignify/src/Application/ManageAccounts/UI/ManageAccountsView.dart';
 
 class ManageAccountsPage extends StatelessWidget {
   const ManageAccountsPage({super.key});

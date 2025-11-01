@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/theme/AppColors.dart';
+import 'package:alignify/src/theme/AppColors.dart';
 
 /// Chip personnalisé pour les tags et badges
 class CustomChip extends StatelessWidget {

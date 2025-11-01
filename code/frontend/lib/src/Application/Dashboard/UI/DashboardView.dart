@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
-import 'package:frontend/src/routes/AppRoutes.dart';
+import 'package:alignify/l10n/app_localizations.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
 import 'Components/StatCard.dart';
@@ -227,6 +227,9 @@ class _DashboardViewState extends State<DashboardView> {
   // Widget pour le filtre de statut (design amélioré avec chips)
   Widget _buildStatusFilter(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+    
     final statuses = [
       {'value': 'all', 'label': l10n.allTopics, 'icon': Icons.grid_view},
       {'value': 'Active', 'label': l10n.active, 'icon': Icons.play_circle_outline},
@@ -234,8 +237,95 @@ class _DashboardViewState extends State<DashboardView> {
       {'value': 'Closed', 'label': l10n.closed, 'icon': Icons.check_circle_outline},
     ];
 
+    Widget buildChip(Map<String, dynamic> status) {
+      final isSelected = _selectedStatus == status['value'];
+      Color backgroundColor;
+      Color textColor;
+      
+      if (isSelected) {
+        switch (status['value']) {
+          case 'Active':
+            backgroundColor = const Color(0xFFF3E8FF);
+            textColor = const Color(0xFF7C3AED);
+            break;
+          case 'Soon':
+            backgroundColor = const Color(0xFFFCE7F3);
+            textColor = const Color(0xFFEC4899);
+            break;
+          case 'Closed':
+            backgroundColor = const Color(0xFFCCFBF1);
+            textColor = const Color(0xFF14B8A6);
+            break;
+          default:
+            backgroundColor = const Color(0xFFDCEEFE);
+            textColor = AppColors.blue;
+        }
+      } else {
+        backgroundColor = Colors.transparent;
+        textColor = AppColors.textSecondary;
+      }
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              _selectedStatus = status['value'] as String;
+              _applyFilters();
+            });
+          },
+          borderRadius: BorderRadius.circular(8),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 6,
+            ),
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(8),
+              border: isSelected
+                  ? Border.all(color: textColor, width: 1)
+                  : null,
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  status['icon'] as IconData,
+                  size: 18,
+                  color: textColor,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  status['label'] as String,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                    color: textColor,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    if (isMobile) {
+      // Mobile: Horizontal scrollable chips
+      return SizedBox(
+        height: 48,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: statuses.map((status) => buildChip(status)).toList(),
+        ),
+      );
+    }
+    
+    // Desktop: All chips in a container
     return SizedBox(
-      height: 48, // Hauteur fixe identique à la search bar
+      height: 48,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
@@ -248,81 +338,8 @@ class _DashboardViewState extends State<DashboardView> {
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
-          children: statuses.map((status) {
-          final isSelected = _selectedStatus == status['value'];
-          Color backgroundColor;
-          Color textColor;
-          
-          if (isSelected) {
-            switch (status['value']) {
-              case 'Active':
-                backgroundColor = const Color(0xFFF3E8FF);
-                textColor = const Color(0xFF7C3AED);
-                break;
-              case 'Soon':
-                backgroundColor = const Color(0xFFFCE7F3);
-                textColor = const Color(0xFFEC4899);
-                break;
-              case 'Closed':
-                backgroundColor = const Color(0xFFCCFBF1);
-                textColor = const Color(0xFF14B8A6);
-                break;
-              default:
-                backgroundColor = const Color(0xFFDCEEFE);
-                textColor = AppColors.blue;
-            }
-          } else {
-            backgroundColor = Colors.transparent;
-            textColor = AppColors.textSecondary;
-          }
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  _selectedStatus = status['value'] as String;
-                  _applyFilters();
-                });
-              },
-              borderRadius: BorderRadius.circular(8),
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: backgroundColor,
-                  borderRadius: BorderRadius.circular(8),
-                  border: isSelected
-                      ? Border.all(color: textColor, width: 1)
-                      : null,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      status['icon'] as IconData,
-                      size: 18,
-                      color: textColor,
-                    ),
-                    const SizedBox(width: 6),
-                    Text(
-                      status['label'] as String,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-                        color: textColor,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }).toList(),
-      ),
+          children: statuses.map((status) => buildChip(status)).toList(),
+        ),
       ),
     );
   }
@@ -391,7 +408,8 @@ class _DashboardViewState extends State<DashboardView> {
                 : SingleChildScrollView(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final horizontalPadding = constraints.maxWidth * 0.1;
+            final isMobile = constraints.maxWidth < 600;
+            final horizontalPadding = isMobile ? 16.0 : constraints.maxWidth * 0.1;
             return Padding(
               padding: EdgeInsets.only(
                 left: horizontalPadding,

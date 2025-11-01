@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Application/Shared/UI/Components.dart';
-import 'package:frontend/src/theme/AppColors.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
-import 'package:frontend/src/routes/AppRoutes.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/src/Application/Shared/UI/Components.dart';
+import 'package:alignify/src/theme/AppColors.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/routes/AppRoutes.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -27,24 +27,32 @@ class LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
     
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SelectionArea(
         child: Center(
-        child: CustomCard.elevated(
-          width: 540,
-          padding: const EdgeInsets.all(48),
-          child: Column(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 16 : 0,
+          ),
+          child: CustomCard.elevated(
+            width: isMobile ? double.infinity : 540,
+            padding: EdgeInsets.all(isMobile ? 24 : 48),
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              CustomAvatar(
-                initials: 'C',
-                size: 64,
-                backgroundColor: AppColors.blueLight,
-                textColor: Colors.white,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/alignify_logo_icon.png',
+                  width: 64,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -71,7 +79,6 @@ class LoginViewState extends State<LoginView> {
                 controller: emailController,
                 labelText: l10n.emailAddress,
                 hintText: l10n.emailPlaceholder,
-                helperText: l10n.emailHelperText,
                 keyboardType: TextInputType.emailAddress,
                 prefixIcon: const Icon(
                   Icons.email_outlined,
@@ -151,6 +158,7 @@ class LoginViewState extends State<LoginView> {
             ],
           ),
         ),
+          ),
         ),
       ),
     );
