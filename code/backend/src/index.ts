@@ -56,7 +56,7 @@ async function startApp(): Promise<void> {
     await app.register(healthRoutes, { prefix: `${API_VERSION}/health` });
 	await app.register(authRoutes, { prefix: `${API_VERSION}/auth` });
     await app.register(usersRoutes, { prefix: `${API_VERSION}/users` });
-    await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics`,  });
+    await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics` });
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {
         reply.status(404).send({
