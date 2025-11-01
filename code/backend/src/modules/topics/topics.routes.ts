@@ -4,23 +4,34 @@ import { createSchema } from './schemas/create.schema';
 import { submissionSchema } from './schemas/submission.schema';
 
 /**
- * @function healthRoutes
- * @description This function sets up the health routes for the application
+ * @function topicsRoutes
+ * @description This function handles topics routes
  */
 async function topicsRoutes(app: FastifyInstance): Promise<void> {
-    app.get('/', topicsController.getAllTopics);
+    app.get('/', {
+        onRequest: [app.authGuard]
+    }, topicsController.getAllTopics);
     app.post('/', {
-            schema: createSchema
-        }, topicsController.createTopic);
+        onRequest: [app.authGuard],
+        schema: createSchema,
+    }, topicsController.createTopic as any);
     app.put('/:id', {
-            schema: createSchema
-        }, topicsController.modifyTopic);
-    app.get('/:id', topicsController.getTopicById);
-    app.get('/:id/summary', topicsController.getSummaryTopic);
-    app.get('/:id/submissions', topicsController.getSubmissions);
+        onRequest: [app.authGuard],
+        schema: createSchema
+    }, topicsController.modifyTopic as any);
+    app.get('/:id', {
+        onRequest: [app.authGuard]
+    }, topicsController.getTopicById as any);
+    app.get('/:id/summary', {
+        onRequest: [app.authGuard]
+    }, topicsController.getSummaryTopic as any);
+    app.get('/:id/submissions', {
+        onRequest: [app.authGuard]
+    }, topicsController.getSubmissions as any);
     app.post('/:id/submissions', {
-            schema: submissionSchema
-    }, topicsController.sendSubmission);
+        onRequest: [app.authGuard],
+        schema: submissionSchema
+    }, topicsController.sendSubmission as any);
 }
 
 export default topicsRoutes;

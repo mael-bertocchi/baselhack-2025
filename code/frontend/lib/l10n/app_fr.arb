@@ -1,6 +1,6 @@
 {
   "@@locale": "fr",
-  "appTitle": "BaselHack Frontend",
+  "appTitle": "Hub Consensus",
   "@appTitle": {
     "description": "Title for the application"
   },
@@ -8,5 +8,100 @@
   "detailsTitle": "Détails",
   "@detailsTitle": {
     "description": "Title for details pages"
+  },
+
+  "logout": "Déconnexion",
+  "@logout": {
+    "description": "Logout button"
+  },
+
+  "language": "Langue",
+  "@language": {
+    "description": "Language selector label"
+  },
+
+  "user": "Utilisateur",
+  "@user": {
+    "description": "Default user label"
+  },
+
+  "administrator": "Administrateur",
+  "@administrator": {
+    "description": "Administrator role"
+  },
+
+  "manager": "Gestionnaire",
+  "@manager": {
+    "description": "Manager role"
+  },
+
+  "searchTopics": "Rechercher des sujets...",
+  "@searchTopics": {
+    "description": "Search placeholder"
+  },
+
+  "allTopics": "Tous les sujets",
+  "@allTopics": {
+    "description": "All topics filter"
+  },
+
+  "active": "Actif",
+  "@active": {
+    "description": "Active status"
+  },
+
+  "closed": "Fermé",
+  "@closed": {
+    "description": "Closed status"
+  },
+
+  "scheduled": "Planifié",
+  "@scheduled": {
+    "description": "Scheduled status"
+  },
+
+  "archived": "Archivé",
+  "@archived": {
+    "description": "Archived status"
+  },
+
+  "createTopic": "Créer un sujet",
+  "@createTopic": {
+    "description": "Create topic button"
+  },
+
+  "noTopicsFound": "Aucun sujet trouvé",
+  "@noTopicsFound": {
+    "description": "No topics message"
+  },
+
+  "tryAdjustingSearch": "Essayez d'ajuster vos termes de recherche",
+  "@tryAdjustingSearch": {
+    "description": "Search help message"
+  },
+
+  "errorLoadingTopics": "Erreur de chargement des sujets",
+  "@errorLoadingTopics": {
+    "description": "Error message title"
+  },
+
+  "tryAgain": "Réessayer",
+  "@tryAgain": {
+    "description": "Try again button"
+  },
+
+  "loading": "Chargement...",
+  "@loading": {
+    "description": "Loading message"
+  },
+
+  "logoutFailed": "Échec de la déconnexion : {error}",
+  "@logoutFailed": {
+    "description": "Logout error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

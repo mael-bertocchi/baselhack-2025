@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "BaselHack Frontend",
+  "appTitle": "Consensus Hub",
   "@appTitle": {
     "description": "Title for the application"
   },
@@ -8,5 +8,100 @@
   "detailsTitle": "Details",
   "@detailsTitle": {
     "description": "Title for details pages"
+  },
+
+  "logout": "Logout",
+  "@logout": {
+    "description": "Logout button"
+  },
+
+  "language": "Language",
+  "@language": {
+    "description": "Language selector label"
+  },
+
+  "user": "User",
+  "@user": {
+    "description": "Default user label"
+  },
+
+  "administrator": "Administrator",
+  "@administrator": {
+    "description": "Administrator role"
+  },
+
+  "manager": "Manager",
+  "@manager": {
+    "description": "Manager role"
+  },
+
+  "searchTopics": "Search topics...",
+  "@searchTopics": {
+    "description": "Search placeholder"
+  },
+
+  "allTopics": "All Topics",
+  "@allTopics": {
+    "description": "All topics filter"
+  },
+
+  "active": "Active",
+  "@active": {
+    "description": "Active status"
+  },
+
+  "closed": "Closed",
+  "@closed": {
+    "description": "Closed status"
+  },
+
+  "scheduled": "Scheduled",
+  "@scheduled": {
+    "description": "Scheduled status"
+  },
+
+  "archived": "Archived",
+  "@archived": {
+    "description": "Archived status"
+  },
+
+  "createTopic": "Create Topic",
+  "@createTopic": {
+    "description": "Create topic button"
+  },
+
+  "noTopicsFound": "No topics found",
+  "@noTopicsFound": {
+    "description": "No topics message"
+  },
+
+  "tryAdjustingSearch": "Try adjusting your search terms",
+  "@tryAdjustingSearch": {
+    "description": "Search help message"
+  },
+
+  "errorLoadingTopics": "Error Loading Topics",
+  "@errorLoadingTopics": {
+    "description": "Error message title"
+  },
+
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Try again button"
+  },
+
+  "loading": "Loading...",
+  "@loading": {
+    "description": "Loading message"
+  },
+
+  "logoutFailed": "Logout failed: {error}",
+  "@logoutFailed": {
+    "description": "Logout error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   }
 }

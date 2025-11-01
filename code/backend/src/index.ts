@@ -4,6 +4,7 @@ import topicsRoutes from "@modules/topics/topics.routes";
 import healthRoutes from "@modules/health/health.routes";
 import corsPlugin from "@plugins/cors";
 import authRoutes from "@modules/auth/auth.route";
+import usersRoutes from "@modules/users/users.routes";
 import dbPlugin from "@plugins/database";
 import rateLimiterPlugin from "@plugins/rate-limiter";
 import jwtPlugin from "@plugins/jwt";
@@ -54,6 +55,7 @@ async function startApp(): Promise<void> {
 
     await app.register(healthRoutes, { prefix: `${API_VERSION}/health` });
 	await app.register(authRoutes, { prefix: `${API_VERSION}/auth` });
+    await app.register(usersRoutes, { prefix: `${API_VERSION}/users` });
     await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics` });
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {

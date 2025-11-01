@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 
 import 'package:frontend/front.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:frontend/src/Application/Common/LocaleProvider.dart';
 
 // Conditional import for web URL strategy
 import 'main_web.dart' if (dart.library.io) 'main_non_web.dart';
@@ -20,7 +22,15 @@ Future<void> main() async {
   
   // Remove the # from URLs on web (no-op on mobile)
   configureUrlStrategy();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ChangeNotifierProvider.value(value: AuthService.instance),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 /// Entrypoint app that uses the centralized [AppRoutes].
@@ -35,37 +45,42 @@ class MyApp extends StatelessWidget {
         ? AppRoutes.dashboard 
         : AppRoutes.login;
 
-    return MaterialApp(
-      title: 'BaselHack Frontend',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en'),
-        Locale('fr'),
-        Locale('de'),
-      ],
-      localeResolutionCallback: (locale, supportedLocales) {
-        // Prefer exact match, otherwise default to English
-        if (locale != null) {
-          for (final supported in supportedLocales) {
-            if (supported.languageCode == locale.languageCode) {
-              return supported;
+    return Consumer<LocaleProvider>(
+      builder: (context, localeProvider, child) {
+        return MaterialApp(
+          title: 'BaselHack Frontend',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+            useMaterial3: true,
+          ),
+          locale: localeProvider.locale,
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'),
+            Locale('fr'),
+            Locale('de'),
+          ],
+          localeResolutionCallback: (locale, supportedLocales) {
+            // Prefer exact match, otherwise default to English
+            if (locale != null) {
+              for (final supported in supportedLocales) {
+                if (supported.languageCode == locale.languageCode) {
+                  return supported;
+                }
+              }
             }
-          }
-        }
-        return const Locale('en');
+            return const Locale('en');
+          },
+          initialRoute: initialRoute,
+          routes: AppRoutes.routes,
+          onUnknownRoute: AppRoutes.onUnknownRoute,
+        );
       },
-      initialRoute: initialRoute,
-      routes: AppRoutes.routes,
-      onUnknownRoute: AppRoutes.onUnknownRoute,
     );
   }
 }
