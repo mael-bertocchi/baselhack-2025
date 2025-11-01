@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../theme/AppColors.dart';
+import '../../../pages/SurveyDetail/SurveyDetailPage.dart';
 import 'Components/StatCard.dart';
 import 'Components/SurveyCard.dart';
 
@@ -13,16 +14,34 @@ class DashboardView extends StatefulWidget {
 class _DashboardViewState extends State<DashboardView> {
   final TextEditingController _searchController = TextEditingController();
   List<Survey> _filteredSurveys = [];
+  
+  // Variables de filtre et tri
+  String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Soon'
 
   // Données d'exemple pour les enquêtes
   final List<Survey> _surveys = const [
     Survey(
       title: 'Digital Transformation Strategy',
       description: 'How should we prioritize digital initiatives across the organization?',
-      status: 'Closed',
+      status: 'Active',
       category: 'Strategy',
       ideasCount: 24,
       participantsCount: 18,
+      createdBy: 'Michael Chen',
+      context: 'Our organization is at a critical juncture in our digital journey. We need diverse perspectives from team members across all departments to make informed decisions about our digital transformation priorities.',
+      lookingFor: [
+        'Specific ideas and recommendations',
+        'Concerns or risks you foresee',
+        'Resources or skills needed',
+        'Timeline and priority suggestions',
+      ],
+      guidelines: [
+        'Be specific and actionable',
+        'Consider cross-departmental impact',
+        'Think both short-term and long-term',
+        'Focus on feasibility alongside innovation',
+      ],
+      timeline: 'Submissions close: December 15, 2024\nReview period: December 16-31, 2024\nDecision announcement: January 15, 2025',
     ),
     Survey(
       title: 'Workplace Flexibility',
@@ -31,6 +50,21 @@ class _DashboardViewState extends State<DashboardView> {
       category: 'HR',
       ideasCount: 32,
       participantsCount: 25,
+      createdBy: 'Sarah Johnson',
+      context: 'As we evolve our workplace policies, we want to understand what flexibility options would best support our team\'s productivity and work-life balance.',
+      lookingFor: [
+        'Preferred working arrangements',
+        'Productivity concerns or benefits',
+        'Technology or tools needed',
+        'Communication strategies',
+      ],
+      guidelines: [
+        'Consider team collaboration needs',
+        'Think about work-life balance',
+        'Be realistic about constraints',
+        'Share your personal experience',
+      ],
+      timeline: 'Survey opens: December 1, 2024\nSubmissions close: January 15, 2025\nImplementation: February 2025',
     ),
     Survey(
       title: 'Product Innovation',
@@ -39,6 +73,21 @@ class _DashboardViewState extends State<DashboardView> {
       category: 'Product',
       ideasCount: 18,
       participantsCount: 14,
+      createdBy: 'Alex Rodriguez',
+      context: 'We\'re planning our Q2 2025 product roadmap and need input on features that will deliver the most value to our customers.',
+      lookingFor: [
+        'Feature ideas and use cases',
+        'Customer pain points to address',
+        'Market opportunities',
+        'Technical feasibility considerations',
+      ],
+      guidelines: [
+        'Focus on customer value',
+        'Consider implementation complexity',
+        'Think about scalability',
+        'Include competitive analysis',
+      ],
+      timeline: 'Submissions close: December 20, 2024\nPrioritization: January 2025\nDevelopment starts: February 2025',
     ),
     Survey(
       title: 'Sustainability Goals',
@@ -70,22 +119,30 @@ class _DashboardViewState extends State<DashboardView> {
   void initState() {
     super.initState();
     _filteredSurveys = _surveys;
-    _searchController.addListener(_filterSurveys);
+    _searchController.addListener(_applyFilters);
   }
 
-  void _filterSurveys() {
+  void _applyFilters() {
     final query = _searchController.text.toLowerCase();
     setState(() {
-      if (query.isEmpty) {
-        _filteredSurveys = _surveys;
-      } else {
-        _filteredSurveys = _surveys.where((survey) {
+      // Filtrage par recherche textuelle
+      List<Survey> filtered = _surveys;
+      
+      if (query.isNotEmpty) {
+        filtered = filtered.where((survey) {
           return survey.title.toLowerCase().contains(query) ||
               survey.description.toLowerCase().contains(query) ||
               survey.category.toLowerCase().contains(query) ||
               survey.status.toLowerCase().contains(query);
         }).toList();
       }
+      
+      // Filtrage par statut
+      if (_selectedStatus != 'all') {
+        filtered = filtered.where((survey) => survey.status == _selectedStatus).toList();
+      }
+      
+      _filteredSurveys = filtered;
     });
   }
 
@@ -93,6 +150,171 @@ class _DashboardViewState extends State<DashboardView> {
   void dispose() {
     _searchController.dispose();
     super.dispose();
+  }
+
+  // Widget pour la barre de recherche
+  Widget _buildSearchBar() {
+    return SizedBox(
+      height: 56, // Hauteur fixe
+      child: TextField(
+        controller: _searchController,
+        style: const TextStyle(
+          color: AppColors.textPrimary,
+          fontSize: 16,
+        ),
+        decoration: InputDecoration(
+          hintText: 'Search surveys...',
+          hintStyle: TextStyle(
+            color: AppColors.textSecondary.withOpacity(0.6),
+            fontSize: 16,
+          ),
+          prefixIcon: const Icon(
+            Icons.search,
+            color: AppColors.blue,
+            size: 24,
+          ),
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.clear,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                  },
+                )
+              : null,
+          filled: true,
+          fillColor: AppColors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xFFE5E7EB),
+              width: 1,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xFFE5E7EB),
+              width: 1,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: AppColors.blue,
+              width: 2,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Widget pour le filtre de statut (design amélioré avec chips)
+  Widget _buildStatusFilter() {
+    final statuses = [
+      {'value': 'all', 'label': 'All', 'icon': Icons.grid_view},
+      {'value': 'Active', 'label': 'Active', 'icon': Icons.play_circle_outline},
+      {'value': 'Soon', 'label': 'Soon', 'icon': Icons.schedule},
+      {'value': 'Closed', 'label': 'Closed', 'icon': Icons.check_circle_outline},
+    ];
+
+    return Container(
+      height: 56, // Hauteur fixe identique à la search bar
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: const Color(0xFFE5E7EB),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: statuses.map((status) {
+          final isSelected = _selectedStatus == status['value'];
+          Color backgroundColor;
+          Color textColor;
+          
+          if (isSelected) {
+            switch (status['value']) {
+              case 'Active':
+                backgroundColor = const Color(0xFFF3E8FF);
+                textColor = const Color(0xFF7C3AED);
+                break;
+              case 'Soon':
+                backgroundColor = const Color(0xFFFCE7F3);
+                textColor = const Color(0xFFEC4899);
+                break;
+              case 'Closed':
+                backgroundColor = const Color(0xFFCCFBF1);
+                textColor = const Color(0xFF14B8A6);
+                break;
+              default:
+                backgroundColor = const Color(0xFFDCEEFE);
+                textColor = AppColors.blue;
+            }
+          } else {
+            backgroundColor = Colors.transparent;
+            textColor = AppColors.textSecondary;
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  _selectedStatus = status['value'] as String;
+                  _applyFilters();
+                });
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: backgroundColor,
+                  borderRadius: BorderRadius.circular(8),
+                  border: isSelected
+                      ? Border.all(color: textColor, width: 1)
+                      : null,
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      status['icon'] as IconData,
+                      size: 18,
+                      color: textColor,
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      status['label'] as String,
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+                        color: textColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
   }
 
   @override
@@ -243,64 +465,37 @@ class _DashboardViewState extends State<DashboardView> {
               ),
               const SizedBox(height: 40),
 
-              // Barre de recherche
-              TextField(
-                controller: _searchController,
-                style: const TextStyle(
-                  color: AppColors.textPrimary,
-                  fontSize: 16,
-                ),
-                decoration: InputDecoration(
-                  hintText: 'Search surveys...',
-                  hintStyle: TextStyle(
-                    color: AppColors.textSecondary.withOpacity(0.6),
-                    fontSize: 16,
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.search,
-                    color: AppColors.blue,
-                    size: 24,
-                  ),
-                  suffixIcon: _searchController.text.isNotEmpty
-                      ? IconButton(
-                          icon: const Icon(
-                            Icons.clear,
-                            color: AppColors.textSecondary,
-                            size: 20,
-                          ),
-                          onPressed: () {
-                            _searchController.clear();
-                          },
-                        )
-                      : null,
-                  filled: true,
-                  fillColor: AppColors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Color(0xFFE5E7EB),
-                      width: 1,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: Color(0xFFE5E7EB),
-                      width: 1,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(
-                      color: AppColors.blue,
-                      width: 2,
-                    ),
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 16,
-                  ),
-                ),
+              // Barre de recherche et filtres
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final isWide = constraints.maxWidth > 800;
+                  
+                  if (isWide) {
+                    // Version desktop - tout sur une ligne
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Barre de recherche
+                        Expanded(
+                          child: _buildSearchBar(),
+                        ),
+                        const SizedBox(width: 16),
+                        
+                        // Filtre par statut
+                        _buildStatusFilter(),
+                      ],
+                    );
+                  } else {
+                    // Version mobile - empilé verticalement
+                    return Column(
+                      children: [
+                        _buildSearchBar(),
+                        const SizedBox(height: 16),
+                        _buildStatusFilter(),
+                      ],
+                    );
+                  }
+                },
               ),
               const SizedBox(height: 32),
 
@@ -361,15 +556,11 @@ class _DashboardViewState extends State<DashboardView> {
                       return SurveyCard(
                         survey: _filteredSurveys[index],
                         onViewSurvey: () {
-                          // TODO: Navigation vers la page de détail de l'enquête
-                          final scaffoldMessenger = ScaffoldMessenger.of(context);
-                          scaffoldMessenger.showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Opening ${_filteredSurveys[index].title}',
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => SurveyDetailPage(
+                                survey: _filteredSurveys[index],
                               ),
-                              duration: const Duration(seconds: 2),
-                              behavior: SnackBarBehavior.floating,
                             ),
                           );
                         },

@@ -10,6 +10,13 @@ class Survey {
   final String category;
   final int ideasCount;
   final int participantsCount;
+  
+  // Champs optionnels pour le détail
+  final String? createdBy;
+  final String? context;
+  final List<String>? lookingFor;
+  final List<String>? guidelines;
+  final String? timeline;
 
   const Survey({
     this.id,
@@ -19,6 +26,11 @@ class Survey {
     required this.category,
     required this.ideasCount,
     required this.participantsCount,
+    this.createdBy,
+    this.context,
+    this.lookingFor,
+    this.guidelines,
+    this.timeline,
   });
 
   /// Crée une Survey depuis un JSON
@@ -32,6 +44,11 @@ class Survey {
       category: json['category'] as String? ?? '',
       ideasCount: json['ideasCount'] as int? ?? json['ideas_count'] as int? ?? 0,
       participantsCount: json['participantsCount'] as int? ?? json['participants_count'] as int? ?? 0,
+      createdBy: json['createdBy'] as String?,
+      context: json['context'] as String?,
+      lookingFor: (json['lookingFor'] as List<dynamic>?)?.cast<String>(),
+      guidelines: (json['guidelines'] as List<dynamic>?)?.cast<String>(),
+      timeline: json['timeline'] as String?,
     );
   }
 
@@ -46,6 +63,11 @@ class Survey {
       'category': category,
       'ideasCount': ideasCount,
       'participantsCount': participantsCount,
+      if (createdBy != null) 'createdBy': createdBy,
+      if (context != null) 'context': context,
+      if (lookingFor != null) 'lookingFor': lookingFor,
+      if (guidelines != null) 'guidelines': guidelines,
+      if (timeline != null) 'timeline': timeline,
     };
   }
 
@@ -58,6 +80,11 @@ class Survey {
     String? category,
     int? ideasCount,
     int? participantsCount,
+    String? createdBy,
+    String? context,
+    List<String>? lookingFor,
+    List<String>? guidelines,
+    String? timeline,
   }) {
     return Survey(
       id: id ?? this.id,
@@ -67,6 +94,11 @@ class Survey {
       category: category ?? this.category,
       ideasCount: ideasCount ?? this.ideasCount,
       participantsCount: participantsCount ?? this.participantsCount,
+      createdBy: createdBy ?? this.createdBy,
+      context: context ?? this.context,
+      lookingFor: lookingFor ?? this.lookingFor,
+      guidelines: guidelines ?? this.guidelines,
+      timeline: timeline ?? this.timeline,
     );
   }
 
