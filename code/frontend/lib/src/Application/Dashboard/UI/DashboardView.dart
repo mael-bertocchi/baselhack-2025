@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:frontend/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
-import '../../../pages/SurveyDetail/SurveyDetailPage.dart';
-import '../../../routes/AppRoutes.dart';
-import '../../Login/Api/AuthService.dart';
+import 'package:frontend/src/Application/Dashboard/UI/TopicDetail/UI/TopicDetailView.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
 import 'Components/ProfileMenu.dart';
@@ -58,20 +58,6 @@ class _DashboardViewState extends State<DashboardView> {
         _isLoading = false;
       });
     }
-  }
-
-  void _navigateToCreateTopic() async {
-    final result = await Navigator.of(context).pushReplacementNamed(AppRoutes.createTopic);
-    
-    // If topic was created successfully, reload the topics
-    if (result == true) {
-      _loadTopics();
-    }
-  }
-
-  bool get _isAdmin {
-    final user = AuthService.instance.currentUser;
-    return user?.role == Role.administrator;
   }
 
   void _applyFilters() {
@@ -155,6 +141,10 @@ class _DashboardViewState extends State<DashboardView> {
     _profileMenuOverlay = null;
   }
 
+  void _navigateToCreateTopic() {
+    Navigator.of(context).pushNamed(AppRoutes.createTopic);
+  }
+
   // Widget pour la barre de recherche
   Widget _buildSearchBar(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -231,20 +221,21 @@ class _DashboardViewState extends State<DashboardView> {
       {'value': 'Closed', 'label': l10n.closed, 'icon': Icons.check_circle_outline},
     ];
 
-    return Container(
-      height: 56, // Hauteur fixe identique à la search bar
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: const Color(0xFFE5E7EB),
-          width: 1,
+    return SizedBox(
+      height: 48, // Hauteur fixe identique à la search bar
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color(0xFFE5E7EB),
+            width: 1,
+          ),
         ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: statuses.map((status) {
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: statuses.map((status) {
           final isSelected = _selectedStatus == status['value'];
           Color backgroundColor;
           Color textColor;
@@ -255,7 +246,7 @@ class _DashboardViewState extends State<DashboardView> {
                 backgroundColor = const Color(0xFFF3E8FF);
                 textColor = const Color(0xFF7C3AED);
                 break;
-              case 'Scheduled':
+              case 'Soon':
                 backgroundColor = const Color(0xFFFCE7F3);
                 textColor = const Color(0xFFEC4899);
                 break;
@@ -286,7 +277,7 @@ class _DashboardViewState extends State<DashboardView> {
                 duration: const Duration(milliseconds: 200),
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
-                  vertical: 8,
+                  vertical: 6,
                 ),
                 decoration: BoxDecoration(
                   color: backgroundColor,
@@ -318,6 +309,7 @@ class _DashboardViewState extends State<DashboardView> {
             ),
           );
         }).toList(),
+      ),
       ),
     );
   }
@@ -619,8 +611,8 @@ class _DashboardViewState extends State<DashboardView> {
                         onViewTopic: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => SurveyDetailPage(
-                                survey: _filteredTopics[index],
+                              builder: (context) => TopicDetailView(
+                                topic: _filteredTopics[index],
                               ),
                             ),
                           );
@@ -635,7 +627,7 @@ class _DashboardViewState extends State<DashboardView> {
         ),
         ),
       ),
-      floatingActionButton: _isAdmin
+      floatingActionButton: AuthService.instance.currentUser?.role == Role.manager || AuthService.instance.currentUser?.role == Role.administrator
           ? FloatingActionButton.extended(
               onPressed: _navigateToCreateTopic,
               backgroundColor: AppColors.blue,

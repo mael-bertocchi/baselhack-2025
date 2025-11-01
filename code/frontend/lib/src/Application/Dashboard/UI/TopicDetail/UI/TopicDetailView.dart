@@ -1,46 +1,78 @@
 import 'package:flutter/material.dart';
-import '../../../theme/AppColors.dart';
-import '../../Dashboard/UI/Components/TopicCard.dart';
+import '../../../../../theme/AppColors.dart';
+import '../../Components/TopicCard.dart';
 import '../Models/Idea.dart';
+import '../../../Api/TopicSubmissionService.dart';
 
 // Alias temporaire pour rétrocompatibilité
 typedef Survey = Topic;
 
-class SurveyDetailView extends StatefulWidget {
-  final Survey survey;
+class TopicDetailView extends StatefulWidget {
+  final Topic topic;
 
-  const SurveyDetailView({
+  const TopicDetailView({
     super.key,
-    required this.survey,
+    required this.topic,
   });
 
   @override
-  State<SurveyDetailView> createState() => _SurveyDetailViewState();
+  State<TopicDetailView> createState() => TopicDetailViewState();
 }
 
-class _SurveyDetailViewState extends State<SurveyDetailView> {
+class TopicDetailViewState extends State<TopicDetailView> {
   final TextEditingController _ideaController = TextEditingController();
-  final List<Idea> _ideas = [
-    // Mock data
-    Idea(
-      id: '1',
-      content: 'We should implement a transparent voting system where everyone can see the results in real-time.',
-      authorId: 'john_doe',
-      createdAt: DateTime.now().subtract(const Duration(days: 2)),
-    ),
-    Idea(
-      id: '2',
-      content: 'Creating a mobile app would make it easier for citizens to participate in consultations.',
-      authorId: 'jane_smith',
-      createdAt: DateTime.now().subtract(const Duration(days: 1)),
-    ),
-    Idea(
-      id: '3',
-      content: 'Regular town hall meetings could complement the digital platform for those who prefer in-person discussions.',
-      authorId: 'mark_wilson',
-      createdAt: DateTime.now().subtract(const Duration(hours: 5)),
-    ),
-  ];
+  final TopicSubmissionService _submissionService = TopicSubmissionService();
+  List<Idea> _ideas = [];
+  bool _isLoading = true;
+  bool _isSubmitting = false;
+  String? _error;
+  
+  static const int maxIdeaLength = 1000;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSubmissions();
+  }
+
+  /// Charge les soumissions depuis l'API
+  Future<void> _loadSubmissions() async {
+    if (widget.topic.id == null) {
+      setState(() {
+        _error = 'Topic ID is missing';
+        _isLoading = false;
+      });
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    try {
+      final submissions = await _submissionService.getSubmissions(widget.topic.id!);
+      setState(() {
+        _ideas = submissions;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = 'Failed to load ideas: ${e.toString()}';
+        _isLoading = false;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_error!),
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color(0xFFEF4444),
+          ),
+        );
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -48,30 +80,62 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
     super.dispose();
   }
 
-  void _submitIdea() {
+  Future<void> _submitIdea() async {
     if (_ideaController.text.trim().isEmpty) return;
-
-    setState(() {
-      _ideas.insert(
-        0,
-        Idea(
-          id: DateTime.now().millisecondsSinceEpoch.toString(),
-          content: _ideaController.text.trim(),
-          authorId: 'current_user',
-          createdAt: DateTime.now(),
+    if (widget.topic.id == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Cannot submit idea: Topic ID is missing'),
+          duration: Duration(seconds: 3),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Color(0xFFEF4444),
         ),
       );
-      _ideaController.clear();
+      return;
+    }
+
+    setState(() {
+      _isSubmitting = true;
     });
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Idea submitted successfully!'),
-        duration: Duration(seconds: 2),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Color(0xFF14B8A6),
-      ),
-    );
+    try {
+      final newIdea = await _submissionService.submitIdea(
+        widget.topic.id!,
+        _ideaController.text.trim(),
+      );
+
+      setState(() {
+        _ideas.insert(0, newIdea);
+        _ideaController.clear();
+        _isSubmitting = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Idea submitted successfully!'),
+            duration: Duration(seconds: 2),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Color(0xFF14B8A6),
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() {
+        _isSubmitting = false;
+      });
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to submit idea: ${e.toString()}'),
+            duration: const Duration(seconds: 3),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: const Color(0xFFEF4444),
+          ),
+        );
+      }
+    }
   }
 
   String _getTimeAgo(DateTime date) {
@@ -90,10 +154,10 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
   }
 
   Color _getStatusColor() {
-    final displayStatus = widget.survey.statusDisplay.toLowerCase();
+    final displayStatus = widget.topic.statusDisplay.toLowerCase();
     switch (displayStatus) {
       case 'active':
-        return const Color(0xFF0891B2); // Cyan
+        return const Color(0xFF7C3AED);
       case 'closed':
         return const Color(0xFF14B8A6);
       case 'scheduled':
@@ -106,10 +170,10 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
   }
 
   Color _getStatusBackgroundColor() {
-    final displayStatus = widget.survey.statusDisplay.toLowerCase();
+    final displayStatus = widget.topic.statusDisplay.toLowerCase();
     switch (displayStatus) {
       case 'active':
-        return const Color(0xFFCFFAFE); // Cyan très clair
+        return const Color.fromARGB(255, 242, 234, 255); // Cyan très clair
       case 'closed':
         return const Color(0xFFCCFBF1);
       case 'scheduled':
@@ -134,48 +198,45 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
         backgroundColor: AppColors.white,
         elevation: 0,
         toolbarHeight: 70,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
+        automaticallyImplyLeading: false,
         title: Row(
           children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: AppColors.blue,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: const Center(
-                child: Text(
-                  'C',
-                  style: TextStyle(
-                    color: AppColors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+        Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: AppColors.blue,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: const Center(
+            child: Text(
+          'C',
+          style: TextStyle(
+            color: AppColors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
             ),
-            const SizedBox(width: 12),
-            const Text(
-              'Consensus Hub',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
-              ),
-            ),
+          ),
+        ),
+        const SizedBox(width: 12),
+        const Text(
+          'Consensus Hub',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
+          ),
+        ),
           ],
         ),
         actions: [
           IconButton(
-            icon: const CircleAvatar(
-              backgroundColor: AppColors.background,
-              child: Icon(Icons.person, color: AppColors.textSecondary),
-            ),
-            onPressed: () {},
+        icon: const CircleAvatar(
+          backgroundColor: AppColors.background,
+          child: Icon(Icons.person, color: AppColors.textSecondary),
+        ),
+        onPressed: () {},
           ),
           const SizedBox(width: 16),
         ],
@@ -211,59 +272,15 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
               ),
               const SizedBox(height: 32),
 
-              // Badge de statut
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-                decoration: BoxDecoration(
-                  color: _getStatusBackgroundColor(),
-                  borderRadius: BorderRadius.circular(6),
-                ),
-                child: Text(
-                  '${widget.survey.statusDisplay} Topic',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: _getStatusColor(),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Titre
-              Text(
-                widget.survey.title,
-                style: const TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w900,
-                  color: AppColors.textPrimary,
-                  height: 1.2,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // Description
-              Text(
-                widget.survey.description,
-                style: const TextStyle(
-                  fontSize: 18,
-                  color: AppColors.textSecondary,
-                  height: 1.6,
-                ),
-              ),
-              const SizedBox(height: 24),
-
               // Info ligne avec dates et auteur
-              Text(
-                'Created by: ${widget.survey.authorId} • From ${_formatDate(widget.survey.startDate)} to ${_formatDate(widget.survey.endDate)} • Last updated ${_formatDate(widget.survey.updatedAt)}',
+              SelectableText(
+                'Created by: ${widget.topic.authorId} • From ${_formatDate(widget.topic.startDate)} to ${_formatDate(widget.topic.endDate)} • Last updated ${_formatDate(widget.topic.updatedAt)}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 20),
 
               // Carte Survey Overview
               Container(
@@ -288,31 +305,51 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Bordure cyan à gauche
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 4,
-                            height: 600,
-                            decoration: BoxDecoration(
-                              color: const Color(0xFF0891B2),
-                              borderRadius: BorderRadius.circular(2),
+                      IntrinsicHeight(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            Container(
+                              width: 4,
+                              decoration: BoxDecoration(
+                                color: AppColors.blueLight,
+                                borderRadius: BorderRadius.circular(2),
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 24),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Topic Overview',
-                                  style: TextStyle(
+                            const SizedBox(width: 24),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                // Badge de statut
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: _getStatusBackgroundColor(),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Text(
+                  '${widget.topic.statusDisplay} Topic',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: _getStatusColor(),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+                                SelectableText(
+                                  widget.topic.title,
+                                  style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w800,
                                     color: AppColors.textPrimary,
                                   ),
                                 ),
-                                const SizedBox(height: 32),
+                                const SizedBox(height: 22),
 
                                 // Short Description
                                 const Text(
@@ -324,8 +361,8 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                Text(
-                                  widget.survey.shortDescription,
+                                SelectableText(
+                                  widget.topic.shortDescription,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: AppColors.textSecondary,
@@ -344,8 +381,8 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                Text(
-                                  widget.survey.description,
+                                SelectableText(
+                                  widget.topic.description,
                                   style: const TextStyle(
                                     fontSize: 16,
                                     color: AppColors.textSecondary,
@@ -366,25 +403,26 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                                 const SizedBox(height: 12),
                                 _buildTimelineItem(
                                   'Topic Opens',
-                                  _formatDate(widget.survey.startDate),
+                                  _formatDate(widget.topic.startDate),
                                   Icons.play_circle_outline,
                                 ),
                                 const SizedBox(height: 8),
                                 _buildTimelineItem(
                                   'Topic Closes',
-                                  _formatDate(widget.survey.endDate),
+                                  _formatDate(widget.topic.endDate),
                                   Icons.check_circle_outline,
                                 ),
                                 const SizedBox(height: 8),
                                 _buildTimelineItem(
                                   'Created',
-                                  _formatDate(widget.survey.createdAt),
+                                  _formatDate(widget.topic.createdAt),
                                   Icons.calendar_today,
                                 ),
                               ],
                             ),
                           ),
                         ],
+                      ),
                       ),
                     ],
                   ),
@@ -393,20 +431,20 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
               const SizedBox(height: 40),
 
               // Section Share Your Idea
-              if (widget.survey.isActive) ...[
+              if (widget.topic.isActive) ...[
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: const Color(0xFF14B8A6),
+                      color: AppColors.blueLight,
                       width: 2,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF14B8A6).withValues(alpha: 0.1),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
+                        color: AppColors.blueLight,
+                        blurRadius: 5,
+                        offset: const Offset(0, 1),
                       ),
                     ],
                   ),
@@ -443,6 +481,18 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                       TextField(
                         controller: _ideaController,
                         maxLines: 5,
+                        maxLength: maxIdeaLength,
+                        buildCounter: (context, {required currentLength, required isFocused, maxLength}) {
+                          return Text(
+                            '$currentLength/$maxIdeaLength',
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: currentLength > maxIdeaLength * 0.9 
+                                  ? const Color(0xFFEF4444) 
+                                  : AppColors.textSecondary,
+                            ),
+                          );
+                        },
                         decoration: InputDecoration(
                           hintText: 'Share your thoughts, ideas, or concerns... (Be specific and constructive)',
                           hintStyle: const TextStyle(
@@ -464,8 +514,8 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                             borderSide: const BorderSide(
-                              color: Color(0xFF14B8A6),
-                              width: 2,
+                              color: AppColors.blueLight,
+                              width: 1,
                             ),
                           ),
                           filled: true,
@@ -473,7 +523,7 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                           contentPadding: const EdgeInsets.all(16),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 8),
                       const Text(
                         'You can submit multiple ideas. All submissions are anonymous.',
                         style: TextStyle(
@@ -485,17 +535,28 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
                       Align(
                         alignment: Alignment.centerLeft,
                         child: ElevatedButton.icon(
-                          onPressed: _submitIdea,
-                          icon: const Icon(Icons.send, size: 18),
-                          label: const Text(
-                            'Submit Idea',
-                            style: TextStyle(
+                          onPressed: _isSubmitting ? null : _submitIdea,
+                          icon: _isSubmitting
+                              ? const SizedBox(
+                                  width: 18,
+                                  height: 18,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                                  ),
+                                )
+                              : const Icon(Icons.send, size: 18),
+                          label: Text(
+                            _isSubmitting ? 'Submitting...' : 'Submit Idea',
+                            style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF14B8A6),
+                            backgroundColor: _isSubmitting 
+                                ? AppColors.blueLight.withOpacity(0.6)
+                                : AppColors.blueLight,
                             foregroundColor: AppColors.white,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 28,
@@ -549,57 +610,141 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
               const SizedBox(height: 20),
 
               // Liste des idées
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: _ideas.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 16),
-                itemBuilder: (context, index) {
-                  final idea = _ideas[index];
-                  return Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFFE5E7EB),
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
+              if (_isLoading)
+                const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(32.0),
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(AppColors.blueLight),
                     ),
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // Contenu de l'idée
-                        Text(
-                          idea.content,
+                  ),
+                )
+              else if (_error != null && _ideas.isEmpty)
+                Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFEE2E2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFEF4444),
+                      width: 1,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: Color(0xFFEF4444),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          _error!,
                           style: const TextStyle(
-                            fontSize: 15,
-                            color: AppColors.textPrimary,
-                            height: 1.5,
+                            fontSize: 14,
+                            color: Color(0xFFEF4444),
                           ),
                         ),
-                        const SizedBox(height: 16),
-
-                        // Footer avec date
+                      ),
+                      TextButton(
+                        onPressed: _loadSubmissions,
+                        child: const Text('Retry'),
+                      ),
+                    ],
+                  ),
+                )
+              else if (_ideas.isEmpty)
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: const Color(0xFFE5E7EB),
+                      width: 1,
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(32),
+                  child: const Center(
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.lightbulb_outline,
+                          size: 48,
+                          color: AppColors.textSecondary,
+                        ),
+                        SizedBox(height: 16),
                         Text(
-                          _getTimeAgo(idea.createdAt),
-                          style: const TextStyle(
-                            fontSize: 13,
+                          'No ideas yet',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Be the first to share your thoughts!',
+                          style: TextStyle(
+                            fontSize: 14,
                             color: AppColors.textSecondary,
                           ),
                         ),
                       ],
                     ),
-                  );
-                },
-              ),
+                  ),
+                )
+              else
+                ListView.separated(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: _ideas.length,
+                  separatorBuilder: (context, index) => const SizedBox(height: 16),
+                  itemBuilder: (context, index) {
+                    final idea = _ideas[index];
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: const Color(0xFFE5E7EB),
+                          width: 1,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.04),
+                            blurRadius: 8,
+                            offset: const Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // Contenu de l'idée
+                          SelectableText(
+                            idea.content,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: AppColors.textPrimary,
+                              height: 1.5,
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+
+                          // Footer avec date
+                          SelectableText(
+                            _getTimeAgo(idea.createdAt),
+                            style: const TextStyle(
+                              fontSize: 13,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
             ],
           ),
         ),
@@ -616,19 +761,25 @@ class _SurveyDetailViewState extends State<SurveyDetailView> {
           color: AppColors.blue,
         ),
         const SizedBox(width: 12),
-        Text(
-          '$label: ',
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
-          ),
-        ),
-        Text(
-          date,
-          style: const TextStyle(
-            fontSize: 16,
-            color: AppColors.textSecondary,
+        SelectableText.rich(
+          TextSpan(
+            children: [
+              TextSpan(
+                text: '$label: ',
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
+                ),
+              ),
+              TextSpan(
+                text: date,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: AppColors.textSecondary,
+                ),
+              ),
+            ],
           ),
         ),
       ],

@@ -6,14 +6,14 @@ import '../../Login/Api/AuthService.dart';
 import 'Components/CustomTextField.dart';
 import 'Components/DateTimePickerField.dart';
 
-class CreateTopicPage extends StatefulWidget {
-  const CreateTopicPage({super.key});
+class CreateTopicView extends StatefulWidget {
+  const CreateTopicView({super.key});
 
   @override
-  State<CreateTopicPage> createState() => _CreateTopicPageState();
+  State<CreateTopicView> createState() => _CreateTopicViewState();
 }
 
-class _CreateTopicPageState extends State<CreateTopicPage> {
+class _CreateTopicViewState extends State<CreateTopicView> {
   final _formKey = GlobalKey<FormState>();
   final _createTopicService = CreateTopicService();
   
@@ -88,6 +88,9 @@ class _CreateTopicPageState extends State<CreateTopicPage> {
       isValid = false;
     } else if (_descriptionController.text.trim().length < 10) {
       setState(() => _descriptionError = 'Description must be at least 10 characters');
+      isValid = false;
+    } else if (_descriptionController.text.trim().length > 2500) {
+      setState(() => _descriptionError = 'Description must not exceed 2500 characters');
       isValid = false;
     }
 
@@ -378,6 +381,7 @@ class _CreateTopicPageState extends State<CreateTopicPage> {
                             hint: 'Detailed information about the topic',
                             controller: _descriptionController,
                             maxLines: 8,
+                            maxLength: 2500,
                             errorText: _descriptionError,
                             prefixIcon: Icons.description,
                             required: true,
