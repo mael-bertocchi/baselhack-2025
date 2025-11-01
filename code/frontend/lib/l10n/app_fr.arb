@@ -158,5 +158,70 @@
   "updateTopicFailed": "Échec de la mise à jour du sujet",
   "@updateTopicFailed": {
     "description": "Topic update error message"
+  },
+
+  "manageAccounts": "Gérer les comptes",
+  "@manageAccounts": {
+    "description": "Manage accounts page title"
+  },
+
+  "errorLoadingUsers": "Erreur lors du chargement des utilisateurs",
+  "@errorLoadingUsers": {
+    "description": "Error message when loading users fails"
+  },
+
+  "noUsersFound": "Aucun utilisateur trouvé",
+  "@noUsersFound": {
+    "description": "Message when no users are found"
+  },
+
+  "joinedOn": "Inscrit le",
+  "@joinedOn": {
+    "description": "Label for user join date"
+  },
+
+  "changePassword": "Changer le mot de passe",
+  "@changePassword": {
+    "description": "Change password button"
+  },
+
+  "newPassword": "Nouveau mot de passe",
+  "@newPassword": {
+    "description": "New password field label"
+  },
+
+  "confirmPassword": "Confirmer le mot de passe",
+  "@confirmPassword": {
+    "description": "Confirm password field label"
+  },
+
+  "passwordsDoNotMatch": "Les mots de passe ne correspondent pas",
+  "@passwordsDoNotMatch": {
+    "description": "Error when passwords don't match"
+  },
+
+  "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+  "@passwordTooShort": {
+    "description": "Error when password is too short"
+  },
+
+  "passwordChangedSuccessfully": "Mot de passe changé avec succès",
+  "@passwordChangedSuccessfully": {
+    "description": "Success message after password change"
+  },
+
+  "changePasswordFailed": "Échec du changement de mot de passe",
+  "@changePasswordFailed": {
+    "description": "Error message when password change fails"
+  },
+
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+
+  "save": "Enregistrer",
+  "@save": {
+    "description": "Save button"
   }
 }

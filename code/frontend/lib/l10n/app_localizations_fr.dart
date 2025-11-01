@@ -71,35 +71,71 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get editTopic => 'Edit Topic';
+  String get editTopic => 'Modifier le sujet';
 
   @override
-  String get deleteTopic => 'Delete Topic';
+  String get deleteTopic => 'Supprimer le sujet';
 
   @override
-  String get confirmDelete => 'Confirm Delete';
+  String get confirmDelete => 'Confirmer la suppression';
 
   @override
-  String get deleteTopicMessage => 'Are you sure you want to delete this topic? This action cannot be undone.';
+  String get deleteTopicMessage => 'Êtes-vous sûr de vouloir supprimer ce sujet ? Cette action ne peut pas être annulée.';
 
   @override
-  String get cancel => 'Cancel';
+  String get cancel => 'Annuler';
 
   @override
-  String get delete => 'Delete';
+  String get delete => 'Supprimer';
 
   @override
-  String get topicDeleted => 'Topic deleted successfully';
+  String get topicDeleted => 'Sujet supprimé avec succès';
 
   @override
-  String get deleteTopicFailed => 'Failed to delete topic';
+  String get deleteTopicFailed => 'Échec de la suppression du sujet';
 
   @override
-  String get updateTopic => 'Update Topic';
+  String get updateTopic => 'Mettre à jour le sujet';
 
   @override
-  String get topicUpdated => 'Topic updated successfully';
+  String get topicUpdated => 'Sujet mis à jour avec succès';
 
   @override
-  String get updateTopicFailed => 'Failed to update topic';
+  String get updateTopicFailed => 'Échec de la mise à jour du sujet';
+
+  @override
+  String get manageAccounts => 'Gérer les comptes';
+
+  @override
+  String get errorLoadingUsers => 'Erreur lors du chargement des utilisateurs';
+
+  @override
+  String get noUsersFound => 'Aucun utilisateur trouvé';
+
+  @override
+  String get joinedOn => 'Inscrit le';
+
+  @override
+  String get changePassword => 'Changer le mot de passe';
+
+  @override
+  String get newPassword => 'Nouveau mot de passe';
+
+  @override
+  String get confirmPassword => 'Confirmer le mot de passe';
+
+  @override
+  String get passwordsDoNotMatch => 'Les mots de passe ne correspondent pas';
+
+  @override
+  String get passwordTooShort => 'Le mot de passe doit contenir au moins 6 caractères';
+
+  @override
+  String get passwordChangedSuccessfully => 'Mot de passe changé avec succès';
+
+  @override
+  String get changePasswordFailed => 'Échec du changement de mot de passe';
+
+  @override
+  String get save => 'Enregistrer';
 }
