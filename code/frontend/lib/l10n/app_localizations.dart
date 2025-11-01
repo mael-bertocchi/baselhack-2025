@@ -282,6 +282,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to update topic'**
   String get updateTopicFailed;
+
+  /// Manage accounts page title
+  ///
+  /// In en, this message translates to:
+  /// **'Manage Accounts'**
+  String get manageAccounts;
+
+  /// Error message when loading users fails
+  ///
+  /// In en, this message translates to:
+  /// **'Error loading users'**
+  String get errorLoadingUsers;
+
+  /// Message when no users are found
+  ///
+  /// In en, this message translates to:
+  /// **'No users found'**
+  String get noUsersFound;
+
+  /// Label for user join date
+  ///
+  /// In en, this message translates to:
+  /// **'Joined on'**
+  String get joinedOn;
+
+  /// Change password button
+  ///
+  /// In en, this message translates to:
+  /// **'Change Password'**
+  String get changePassword;
+
+  /// New password field label
+  ///
+  /// In en, this message translates to:
+  /// **'New Password'**
+  String get newPassword;
+
+  /// Confirm password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirmPassword;
+
+  /// Error when passwords don't match
+  ///
+  /// In en, this message translates to:
+  /// **'Passwords do not match'**
+  String get passwordsDoNotMatch;
+
+  /// Error when password is too short
+  ///
+  /// In en, this message translates to:
+  /// **'Password must be at least 6 characters'**
+  String get passwordTooShort;
+
+  /// Success message after password change
+  ///
+  /// In en, this message translates to:
+  /// **'Password changed successfully'**
+  String get passwordChangedSuccessfully;
+
+  /// Error message when password change fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change password'**
+  String get changePasswordFailed;
+
+  /// Save button
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

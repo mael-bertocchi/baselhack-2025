@@ -10,6 +10,8 @@ enum ApiRoutes {
   
   // User endpoints
   userMe('/v1/users/me'),
+  users('/v1/users'),
+  changePassword('/v1/users/changePassword'),
   
   // Topic endpoints
   topics('/v1/topics'),

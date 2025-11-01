@@ -179,6 +179,48 @@ class ProfileMenu extends StatelessWidget {
                 ),
               ),
 
+              // Manage Accounts button (only for administrators)
+              if (user?.role == Role.administrator)
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 12),
+                  child: InkWell(
+                    onTap: () {
+                      onClose();
+                      Navigator.of(context).pushNamed(AppRoutes.manageAccounts);
+                    },
+                    borderRadius: BorderRadius.circular(8),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xFFE5E7EB),
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 12),
+                          const Icon(
+                            Icons.manage_accounts,
+                            color: AppColors.blue,
+                            size: 20,
+                          ),
+                          const SizedBox(width: 12),
+                          Text(
+                            l10n.manageAccounts,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+
               // Logout button
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),

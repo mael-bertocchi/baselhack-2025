@@ -102,4 +102,40 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get updateTopicFailed => 'Failed to update topic';
+
+  @override
+  String get manageAccounts => 'Manage Accounts';
+
+  @override
+  String get errorLoadingUsers => 'Error loading users';
+
+  @override
+  String get noUsersFound => 'No users found';
+
+  @override
+  String get joinedOn => 'Joined on';
+
+  @override
+  String get changePassword => 'Change Password';
+
+  @override
+  String get newPassword => 'New Password';
+
+  @override
+  String get confirmPassword => 'Confirm Password';
+
+  @override
+  String get passwordsDoNotMatch => 'Passwords do not match';
+
+  @override
+  String get passwordTooShort => 'Password must be at least 6 characters';
+
+  @override
+  String get passwordChangedSuccessfully => 'Password changed successfully';
+
+  @override
+  String get changePasswordFailed => 'Failed to change password';
+
+  @override
+  String get save => 'Save';
 }
