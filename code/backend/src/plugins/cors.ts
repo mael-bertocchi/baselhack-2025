@@ -9,7 +9,7 @@ import fp from 'fastify-plugin';
 async function corsPlugin(fastify: FastifyInstance): Promise<void> {
     await fastify.register(fastifyCors, {
         origin: ['*'],
-        methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+        methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
         allowedHeaders: ['Content-Type', 'Authorization'],
         credentials: true
     });
