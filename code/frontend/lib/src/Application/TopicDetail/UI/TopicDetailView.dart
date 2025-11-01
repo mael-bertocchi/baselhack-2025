@@ -315,7 +315,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
               : SingleChildScrollView(
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final horizontalPadding = constraints.maxWidth * 0.1;
+            final isMobile = constraints.maxWidth < 600;
+            final horizontalPadding = isMobile ? 16.0 : constraints.maxWidth * 0.1;
             return Padding(
               padding: EdgeInsets.only(
                 left: horizontalPadding,

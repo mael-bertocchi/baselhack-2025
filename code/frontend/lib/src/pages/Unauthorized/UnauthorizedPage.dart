@@ -19,9 +19,11 @@ class UnauthorizedPage extends StatelessWidget {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
             const Icon(
               Icons.lock_outline,
               size: 80,
@@ -65,6 +67,7 @@ class UnauthorizedPage extends StatelessWidget {
               ),
             ),
           ],
+        ),
         ),
       ),
     );

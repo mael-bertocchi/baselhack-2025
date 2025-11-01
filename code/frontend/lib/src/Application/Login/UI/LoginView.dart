@@ -27,15 +27,21 @@ class LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
     
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SelectionArea(
         child: Center(
-        child: CustomCard.elevated(
-          width: 540,
-          padding: const EdgeInsets.all(48),
-          child: Column(
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 16 : 0,
+          ),
+          child: CustomCard.elevated(
+            width: isMobile ? double.infinity : 540,
+            padding: EdgeInsets.all(isMobile ? 24 : 48),
+            child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -152,6 +158,7 @@ class LoginViewState extends State<LoginView> {
             ],
           ),
         ),
+          ),
         ),
       ),
     );
