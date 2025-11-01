@@ -154,61 +154,64 @@ class _DashboardViewState extends State<DashboardView> {
 
   // Widget pour la barre de recherche
   Widget _buildSearchBar() {
-    return TextField(
-      controller: _searchController,
-      style: const TextStyle(
-        color: AppColors.textPrimary,
-        fontSize: 16,
-      ),
-      decoration: InputDecoration(
-        hintText: 'Search surveys...',
-        hintStyle: TextStyle(
-          color: AppColors.textSecondary.withOpacity(0.6),
+    return SizedBox(
+      height: 56, // Hauteur fixe
+      child: TextField(
+        controller: _searchController,
+        style: const TextStyle(
+          color: AppColors.textPrimary,
           fontSize: 16,
         ),
-        prefixIcon: const Icon(
-          Icons.search,
-          color: AppColors.blue,
-          size: 24,
-        ),
-        suffixIcon: _searchController.text.isNotEmpty
-            ? IconButton(
-                icon: const Icon(
-                  Icons.clear,
-                  color: AppColors.textSecondary,
-                  size: 20,
-                ),
-                onPressed: () {
-                  _searchController.clear();
-                },
-              )
-            : null,
-        filled: true,
-        fillColor: AppColors.white,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Color(0xFFE5E7EB),
-            width: 1,
+        decoration: InputDecoration(
+          hintText: 'Search surveys...',
+          hintStyle: TextStyle(
+            color: AppColors.textSecondary.withOpacity(0.6),
+            fontSize: 16,
           ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
-            color: Color(0xFFE5E7EB),
-            width: 1,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(
+          prefixIcon: const Icon(
+            Icons.search,
             color: AppColors.blue,
-            width: 2,
+            size: 24,
           ),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 16,
+          suffixIcon: _searchController.text.isNotEmpty
+              ? IconButton(
+                  icon: const Icon(
+                    Icons.clear,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  ),
+                  onPressed: () {
+                    _searchController.clear();
+                  },
+                )
+              : null,
+          filled: true,
+          fillColor: AppColors.white,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xFFE5E7EB),
+              width: 1,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: Color(0xFFE5E7EB),
+              width: 1,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: const BorderSide(
+              color: AppColors.blue,
+              width: 2,
+            ),
+          ),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 20,
+            vertical: 16,
+          ),
         ),
       ),
     );
@@ -224,6 +227,7 @@ class _DashboardViewState extends State<DashboardView> {
     ];
 
     return Container(
+      height: 56, // Hauteur fixe identique à la search bar
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
         color: AppColors.white,
