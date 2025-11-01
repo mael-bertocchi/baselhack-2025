@@ -4,7 +4,7 @@ import { Maybe } from '@core/models';
  * @type TopicStatus
  * @description Represents the current state of a topic discussion.
  */
-export type TopicStatus = 'open' | 'closed' | 'archived';
+export type TopicStatus = 'scheduled' | 'open' | 'closed';
 
 /**
  * @interface Topic
@@ -21,3 +21,23 @@ export interface Topic {
     createdAt: Date; /*!> Timestamp when the topic was created */
     updatedAt: Date; /*!> Timestamp of the last topic update */
 };
+
+export interface Summary {
+    title: string; /*!> Title of the discussion topic */
+    short_description: string; /*!> Short description providing context */
+    description: string; /*!> Long description providing more information about the topic */
+    startDate: Date; /*!> Date when the topic becomes active */
+    endDate: Date; /*!> Date when the topic closes */
+    createdAt: Date; /*!> Timestamp when the topic was created */
+    updatedAt: Date; /*!> Timestamp of the last topic update */
+    status: TopicStatus; /*!> The current state of the topic */
+    authorId: string; /*!> Identifier of the user who created the topic */
+};
+
+export interface Submission {
+    topicId: string; /*!> Identifier of the related topic */
+    createdAt: Date; /*!> Timestamp when the submission was created */
+    updatedAt: Date; /*!> Timestamp when the submission was last updated */
+    text: string; /*!> The textual content of the submission */
+};
+
