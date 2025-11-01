@@ -47,6 +47,20 @@ async function getTopicById(id: string, fastify: FastifyInstance) {
 }
 
 /**
+ * @function deleteTopicById
+ * @description Delete a topic by id
+ */
+async function deleteTopicById(id: string, fastify: FastifyInstance) {
+    const topicsCollection = getTopicsCollection(fastify);
+
+    const result = await topicsCollection.deleteOne({ _id: new (fastify.mongo).ObjectId(id) });
+
+    if (!result.acknowledged) {
+        throw new RequestError('Failed to delete topic', 500);
+    }
+}
+
+/**
  * @function createTopic
  * @description Create a new topic
  */
@@ -207,6 +221,7 @@ async function sendSubmission(id: string, data: SubmissionBody, fastify: Fastify
 export default {
     getAllTopics,
     getTopicById,
+    deleteTopicById,
     createTopic,
     modifyTopic,
     getSummaryById,

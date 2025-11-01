@@ -29,6 +29,19 @@ async function getTopicById(request: FastifyRequest<{ Params: TopicParams }>, re
 }
 
 /**
+ * @function deleteTopicById
+ * @description Delete a topic by the id given on the url
+ */
+async function deleteTopicById(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.deleteTopicById(request.params.id, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully deleted topic',
+        data: result
+    });
+}
+
+/**
  * @function createTopic
  * @description Create a new topic
  */
@@ -96,6 +109,7 @@ async function sendSubmission(request: FastifyRequest<{ Params: TopicParams, Bod
 export default {
     getAllTopics,
     getTopicById,
+    deleteTopicById,
     createTopic,
     modifyTopic,
     getSummaryTopic,

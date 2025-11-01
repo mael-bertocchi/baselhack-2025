@@ -15,13 +15,16 @@ async function topicsRoutes(app: FastifyInstance): Promise<void> {
         onRequest: [app.authGuard],
         schema: createSchema,
     }, topicsController.createTopic as any);
+    app.get('/:id', {
+        onRequest: [app.authGuard]
+    }, topicsController.getTopicById as any);
     app.put('/:id', {
         onRequest: [app.authGuard],
         schema: createSchema
     }, topicsController.modifyTopic as any);
-    app.get('/:id', {
+    app.delete('/:id', {
         onRequest: [app.authGuard]
-    }, topicsController.getTopicById as any);
+    }, topicsController.deleteTopicById as any);
     app.get('/:id/summary', {
         onRequest: [app.authGuard]
     }, topicsController.getSummaryTopic as any);
