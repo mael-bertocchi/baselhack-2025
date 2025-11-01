@@ -3,7 +3,7 @@ import 'package:frontend/src/pages/Dashboard/DashboardPage.dart';
 import 'package:frontend/src/pages/Login/LoginPage.dart';
 import 'package:frontend/src/pages/Unauthorized/UnauthorizedPage.dart';
 import 'package:frontend/src/routes/ProtectedRoutes.dart';
-import 'package:frontend/src/services/AuthService.dart';
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -17,7 +17,7 @@ class AppRoutes {
     unauthorized: (context) => const UnauthorizedPage(),
     dashboard: (context) => ProtectedRoute(
           builder: (ctx) => const DashboardPage(),
-          requiredRoles: [Role.manager, Role.admin],
+          requiredRoles: [Role.user, Role.manager, Role.administrator],
         ),
   };
 
