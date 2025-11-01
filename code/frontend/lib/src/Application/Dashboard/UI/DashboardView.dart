@@ -4,9 +4,11 @@ import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 import 'package:frontend/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
 import 'package:frontend/src/Application/Dashboard/UI/TopicDetail/UI/TopicDetailView.dart';
+import 'package:frontend/src/pages/UpdateTopic/UpdateTopicPage.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
 import 'Components/ProfileMenu.dart';
+import 'Components/DeleteConfirmationDialog.dart';
 import '../Api/DashboardService.dart';
 
 class DashboardView extends StatefulWidget {
@@ -143,6 +145,74 @@ class _DashboardViewState extends State<DashboardView> {
 
   void _navigateToCreateTopic() {
     Navigator.of(context).pushNamed(AppRoutes.createTopic);
+  }
+
+  void _navigateToEditTopic(Topic topic) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => UpdateTopicPage(topic: topic),
+      ),
+    ).then((_) => _loadTopics()); // Reload topics after edit
+  }
+
+  Future<void> _deleteTopic(Topic topic) async {
+    final l10n = AppLocalizations.of(context)!;
+    
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => DeleteConfirmationDialog(
+        title: l10n.confirmDelete,
+        message: l10n.deleteTopicMessage,
+        onConfirm: () => Navigator.of(context).pop(true),
+        onCancel: () => Navigator.of(context).pop(false),
+      ),
+    );
+
+    if (confirmed == true && topic.id != null) {
+      try {
+        await _apiService.deleteTopic(topic.id!);
+        
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.check_circle, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Text(l10n.topicDeleted),
+                ],
+              ),
+              backgroundColor: const Color(0xFF10B981),
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+          
+          // Reload topics
+          _loadTopics();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Row(
+                children: [
+                  const Icon(Icons.error_outline, color: Colors.white),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text('${l10n.deleteTopicFailed}: ${e.toString()}'),
+                  ),
+                ],
+              ),
+              backgroundColor: AppColors.pink,
+              behavior: SnackBarBehavior.floating,
+              duration: const Duration(seconds: 5),
+            ),
+          );
+        }
+      }
+    }
   }
 
   // Widget pour la barre de recherche
@@ -606,17 +676,25 @@ class _DashboardViewState extends State<DashboardView> {
                     ),
                     itemCount: _filteredTopics.length,
                     itemBuilder: (context, index) {
+                      final topic = _filteredTopics[index];
+                      final currentUser = AuthService.instance.currentUser;
+                      final showActions = currentUser?.role == Role.manager || 
+                                         currentUser?.role == Role.administrator;
+                      
                       return TopicCard(
-                        topic: _filteredTopics[index],
+                        topic: topic,
+                        showActions: showActions,
                         onViewTopic: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => TopicDetailView(
-                                topic: _filteredTopics[index],
+                                topic: topic,
                               ),
                             ),
                           );
                         },
+                        onEditTopic: showActions ? () => _navigateToEditTopic(topic) : null,
+                        onDeleteTopic: showActions ? () => _deleteTopic(topic) : null,
                       );
                     },
                   );

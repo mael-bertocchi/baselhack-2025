@@ -216,6 +216,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout failed: {error}'**
   String logoutFailed(String error);
+
+  /// Edit topic button
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Topic'**
+  String get editTopic;
+
+  /// Delete topic button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Topic'**
+  String get deleteTopic;
+
+  /// Delete confirmation dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Delete'**
+  String get confirmDelete;
+
+  /// Delete confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this topic? This action cannot be undone.'**
+  String get deleteTopicMessage;
+
+  /// Cancel button
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// Delete button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// Topic deletion success message
+  ///
+  /// In en, this message translates to:
+  /// **'Topic deleted successfully'**
+  String get topicDeleted;
+
+  /// Topic deletion error message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete topic'**
+  String get deleteTopicFailed;
+
+  /// Update topic button
+  ///
+  /// In en, this message translates to:
+  /// **'Update Topic'**
+  String get updateTopic;
+
+  /// Topic update success message
+  ///
+  /// In en, this message translates to:
+  /// **'Topic updated successfully'**
+  String get topicUpdated;
+
+  /// Topic update error message
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update topic'**
+  String get updateTopicFailed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

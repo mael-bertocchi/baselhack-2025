@@ -136,4 +136,26 @@ class DashboardApiService {
           topic.statusDisplay.toLowerCase().contains(lowerQuery);
     }).toList();
   }
+
+  /// Supprime un topic par son ID
+  Future<bool> deleteTopic(String id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl${ApiRoutes.topics}/$id'),
+        headers: {
+          'Authorization': 'Bearer ${AuthService.instance.accessToken}'
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return true;
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to delete topic');
+      }
+    } catch (e) {
+      print('Error deleting topic: $e');
+      rethrow;
+    }
+  }
 }

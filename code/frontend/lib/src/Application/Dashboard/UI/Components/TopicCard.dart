@@ -186,11 +186,17 @@ extension StringExtension on String {
 class TopicCard extends StatefulWidget {
   final Topic topic;
   final VoidCallback? onViewTopic;
+  final VoidCallback? onEditTopic;
+  final VoidCallback? onDeleteTopic;
+  final bool showActions;
 
   const TopicCard({
     super.key,
     required this.topic,
     this.onViewTopic,
+    this.onEditTopic,
+    this.onDeleteTopic,
+    this.showActions = false,
   });
 
   @override
@@ -428,6 +434,38 @@ class _TopicCardState extends State<TopicCard> {
                     ),
                   ),
                   const SizedBox(width: 16),
+
+                  // Action buttons for managers/admins
+                  if (widget.showActions) ...[
+                    // Edit button
+                    IconButton(
+                      onPressed: widget.onEditTopic,
+                      icon: const Icon(Icons.edit_outlined),
+                      iconSize: 20,
+                      color: AppColors.blue,
+                      tooltip: 'Edit Topic',
+                      style: IconButton.styleFrom(
+                        backgroundColor: AppColors.blueBackground,
+                        padding: const EdgeInsets.all(8),
+                        minimumSize: const Size(36, 36),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    // Delete button
+                    IconButton(
+                      onPressed: widget.onDeleteTopic,
+                      icon: const Icon(Icons.delete_outline),
+                      iconSize: 20,
+                      color: AppColors.pink,
+                      tooltip: 'Delete Topic',
+                      style: IconButton.styleFrom(
+                        backgroundColor: AppColors.pink.withOpacity(0.1),
+                        padding: const EdgeInsets.all(8),
+                        minimumSize: const Size(36, 36),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
 
                   // Bouton View Topic
                   ElevatedButton(

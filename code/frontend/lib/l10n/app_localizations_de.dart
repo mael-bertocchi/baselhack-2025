@@ -69,4 +69,37 @@ class AppLocalizationsDe extends AppLocalizations {
   String logoutFailed(String error) {
     return 'Abmeldung fehlgeschlagen: $error';
   }
+
+  @override
+  String get editTopic => 'Edit Topic';
+
+  @override
+  String get deleteTopic => 'Delete Topic';
+
+  @override
+  String get confirmDelete => 'Confirm Delete';
+
+  @override
+  String get deleteTopicMessage => 'Are you sure you want to delete this topic? This action cannot be undone.';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get topicDeleted => 'Topic deleted successfully';
+
+  @override
+  String get deleteTopicFailed => 'Failed to delete topic';
+
+  @override
+  String get updateTopic => 'Update Topic';
+
+  @override
+  String get topicUpdated => 'Topic updated successfully';
+
+  @override
+  String get updateTopicFailed => 'Failed to update topic';
 }

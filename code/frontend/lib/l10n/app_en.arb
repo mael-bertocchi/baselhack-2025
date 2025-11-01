@@ -103,5 +103,60 @@
         "type": "String"
       }
     }
+  },
+
+  "editTopic": "Edit Topic",
+  "@editTopic": {
+    "description": "Edit topic button"
+  },
+
+  "deleteTopic": "Delete Topic",
+  "@deleteTopic": {
+    "description": "Delete topic button"
+  },
+
+  "confirmDelete": "Confirm Delete",
+  "@confirmDelete": {
+    "description": "Delete confirmation dialog title"
+  },
+
+  "deleteTopicMessage": "Are you sure you want to delete this topic? This action cannot be undone.",
+  "@deleteTopicMessage": {
+    "description": "Delete confirmation message"
+  },
+
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+
+  "delete": "Delete",
+  "@delete": {
+    "description": "Delete button"
+  },
+
+  "topicDeleted": "Topic deleted successfully",
+  "@topicDeleted": {
+    "description": "Topic deletion success message"
+  },
+
+  "deleteTopicFailed": "Failed to delete topic",
+  "@deleteTopicFailed": {
+    "description": "Topic deletion error message"
+  },
+
+  "updateTopic": "Update Topic",
+  "@updateTopic": {
+    "description": "Update topic button"
+  },
+
+  "topicUpdated": "Topic updated successfully",
+  "@topicUpdated": {
+    "description": "Topic update success message"
+  },
+
+  "updateTopicFailed": "Failed to update topic",
+  "@updateTopicFailed": {
+    "description": "Topic update error message"
   }
 }

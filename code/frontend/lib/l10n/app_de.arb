@@ -103,5 +103,60 @@
         "type": "String"
       }
     }
+  },
+
+  "editTopic": "Thema bearbeiten",
+  "@editTopic": {
+    "description": "Edit topic button"
+  },
+
+  "deleteTopic": "Thema löschen",
+  "@deleteTopic": {
+    "description": "Delete topic button"
+  },
+
+  "confirmDelete": "Löschen bestätigen",
+  "@confirmDelete": {
+    "description": "Delete confirmation dialog title"
+  },
+
+  "deleteTopicMessage": "Sind Sie sicher, dass Sie dieses Thema löschen möchten? Diese Aktion kann nicht rückgängig gemacht werden.",
+  "@deleteTopicMessage": {
+    "description": "Delete confirmation message"
+  },
+
+  "cancel": "Abbrechen",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+
+  "delete": "Löschen",
+  "@delete": {
+    "description": "Delete button"
+  },
+
+  "topicDeleted": "Thema erfolgreich gelöscht",
+  "@topicDeleted": {
+    "description": "Topic deletion success message"
+  },
+
+  "deleteTopicFailed": "Fehler beim Löschen des Themas",
+  "@deleteTopicFailed": {
+    "description": "Topic deletion error message"
+  },
+
+  "updateTopic": "Thema aktualisieren",
+  "@updateTopic": {
+    "description": "Update topic button"
+  },
+
+  "topicUpdated": "Thema erfolgreich aktualisiert",
+  "@topicUpdated": {
+    "description": "Topic update success message"
+  },
+
+  "updateTopicFailed": "Fehler beim Aktualisieren des Themas",
+  "@updateTopicFailed": {
+    "description": "Topic update error message"
   }
 }
