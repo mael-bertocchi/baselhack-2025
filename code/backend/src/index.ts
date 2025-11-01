@@ -1,10 +1,11 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
-import healthRoutes from "@modules/health/health.routes";
 import authRoutes from "@modules/auth/auth.route";
+import healthRoutes from "@modules/health/health.routes";
+import corsPlugin from "@plugins/cors";
 import dbPlugin from "@plugins/database";
-import rateLimiterPlugin from "@plugins/rate-limiter";
 import jwtPlugin from "@plugins/jwt";
+import rateLimiterPlugin from "@plugins/rate-limiter";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
@@ -27,6 +28,7 @@ async function startApp(): Promise<void> {
     });
 
     await app.register(rateLimiterPlugin);
+    await app.register(corsPlugin);
     await app.register(dbPlugin);
     await app.register(jwtPlugin);
 
