@@ -56,7 +56,7 @@ class AuthService extends ChangeNotifier {
   
   User? _currentUser;
   bool _isInitialized = false;
-  final http.Client _httpClient = createHttpClient();
+  final http.Client _httpClient = httpClient;
 
   AuthService._internal();
   static final AuthService instance = AuthService._internal();

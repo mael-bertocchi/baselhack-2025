@@ -1,8 +1,9 @@
-import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:frontend/src/routes/ApiRoutes.dart';
 import 'package:frontend/src/Application/Dashboard/UI/Components/TopicCard.dart';
+import 'package:http/http.dart' as http;
+import 'package:frontend/src/Application/Login/Api/http_client_factory.dart';
 
 /// Service pour gérer les appels API du dashboard
 class DashboardApiService {
@@ -12,11 +13,12 @@ class DashboardApiService {
   DashboardApiService._internal();
 
   static String get baseUrl => dotenv.env['API_URL']!;
+  final http.Client _httpClient = httpClient;
 
   /// Récupère la liste des topics depuis l'API
   Future<List<Topic>> getTopics() async {
     try {
-      final response = await http.get(
+      final response = await _httpClient.get(
         Uri.parse('$baseUrl${ApiRoutes.topics}'),
         headers: {'Content-Type': 'application/json'},
       );
@@ -91,7 +93,7 @@ class DashboardApiService {
   /// Récupère un topic spécifique par son ID
   Future<Topic?> getTopicById(String id) async {
     try {
-      final response = await http.get(
+      final response = await _httpClient.get(
         Uri.parse('$baseUrl${ApiRoutes.topics}/$id'),
         headers: {'Content-Type': 'application/json'},
       );
