@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../theme/AppColors.dart';
-import '../../../pages/SurveyDetail/SurveyDetailPage.dart';
+import 'package:frontend/src/Application/Dashboard/UI/TopicDetail/UI/TopicDetailView.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
 import '../Api/DashboardService.dart';
@@ -542,8 +542,8 @@ class _DashboardViewState extends State<DashboardView> {
                         onViewTopic: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => SurveyDetailPage(
-                                survey: _filteredTopics[index],
+                              builder: (context) => TopicDetailView(
+                                topic: _filteredTopics[index],
                               ),
                             ),
                           );
