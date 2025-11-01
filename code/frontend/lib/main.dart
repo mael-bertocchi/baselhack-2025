@@ -29,6 +29,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine initial route based on authentication status
+    // If user is authenticated after init, go to dashboard, otherwise login
+    final initialRoute = AuthService.instance.isAuthenticated 
+        ? AppRoutes.dashboard 
+        : AppRoutes.login;
+
     return MaterialApp(
       title: 'BaselHack Frontend',
       theme: ThemeData(
@@ -57,7 +63,7 @@ class MyApp extends StatelessWidget {
         }
         return const Locale('en');
       },
-      initialRoute: AppRoutes.login,
+      initialRoute: initialRoute,
       routes: AppRoutes.routes,
       onUnknownRoute: AppRoutes.onUnknownRoute,
     );
