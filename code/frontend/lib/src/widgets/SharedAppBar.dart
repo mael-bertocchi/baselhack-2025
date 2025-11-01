@@ -8,15 +8,11 @@ import 'package:frontend/l10n/app_localizations.dart';
 class SharedAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String? title;
   final Widget? leading;
-  final bool showBackButton;
-  final VoidCallback? onBackPressed;
 
   const SharedAppBar({
     super.key,
     this.title,
     this.leading,
-    this.showBackButton = false,
-    this.onBackPressed,
   });
 
   @override
@@ -95,12 +91,7 @@ class _SharedAppBarState extends State<SharedAppBar> {
       elevation: 0,
       toolbarHeight: 70,
       automaticallyImplyLeading: false,
-      leading: widget.showBackButton
-          ? IconButton(
-              icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-              onPressed: widget.onBackPressed ?? () => Navigator.of(context).pop(),
-            )
-          : widget.leading,
+      leading: widget.leading,
       title: LayoutBuilder(
         builder: (context, constraints) {
           return Padding(

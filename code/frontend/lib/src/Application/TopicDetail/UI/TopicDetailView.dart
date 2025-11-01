@@ -199,7 +199,6 @@ class TopicDetailViewState extends State<TopicDetailView> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SharedAppBar(
-        showBackButton: true,
       ),
       body: _isLoading
           ? const Center(

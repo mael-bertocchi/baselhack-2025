@@ -254,10 +254,6 @@ class _CreateTopicViewState extends State<CreateTopicView> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SharedAppBar(
-        showBackButton: true,
-        onBackPressed: () {
-          Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
-        },
       ),
       body: SelectionArea(
         child: SingleChildScrollView(

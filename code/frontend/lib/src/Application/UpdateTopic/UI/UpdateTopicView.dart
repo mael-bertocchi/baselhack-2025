@@ -317,8 +317,6 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SharedAppBar(
-        showBackButton: true,
-        onBackPressed: _handleCancel,
       ),
       body: _isLoading
           ? const Center(
