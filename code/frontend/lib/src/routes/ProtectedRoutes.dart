@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/pages/Login/LoginPage.dart';
 import 'package:frontend/src/pages/Unauthorized/UnauthorizedPage.dart';
-import 'package:frontend/src/services/AuthService.dart';
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
 /// A small widget that wraps another page and enforces authentication and roles.
 ///
@@ -18,12 +18,21 @@ class ProtectedRoute extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth = AuthService.instance;
 
+    // Wait for auth service to initialize before checking authentication
+    if (!auth.isInitialized) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     if (!auth.isAuthenticated) {
       // Not authenticated -> show login
       return const LoginPage();
     }
 
-    if (requiredRoles.isNotEmpty && !auth.hasAnyRole(requiredRoles)) {
+    if (requiredRoles.isNotEmpty && !requiredRoles.contains(auth.currentUser?.role)) {
       // Authenticated but not authorized
       return const UnauthorizedPage();
     }

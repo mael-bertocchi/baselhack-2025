@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/Application/Shared/UI/Components.dart';
 import 'package:frontend/src/theme/AppColors.dart';
-import 'package:frontend/src/services/AuthService.dart';
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -106,6 +106,7 @@ class LoginViewState extends State<LoginView> {
                 width: double.infinity,
                 onPressed: () async {
                   final email = emailController.text.trim();
+                  final password = passwordController.text.trim();
                   if (email.isEmpty) {
                     // simple client-side feedback
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -113,13 +114,32 @@ class LoginViewState extends State<LoginView> {
                     );
                     return;
                   }
+                  
+                  if (password.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please enter your password')),
+                    );
+                    return;
+                  }
 
-                  // Call the mock AuthService. Replace with your real auth flow as needed.
-                  await AuthService.instance.login(email);
+                  try {
+                    // Call the real AuthService with email and password
+                    await AuthService.instance.login(email, password);
 
-                  // After login, navigate to dashboard (replace current route).
-                  if (mounted) {
-                    Navigator.of(context).pushReplacementNamed('/dashboard');
+                    // After login, navigate to dashboard (replace current route).
+                    if (mounted) {
+                      Navigator.of(context).pushReplacementNamed('/dashboard');
+                    }
+                  } catch (e) {
+                    // Show error message to user
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Login failed: ${e.toString()}'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    }
                   }
                 },
               ),

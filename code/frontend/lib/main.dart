@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:frontend/front.dart';
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
 // Conditional import for web URL strategy
 import 'main_web.dart' if (dart.library.io) 'main_non_web.dart';
 
-void main() {
+Future<void> main() async {
+  // Ensure Flutter bindings are initialized
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+  
+  // Initialize AuthService (loads stored tokens if any)
+  await AuthService.instance.init();
+  
   // Remove the # from URLs on web (no-op on mobile)
   configureUrlStrategy();
   runApp(const MyApp());
@@ -18,6 +29,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine initial route based on authentication status
+    // If user is authenticated after init, go to dashboard, otherwise login
+    final initialRoute = AuthService.instance.isAuthenticated 
+        ? AppRoutes.dashboard 
+        : AppRoutes.login;
+
     return MaterialApp(
       title: 'BaselHack Frontend',
       theme: ThemeData(
@@ -46,7 +63,7 @@ class MyApp extends StatelessWidget {
         }
         return const Locale('en');
       },
-      initialRoute: AppRoutes.login,
+      initialRoute: initialRoute,
       routes: AppRoutes.routes,
       onUnknownRoute: AppRoutes.onUnknownRoute,
     );
