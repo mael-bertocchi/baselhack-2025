@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Applications/Shared/UI/Components.dart';
-import 'package:frontend/src/theme/app_colors.dart';
+import 'package:frontend/src/Application/Shared/UI/Components.dart';
+import 'package:frontend/src/theme/AppColors.dart';
+import 'package:frontend/src/services/AuthService.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LoginView> createState() => LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
-  final _emailController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
-  bool _isPasswordVisible = false;
+class LoginViewState extends State<LoginView> {
+  final emailController = TextEditingController(text: '');
+  final passwordController = TextEditingController(text: '');
+  bool isPasswordVisible = false;
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
     super.dispose();
   }
 
@@ -62,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 32),
 
               CustomTextField(
-                controller: _emailController,
+                controller: emailController,
                 labelText: 'Email Address',
                 hintText: 'you@example.com',
                 helperText: 'Tip: Use admin@endress.com for admin view',
@@ -75,24 +76,24 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 24),
 
               CustomTextField(
-                controller: _passwordController,
+                controller: passwordController,
                 labelText: 'Password',
                 hintText: 'Enter your password',
-                obscureText: !_isPasswordVisible,
+                obscureText: !isPasswordVisible,
                 prefixIcon: const Icon(
                   Icons.lock_outline,
                   color: AppColors.textTertiary,
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(
-                    _isPasswordVisible
+                    isPasswordVisible
                         ? Icons.visibility_outlined
                         : Icons.visibility_off_outlined,
                     color: AppColors.textTertiary,
                   ),
                   onPressed: () {
                     setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
+                      isPasswordVisible = !isPasswordVisible;
                     });
                   },
                 ),
@@ -102,8 +103,23 @@ class _LoginViewState extends State<LoginView> {
               CustomButton.primary(
                 text: 'Sign In',
                 width: double.infinity,
-                onPressed: () {
-                  // Handle sign in
+                onPressed: () async {
+                  final email = emailController.text.trim();
+                  if (email.isEmpty) {
+                    // simple client-side feedback
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please enter your email')),
+                    );
+                    return;
+                  }
+
+                  // Call the mock AuthService. Replace with your real auth flow as needed.
+                  await AuthService.instance.login(email);
+
+                  // After login, navigate to dashboard (replace current route).
+                  if (mounted) {
+                    Navigator.of(context).pushReplacementNamed('/dashboard');
+                  }
                 },
               ),
               const SizedBox(height: 24),
