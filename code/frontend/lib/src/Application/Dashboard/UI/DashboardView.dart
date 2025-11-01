@@ -3,6 +3,7 @@ import '../../../theme/AppColors.dart';
 import '../../../pages/SurveyDetail/SurveyDetailPage.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
+import '../Api/DashboardService.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -13,86 +14,42 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   final TextEditingController _searchController = TextEditingController();
+  final DashboardApiService _apiService = DashboardApiService();
+  
+  List<Topic> _topics = [];
   List<Topic> _filteredTopics = [];
+  bool _isLoading = true;
+  String? _errorMessage;
   
   // Variables de filtre et tri
   String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Soon', 'Archived'
 
-  // Données d'exemple pour les topics
-  final List<Topic> _topics = [
-    Topic(
-      title: 'Digital Transformation Strategy',
-      shortDescription: 'How should we prioritize digital initiatives across the organization?',
-      description: 'Our organization is at a critical juncture in our digital journey. We need diverse perspectives from team members across all departments to make informed decisions about our digital transformation priorities.',
-      startDate: DateTime(2024, 11, 1),
-      endDate: DateTime(2026, 12, 15),
-      createdAt: DateTime(2024, 10, 25),
-      updatedAt: DateTime(2024, 10, 25),
-      status: TopicStatus.open,
-      authorId: 'Michael Chen',
-    ),
-    Topic(
-      title: 'Workplace Flexibility',
-      shortDescription: 'What flexible work arrangements would improve productivity?',
-      description: 'As we evolve our workplace policies, we want to understand what flexibility options would best support our team\'s productivity and work-life balance.',
-      startDate: DateTime(2024, 12, 1),
-      endDate: DateTime(2026, 1, 15),
-      createdAt: DateTime(2024, 11, 1),
-      updatedAt: DateTime(2024, 11, 1),
-      status: TopicStatus.open,
-      authorId: 'Sarah Johnson',
-    ),
-    Topic(
-      title: 'Product Innovation',
-      shortDescription: 'What new features should we develop for our next product release?',
-      description: 'We\'re planning our Q2 2025 product roadmap and need input on features that will deliver the most value to our customers.',
-      startDate: DateTime(2024, 11, 1),
-      endDate: DateTime(2026, 12, 20),
-      createdAt: DateTime(2024, 10, 28),
-      updatedAt: DateTime(2024, 10, 28),
-      status: TopicStatus.open,
-      authorId: 'Alex Rodriguez',
-    ),
-    Topic(
-      title: 'Sustainability Goals',
-      shortDescription: 'How can we reduce our environmental impact?',
-      description: 'We are committed to reducing our carbon footprint and need innovative ideas from the team.',
-      startDate: DateTime(2024, 9, 1),
-      endDate: DateTime(2024, 10, 31),
-      createdAt: DateTime(2024, 8, 25),
-      updatedAt: DateTime(2024, 8, 25),
-      status: TopicStatus.closed,
-      authorId: 'Emma Wilson',
-    ),
-    Topic(
-      title: 'Customer Experience',
-      shortDescription: 'What improvements would enhance customer satisfaction?',
-      description: 'We want to understand pain points and opportunities to improve our customer experience.',
-      startDate: DateTime(2024, 11, 1),
-      endDate: DateTime(2025, 1, 31),
-      createdAt: DateTime(2024, 10, 30),
-      updatedAt: DateTime(2024, 10, 30),
-      status: TopicStatus.open,
-      authorId: 'James Lee',
-    ),
-    Topic(
-      title: 'Team Collaboration Tools',
-      shortDescription: 'Which tools would best support our team collaboration?',
-      description: 'Evaluation of collaboration tools to enhance team productivity and communication.',
-      startDate: DateTime(2024, 11, 5),
-      endDate: DateTime(2024, 12, 31),
-      createdAt: DateTime(2024, 11, 1),
-      updatedAt: DateTime(2024, 11, 1),
-      status: TopicStatus.open,
-      authorId: 'Lisa Martinez',
-    ),
-  ];
-
   @override
   void initState() {
     super.initState();
-    _filteredTopics = _topics;
     _searchController.addListener(_applyFilters);
+    _loadTopics();
+  }
+
+  Future<void> _loadTopics() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final topics = await _apiService.getTopics();
+      setState(() {
+        _topics = topics;
+        _filteredTopics = topics;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Failed to load topics: ${e.toString()}';
+        _isLoading = false;
+      });
+    }
   }
 
   void _applyFilters() {
@@ -341,7 +298,61 @@ class _DashboardViewState extends State<DashboardView> {
         ],
       ),
       body: SelectionArea(
-        child: SingleChildScrollView(
+        child: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.blue,
+                ),
+              )
+            : _errorMessage != null
+                ? Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(32.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            size: 64,
+                            color: AppColors.pink,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            'Error Loading Topics',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.textPrimary,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _errorMessage!,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: AppColors.textSecondary,
+                            ),
+                          ),
+                          const SizedBox(height: 24),
+                          ElevatedButton.icon(
+                            onPressed: _loadTopics,
+                            icon: const Icon(Icons.refresh),
+                            label: const Text('Retry'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.blue,
+                              foregroundColor: AppColors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 12,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(

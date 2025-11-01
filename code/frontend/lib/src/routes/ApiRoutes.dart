@@ -11,6 +11,9 @@ enum ApiRoutes {
   // User endpoints
   userMe('/v1/users/me'),
   
+  // Topic endpoints
+  topics('/v1/topics'),
+
   // Health endpoints
   health('/v1/health');
 
