@@ -102,14 +102,14 @@ class UserManagementService {
         throw Exception('User not authenticated');
       }
 
-      final response = await http.post(
+      final response = await http.patch(
         Uri.parse('$baseUrl${ApiRoutes.changePassword.path}/$userId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
         body: jsonEncode({
-          'newPassword': newPassword,
+          'password': newPassword,
         }),
       );
 
