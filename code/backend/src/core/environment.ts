@@ -56,7 +56,8 @@ const environment: Environment = {
     DB_URI: validateVariable('DB_URI', process.env.DB_URI),
     JWT_ACCESS_EXPIRES_IN: validateVariable('JWT_ACCESS_EXPIRES_IN', process.env.JWT_ACCESS_EXPIRES_IN),
     JWT_REFRESH_EXPIRES_IN: validateVariable('JWT_REFRESH_EXPIRES_IN', process.env.JWT_REFRESH_EXPIRES_IN),
-    JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET)
+    JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET),
+    CORS_ALLOWED_ORIGINS: (process.env.CORS_ALLOWED_ORIGINS ?? 'http://localhost:5173').split(',').map((origin) => origin.trim()).filter((origin) => origin.length > 0)
 };
 
 export default environment;

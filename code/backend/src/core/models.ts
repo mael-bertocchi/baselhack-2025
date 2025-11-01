@@ -14,4 +14,5 @@ export interface Environment {
     JWT_ACCESS_EXPIRES_IN: string; /*!< JWT access token expiration time */
     JWT_REFRESH_EXPIRES_IN: string; /*!< JWT refresh token expiration time */
     JWT_SECRET: string; /*!< JWT secret key (optional) */
+    CORS_ALLOWED_ORIGINS: string[]; /*!< List of allowed origins for CORS */
 }
