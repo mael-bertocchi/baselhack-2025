@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../theme/AppColors.dart';
 import '../../../pages/SurveyDetail/SurveyDetailPage.dart';
 import 'Components/StatCard.dart';
-import 'Components/SurveyCard.dart';
+import 'Components/TopicCard.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -13,112 +13,85 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   final TextEditingController _searchController = TextEditingController();
-  List<Survey> _filteredSurveys = [];
+  List<Topic> _filteredTopics = [];
   
   // Variables de filtre et tri
-  String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Soon'
+  String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Soon', 'Archived'
 
-  // Données d'exemple pour les enquêtes
-  final List<Survey> _surveys = const [
-    Survey(
+  // Données d'exemple pour les topics
+  final List<Topic> _topics = [
+    Topic(
       title: 'Digital Transformation Strategy',
-      description: 'How should we prioritize digital initiatives across the organization?',
-      status: 'Active',
-      category: 'Strategy',
-      ideasCount: 24,
-      participantsCount: 18,
-      createdBy: 'Michael Chen',
-      context: 'Our organization is at a critical juncture in our digital journey. We need diverse perspectives from team members across all departments to make informed decisions about our digital transformation priorities.',
-      lookingFor: [
-        'Specific ideas and recommendations',
-        'Concerns or risks you foresee',
-        'Resources or skills needed',
-        'Timeline and priority suggestions',
-      ],
-      guidelines: [
-        'Be specific and actionable',
-        'Consider cross-departmental impact',
-        'Think both short-term and long-term',
-        'Focus on feasibility alongside innovation',
-      ],
-      timeline: 'Submissions close: December 15, 2024\nReview period: December 16-31, 2024\nDecision announcement: January 15, 2025',
+      shortDescription: 'How should we prioritize digital initiatives across the organization?',
+      description: 'Our organization is at a critical juncture in our digital journey. We need diverse perspectives from team members across all departments to make informed decisions about our digital transformation priorities.',
+      startDate: DateTime(2024, 11, 1),
+      endDate: DateTime(2026, 12, 15),
+      createdAt: DateTime(2024, 10, 25),
+      updatedAt: DateTime(2024, 10, 25),
+      status: TopicStatus.open,
+      authorId: 'Michael Chen',
     ),
-    Survey(
+    Topic(
       title: 'Workplace Flexibility',
-      description: 'What flexible work arrangements would improve productivity?',
-      status: 'Soon',
-      category: 'HR',
-      ideasCount: 32,
-      participantsCount: 25,
-      createdBy: 'Sarah Johnson',
-      context: 'As we evolve our workplace policies, we want to understand what flexibility options would best support our team\'s productivity and work-life balance.',
-      lookingFor: [
-        'Preferred working arrangements',
-        'Productivity concerns or benefits',
-        'Technology or tools needed',
-        'Communication strategies',
-      ],
-      guidelines: [
-        'Consider team collaboration needs',
-        'Think about work-life balance',
-        'Be realistic about constraints',
-        'Share your personal experience',
-      ],
-      timeline: 'Survey opens: December 1, 2024\nSubmissions close: January 15, 2025\nImplementation: February 2025',
+      shortDescription: 'What flexible work arrangements would improve productivity?',
+      description: 'As we evolve our workplace policies, we want to understand what flexibility options would best support our team\'s productivity and work-life balance.',
+      startDate: DateTime(2024, 12, 1),
+      endDate: DateTime(2026, 1, 15),
+      createdAt: DateTime(2024, 11, 1),
+      updatedAt: DateTime(2024, 11, 1),
+      status: TopicStatus.open,
+      authorId: 'Sarah Johnson',
     ),
-    Survey(
+    Topic(
       title: 'Product Innovation',
-      description: 'What new features should we develop for our next product release?',
-      status: 'Active',
-      category: 'Product',
-      ideasCount: 18,
-      participantsCount: 14,
-      createdBy: 'Alex Rodriguez',
-      context: 'We\'re planning our Q2 2025 product roadmap and need input on features that will deliver the most value to our customers.',
-      lookingFor: [
-        'Feature ideas and use cases',
-        'Customer pain points to address',
-        'Market opportunities',
-        'Technical feasibility considerations',
-      ],
-      guidelines: [
-        'Focus on customer value',
-        'Consider implementation complexity',
-        'Think about scalability',
-        'Include competitive analysis',
-      ],
-      timeline: 'Submissions close: December 20, 2024\nPrioritization: January 2025\nDevelopment starts: February 2025',
+      shortDescription: 'What new features should we develop for our next product release?',
+      description: 'We\'re planning our Q2 2025 product roadmap and need input on features that will deliver the most value to our customers.',
+      startDate: DateTime(2024, 11, 1),
+      endDate: DateTime(2026, 12, 20),
+      createdAt: DateTime(2024, 10, 28),
+      updatedAt: DateTime(2024, 10, 28),
+      status: TopicStatus.open,
+      authorId: 'Alex Rodriguez',
     ),
-    Survey(
+    Topic(
       title: 'Sustainability Goals',
-      description: 'How can we reduce our environmental impact?',
-      status: 'Closed',
-      category: 'Sustainability',
-      ideasCount: 42,
-      participantsCount: 31,
+      shortDescription: 'How can we reduce our environmental impact?',
+      description: 'We are committed to reducing our carbon footprint and need innovative ideas from the team.',
+      startDate: DateTime(2024, 9, 1),
+      endDate: DateTime(2024, 10, 31),
+      createdAt: DateTime(2024, 8, 25),
+      updatedAt: DateTime(2024, 8, 25),
+      status: TopicStatus.closed,
+      authorId: 'Emma Wilson',
     ),
-    Survey(
+    Topic(
       title: 'Customer Experience',
-      description: 'What improvements would enhance customer satisfaction?',
-      status: 'Active',
-      category: 'Customer',
-      ideasCount: 15,
-      participantsCount: 12,
+      shortDescription: 'What improvements would enhance customer satisfaction?',
+      description: 'We want to understand pain points and opportunities to improve our customer experience.',
+      startDate: DateTime(2024, 11, 1),
+      endDate: DateTime(2025, 1, 31),
+      createdAt: DateTime(2024, 10, 30),
+      updatedAt: DateTime(2024, 10, 30),
+      status: TopicStatus.open,
+      authorId: 'James Lee',
     ),
-    Survey(
+    Topic(
       title: 'Team Collaboration Tools',
-      description: 'Which tools would best support our team collaboration?',
-      status: 'Active',
-      category: 'Operations',
-      ideasCount: 28,
-      participantsCount: 22,
+      shortDescription: 'Which tools would best support our team collaboration?',
+      description: 'Evaluation of collaboration tools to enhance team productivity and communication.',
+      startDate: DateTime(2024, 11, 5),
+      endDate: DateTime(2024, 12, 31),
+      createdAt: DateTime(2024, 11, 1),
+      updatedAt: DateTime(2024, 11, 1),
+      status: TopicStatus.open,
+      authorId: 'Lisa Martinez',
     ),
   ];
 
   @override
   void initState() {
     super.initState();
-    _filteredSurveys = _surveys;
+    _filteredTopics = _topics;
     _searchController.addListener(_applyFilters);
   }
 
@@ -126,23 +99,23 @@ class _DashboardViewState extends State<DashboardView> {
     final query = _searchController.text.toLowerCase();
     setState(() {
       // Filtrage par recherche textuelle
-      List<Survey> filtered = _surveys;
+      List<Topic> filtered = _topics;
       
       if (query.isNotEmpty) {
-        filtered = filtered.where((survey) {
-          return survey.title.toLowerCase().contains(query) ||
-              survey.description.toLowerCase().contains(query) ||
-              survey.category.toLowerCase().contains(query) ||
-              survey.status.toLowerCase().contains(query);
+        filtered = filtered.where((topic) {
+          return topic.title.toLowerCase().contains(query) ||
+              topic.shortDescription.toLowerCase().contains(query) ||
+              topic.description.toLowerCase().contains(query) ||
+              topic.statusDisplay.toLowerCase().contains(query);
         }).toList();
       }
       
       // Filtrage par statut
       if (_selectedStatus != 'all') {
-        filtered = filtered.where((survey) => survey.status == _selectedStatus).toList();
+        filtered = filtered.where((topic) => topic.statusDisplay == _selectedStatus).toList();
       }
       
-      _filteredSurveys = filtered;
+      _filteredTopics = filtered;
     });
   }
 
@@ -163,7 +136,7 @@ class _DashboardViewState extends State<DashboardView> {
           fontSize: 16,
         ),
         decoration: InputDecoration(
-          hintText: 'Search surveys...',
+          hintText: 'Search topics...',
           hintStyle: TextStyle(
             color: AppColors.textSecondary.withOpacity(0.6),
             fontSize: 16,
@@ -403,7 +376,7 @@ class _DashboardViewState extends State<DashboardView> {
                       children: [
                         Expanded(
                           child: StatCard(
-                            label: 'Active Surveys',
+                            label: 'Active Topics',
                             value: '5',
                             icon: Icons.trending_up,
                             iconColor: AppColors.blue,
@@ -436,7 +409,7 @@ class _DashboardViewState extends State<DashboardView> {
                     return Column(
                       children: [
                         StatCard(
-                          label: 'Active Surveys',
+                          label: 'Active Topics',
                           value: '5',
                           icon: Icons.trending_up,
                           iconColor: AppColors.blue,
@@ -500,7 +473,7 @@ class _DashboardViewState extends State<DashboardView> {
               const SizedBox(height: 32),
 
               // Message si aucun résultat
-              if (_filteredSurveys.isEmpty)
+              if (_filteredTopics.isEmpty)
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(48.0),
@@ -513,7 +486,7 @@ class _DashboardViewState extends State<DashboardView> {
                         ),
                         const SizedBox(height: 16),
                         SelectableText(
-                          'No surveys found',
+                          'No topics found',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
@@ -533,7 +506,7 @@ class _DashboardViewState extends State<DashboardView> {
                   ),
                 )
               else
-                // Grille d'enquêtes
+                // Grille de topics
                 LayoutBuilder(
                 builder: (context, constraints) {
                   final crossAxisCount = constraints.maxWidth > 1200
@@ -551,15 +524,15 @@ class _DashboardViewState extends State<DashboardView> {
                       mainAxisSpacing: 24,
                       childAspectRatio: 1.4,
                     ),
-                    itemCount: _filteredSurveys.length,
+                    itemCount: _filteredTopics.length,
                     itemBuilder: (context, index) {
-                      return SurveyCard(
-                        survey: _filteredSurveys[index],
-                        onViewSurvey: () {
+                      return TopicCard(
+                        topic: _filteredTopics[index],
+                        onViewTopic: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => SurveyDetailPage(
-                                survey: _filteredSurveys[index],
+                                survey: _filteredTopics[index],
                               ),
                             ),
                           );
