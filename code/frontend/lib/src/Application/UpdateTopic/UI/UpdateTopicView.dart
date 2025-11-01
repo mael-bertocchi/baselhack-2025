@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
+import '../../../widgets/SharedAppBar.dart';
 import '../Api/UpdateTopicService.dart';
 import '../../CreateTopic/UI/Components/CustomTextField.dart';
 import '../../CreateTopic/UI/Components/DateTimePickerField.dart';
 import '../../Dashboard/UI/Components/TopicCard.dart';
+import '../../Dashboard/Api/DashboardService.dart';
 
 class UpdateTopicView extends StatefulWidget {
-  final Topic topic;
+  final String topicId;
 
   const UpdateTopicView({
     super.key,
-    required this.topic,
+    required this.topicId,
   });
 
   @override
@@ -21,6 +23,7 @@ class UpdateTopicView extends StatefulWidget {
 class _UpdateTopicViewState extends State<UpdateTopicView> {
   final _formKey = GlobalKey<FormState>();
   final _updateTopicService = UpdateTopicService();
+  final _dashboardService = DashboardApiService();
   
   // Controllers
   late final TextEditingController _titleController;
@@ -31,6 +34,9 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
   DateTime? _startDate;
   DateTime? _endDate;
   
+  // Topic data
+  Topic? _topic;
+  
   // Error states
   String? _titleError;
   String? _shortDescriptionError;
@@ -38,18 +44,55 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
   String? _startDateError;
   String? _endDateError;
   
-  // Loading state
+  // Loading states
+  bool _isLoading = true;
   bool _isSubmitting = false;
+  String? _loadError;
   
   @override
   void initState() {
     super.initState();
-    // Pre-fill form with existing topic data
-    _titleController = TextEditingController(text: widget.topic.title);
-    _shortDescriptionController = TextEditingController(text: widget.topic.shortDescription);
-    _descriptionController = TextEditingController(text: widget.topic.description);
-    _startDate = widget.topic.startDate;
-    _endDate = widget.topic.endDate;
+    // Initialize controllers with empty values first
+    _titleController = TextEditingController();
+    _shortDescriptionController = TextEditingController();
+    _descriptionController = TextEditingController();
+    _loadTopicData();
+  }
+  
+  /// Load topic data from API
+  Future<void> _loadTopicData() async {
+    setState(() {
+      _isLoading = true;
+      _loadError = null;
+    });
+
+    try {
+      final topic = await _dashboardService.getTopicById(widget.topicId);
+      
+      if (topic == null) {
+        setState(() {
+          _loadError = 'Topic not found';
+          _isLoading = false;
+        });
+        return;
+      }
+      
+      // Pre-fill form with existing topic data
+      setState(() {
+        _topic = topic;
+        _titleController.text = topic.title;
+        _shortDescriptionController.text = topic.shortDescription;
+        _descriptionController.text = topic.description;
+        _startDate = topic.startDate;
+        _endDate = topic.endDate;
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _loadError = 'Failed to load topic: ${e.toString()}';
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -135,18 +178,20 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
     if (!_validate()) {
       return;
     }
+    
+    if (_topic == null) return;
 
     setState(() => _isSubmitting = true);
 
     try {
       await _updateTopicService.updateTopic(
-        id: widget.topic.id!,
+        id: _topic!.id!,
         title: _titleController.text.trim(),
         shortDescription: _shortDescriptionController.text.trim(),
         description: _descriptionController.text.trim(),
         startDate: _startDate!,
         endDate: _endDate!,
-        authorId: widget.topic.authorId,
+        authorId: _topic!.authorId,
       );
 
       if (mounted) {
@@ -196,12 +241,17 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
   }
 
   void _handleCancel() {
+    if (_topic == null) {
+      Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+      return;
+    }
+    
     // Show confirmation dialog if there are changes
-    final hasChanges = _titleController.text != widget.topic.title ||
-        _shortDescriptionController.text != widget.topic.shortDescription ||
-        _descriptionController.text != widget.topic.description ||
-        _startDate != widget.topic.startDate ||
-        _endDate != widget.topic.endDate;
+    final hasChanges = _titleController.text != _topic!.title ||
+        _shortDescriptionController.text != _topic!.shortDescription ||
+        _descriptionController.text != _topic!.description ||
+        _startDate != _topic!.startDate ||
+        _endDate != _topic!.endDate;
 
     if (hasChanges) {
       showDialog(
@@ -266,29 +316,78 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: _handleCancel,
-        ),
-        title: const Text(
-          'Update Topic',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
-        ),
+      appBar: SharedAppBar(
       ),
-      body: SelectionArea(
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.blue,
+              ),
+            )
+          : _loadError != null
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: AppColors.pink,
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Error Loading Topic',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _loadError!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton.icon(
+                          onPressed: _loadTopicData,
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Try Again'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.blue,
+                            foregroundColor: AppColors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : SelectionArea(
         child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 800),
-              padding: const EdgeInsets.all(32.0),
-              child: Form(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final horizontalPadding = constraints.maxWidth * 0.1;
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: horizontalPadding,
+                  right: horizontalPadding,
+                  top: 32.0,
+                  bottom: 32.0,
+                ),
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -524,7 +623,10 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                   ],
                 ),
               ),
-            ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

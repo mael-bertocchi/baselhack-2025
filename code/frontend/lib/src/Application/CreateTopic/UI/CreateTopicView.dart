@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
+import '../../../widgets/SharedAppBar.dart';
 import '../Api/CreateTopicService.dart';
 import '../../Login/Api/AuthService.dart';
 import 'Components/CustomTextField.dart';
@@ -252,31 +253,24 @@ class _CreateTopicViewState extends State<CreateTopicView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () {
-            Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
-          },
-        ),
-        title: const Text(
-          'Create New Topic',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
-        ),
+      appBar: SharedAppBar(
       ),
       body: SelectionArea(
         child: SingleChildScrollView(
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 800),
-              padding: const EdgeInsets.all(32.0),
-              child: Form(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final horizontalPadding = constraints.maxWidth * 0.1;
+              return Padding(
+                padding: EdgeInsets.only(
+                  left: horizontalPadding,
+                  right: horizontalPadding,
+                  top: 32.0,
+                  bottom: 32.0,
+                ),
+                child: Center(
+                  child: Container(
+                    constraints: const BoxConstraints(maxWidth: 800),
+                    child: Form(
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -512,7 +506,10 @@ class _CreateTopicViewState extends State<CreateTopicView> {
                   ],
                 ),
               ),
-            ),
+                  ),
+                ),
+              );
+            },
           ),
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:frontend/src/routes/ApiRoutes.dart';
-import 'package:frontend/src/Application/Dashboard/UI/TopicDetail/Models/Idea.dart';
+import 'package:frontend/src/Application/TopicDetail/UI/Idea.dart';
 import 'package:frontend/src/Application/Login/Api/TokenStorage.dart';
 
 /// Service pour gérer les soumissions (submissions) des topics

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import '../../../../../theme/AppColors.dart';
-import '../../Components/TopicCard.dart';
-import '../Models/Idea.dart';
-import '../../../Api/TopicSubmissionService.dart';
+import '../../../theme/AppColors.dart';
+import '../../../widgets/SharedAppBar.dart';
+import '../../Dashboard/UI/Components/TopicCard.dart';
+import 'Idea.dart';
+import '../../Dashboard/Api/TopicSubmissionService.dart';
+import '../../Dashboard/Api/DashboardService.dart';
 
 // Alias temporaire pour rétrocompatibilité
 typedef Survey = Topic;
 
 class TopicDetailView extends StatefulWidget {
-  final Topic topic;
+  final String topicId;
 
   const TopicDetailView({
     super.key,
-    required this.topic,
+    required this.topicId,
   });
 
   @override
@@ -23,6 +25,9 @@ class TopicDetailView extends StatefulWidget {
 class TopicDetailViewState extends State<TopicDetailView> {
   final TextEditingController _ideaController = TextEditingController();
   final TopicSubmissionService _submissionService = TopicSubmissionService();
+  final DashboardApiService _dashboardService = DashboardApiService();
+  
+  Topic? _topic;
   List<Idea> _ideas = [];
   bool _isLoading = true;
   bool _isSubmitting = false;
@@ -33,33 +38,39 @@ class TopicDetailViewState extends State<TopicDetailView> {
   @override
   void initState() {
     super.initState();
-    _loadSubmissions();
+    _loadTopicAndSubmissions();
   }
 
-  /// Charge les soumissions depuis l'API
-  Future<void> _loadSubmissions() async {
-    if (widget.topic.id == null) {
-      setState(() {
-        _error = 'Topic ID is missing';
-        _isLoading = false;
-      });
-      return;
-    }
-
+  /// Charge le topic et ses soumissions depuis l'API
+  Future<void> _loadTopicAndSubmissions() async {
     setState(() {
       _isLoading = true;
       _error = null;
     });
 
     try {
-      final submissions = await _submissionService.getSubmissions(widget.topic.id!);
+      // Load topic data first
+      final topic = await _dashboardService.getTopicById(widget.topicId);
+      
+      if (topic == null) {
+        setState(() {
+          _error = 'Topic not found';
+          _isLoading = false;
+        });
+        return;
+      }
+      
+      // Load submissions
+      final submissions = await _submissionService.getSubmissions(widget.topicId);
+      
       setState(() {
+        _topic = topic;
         _ideas = submissions;
         _isLoading = false;
       });
     } catch (e) {
       setState(() {
-        _error = 'Failed to load ideas: ${e.toString()}';
+        _error = 'Failed to load topic: ${e.toString()}';
         _isLoading = false;
       });
       if (mounted) {
@@ -83,17 +94,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
   Future<void> _submitIdea() async {
     if (_ideaController.text.trim().isEmpty) return;
-    if (widget.topic.id == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Cannot submit idea: Topic ID is missing'),
-          duration: Duration(seconds: 3),
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: Color(0xFFEF4444),
-        ),
-      );
-      return;
-    }
+    if (_topic == null) return;
 
     setState(() {
       _isSubmitting = true;
@@ -101,7 +102,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
     try {
       final newIdea = await _submissionService.submitIdea(
-        widget.topic.id!,
+        widget.topicId,
         _ideaController.text.trim(),
       );
 
@@ -155,7 +156,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
   }
 
   Color _getStatusColor() {
-    final displayStatus = widget.topic.statusDisplay.toLowerCase();
+    if (_topic == null) return AppColors.blue;
+    final displayStatus = _topic!.statusDisplay.toLowerCase();
     switch (displayStatus) {
       case 'active':
         return const Color(0xFF7C3AED);
@@ -171,7 +173,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
   }
 
   Color _getStatusBackgroundColor() {
-    final displayStatus = widget.topic.statusDisplay.toLowerCase();
+    if (_topic == null) return AppColors.blueBackground;
+    final displayStatus = _topic!.statusDisplay.toLowerCase();
     switch (displayStatus) {
       case 'active':
         return const Color.fromARGB(255, 242, 234, 255); // Cyan très clair
@@ -195,57 +198,74 @@ class TopicDetailViewState extends State<TopicDetailView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        toolbarHeight: 70,
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: AppColors.blue,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: const Center(
-            child: Text(
-          'C',
-          style: TextStyle(
-            color: AppColors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        const Text(
-          'Consensus Hub',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: AppColors.textPrimary,
-          ),
-        ),
-          ],
-        ),
-        actions: [
-          IconButton(
-        icon: const CircleAvatar(
-          backgroundColor: AppColors.background,
-          child: Icon(Icons.person, color: AppColors.textSecondary),
-        ),
-        onPressed: () {},
-          ),
-          const SizedBox(width: 16),
-        ],
+      appBar: SharedAppBar(
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
-          child: Column(
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(AppColors.blueLight),
+              ),
+            )
+          : _error != null && _topic == null
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 64,
+                          color: Color(0xFFEF4444),
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Error Loading Topic',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _error!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontSize: 14,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        ElevatedButton.icon(
+                          onPressed: _loadTopicAndSubmissions,
+                          icon: const Icon(Icons.refresh),
+                          label: const Text('Try Again'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.blue,
+                            foregroundColor: AppColors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final horizontalPadding = constraints.maxWidth * 0.1;
+            return Padding(
+              padding: EdgeInsets.only(
+                left: horizontalPadding,
+                right: horizontalPadding,
+                top: 32.0,
+                bottom: 32.0,
+              ),
+              child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Bouton Back to Surveys
@@ -275,7 +295,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
               // Info ligne avec dates et auteur
               SelectableText(
-                'Created by: ${widget.topic.authorId} • From ${_formatDate(widget.topic.startDate)} to ${_formatDate(widget.topic.endDate)} • Last updated ${_formatDate(widget.topic.updatedAt)}',
+                'Created by: ${_topic!.authorId} • From ${_formatDate(_topic!.startDate)} to ${_formatDate(_topic!.endDate)} • Last updated ${_formatDate(_topic!.updatedAt)}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
@@ -333,7 +353,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '${widget.topic.statusDisplay} Topic',
+                  '${_topic!.statusDisplay} Topic',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -343,7 +363,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
               ),
               const SizedBox(height: 16),
                                 SelectableText(
-                                  widget.topic.title,
+                                  _topic!.title,
                                   style: const TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.w800,
@@ -363,7 +383,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 ),
                                 const SizedBox(height: 12),
                                 MarkdownBody(
-                                  data: widget.topic.shortDescription,
+                                  data: _topic!.shortDescription,
                                   selectable: true,
                                   styleSheet: MarkdownStyleSheet(
                                     p: const TextStyle(
@@ -449,7 +469,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 ),
                                 const SizedBox(height: 12),
                                 MarkdownBody(
-                                  data: widget.topic.description,
+                                  data: _topic!.description,
                                   selectable: true,
                                   styleSheet: MarkdownStyleSheet(
                                     p: const TextStyle(
@@ -536,19 +556,19 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 const SizedBox(height: 12),
                                 _buildTimelineItem(
                                   'Topic Opens',
-                                  _formatDate(widget.topic.startDate),
+                                  _formatDate(_topic!.startDate),
                                   Icons.play_circle_outline,
                                 ),
                                 const SizedBox(height: 8),
                                 _buildTimelineItem(
                                   'Topic Closes',
-                                  _formatDate(widget.topic.endDate),
+                                  _formatDate(_topic!.endDate),
                                   Icons.check_circle_outline,
                                 ),
                                 const SizedBox(height: 8),
                                 _buildTimelineItem(
                                   'Created',
-                                  _formatDate(widget.topic.createdAt),
+                                  _formatDate(_topic!.createdAt),
                                   Icons.calendar_today,
                                 ),
                               ],
@@ -564,7 +584,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
               const SizedBox(height: 40),
 
               // Section Share Your Idea
-              if (widget.topic.isActive) ...[
+              if (_topic!.isActive) ...[
                 Container(
                   decoration: BoxDecoration(
                     color: AppColors.white,
@@ -780,7 +800,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                         ),
                       ),
                       TextButton(
-                        onPressed: _loadSubmissions,
+                        onPressed: _loadTopicAndSubmissions,
                         child: const Text('Retry'),
                       ),
                     ],
@@ -879,7 +899,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
                   },
                 ),
             ],
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
