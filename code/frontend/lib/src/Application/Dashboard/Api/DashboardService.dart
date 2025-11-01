@@ -1,121 +1,124 @@
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
+import 'package:frontend/src/routes/ApiRoutes.dart';
 import 'package:frontend/src/Application/Dashboard/UI/Components/TopicCard.dart';
 
 /// Service pour gérer les appels API du dashboard
-/// 
-/// TODO: Remplacer les méthodes mockées par de vrais appels HTTP
-/// Exemple avec package:http ou package:dio
 class DashboardApiService {
   // Singleton pattern
   static final DashboardApiService _instance = DashboardApiService._internal();
   factory DashboardApiService() => _instance;
   DashboardApiService._internal();
 
-  // TODO: Ajouter votre base URL API
-  // static const String baseUrl = 'https://api.example.com'\;
+  static String get baseUrl => dotenv.env['API_URL']!;
 
-  /// Récupère la liste des topics
-  /// 
-  /// Exemple d'implémentation avec HTTP:
-  /// ```dart
-  /// Future<List<Topic>> getTopics() async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/topics'));
-  ///   if (response.statusCode == 200) {
-  ///     final List<dynamic> data = json.decode(response.body);
-  ///     return data.map((json) => Topic.fromJson(json)).toList();
-  ///   }
-  ///   throw Exception('Failed to load topics');
-  /// }
-  /// ```
+  /// Récupère la liste des topics depuis l'API
   Future<List<Topic>> getTopics() async {
-    // Simuler un délai réseau
-    await Future.delayed(const Duration(milliseconds: 500));
-    
-    // TODO: Remplacer par un vrai appel API
-    return [
-      Topic(
-        title: 'Digital Transformation Strategy',
-        shortDescription: 'How should we prioritize digital initiatives across the organization?',
-        description: 'Our organization is at a critical juncture in our digital journey. We need diverse perspectives from team members across all departments to make informed decisions about our digital transformation priorities.',
-        startDate: DateTime(2025, 11, 1),
-        endDate: DateTime(2025, 12, 15),
-        createdAt: DateTime(2025, 10, 25),
-        updatedAt: DateTime(2025, 10, 25),
-        status: TopicStatus.open,
-        authorId: 'Michael Chen',
-      ),
-      Topic(
-        title: 'Workplace Flexibility',
-        shortDescription: 'What flexible work arrangements would improve productivity?',
-        description: 'As we evolve our workplace policies, we want to understand what flexibility options would best support our team\047s productivity and work-life balance.',
-        startDate: DateTime(2025, 12, 1),
-        endDate: DateTime(2026, 1, 15),
-        createdAt: DateTime(2025, 11, 1),
-        updatedAt: DateTime(2025, 11, 1),
-        status: TopicStatus.open,
-        authorId: 'Sarah Johnson',
-      ),
-      Topic(
-        title: 'Product Innovation',
-        shortDescription: 'What new features should we develop for our next product release?',
-        description: 'We\047re planning our Q2 2026 product roadmap and need input on features that will deliver the most value to our customers.',
-        startDate: DateTime(2025, 11, 1),
-        endDate: DateTime(2025, 12, 20),
-        createdAt: DateTime(2025, 10, 28),
-        updatedAt: DateTime(2025, 10, 28),
-        status: TopicStatus.open,
-        authorId: 'Alex Rodriguez',
-      ),
-      Topic(
-        title: 'Sustainability Goals',
-        shortDescription: 'How can we reduce our environmental impact?',
-        description: 'We are committed to reducing our carbon footprint and need innovative ideas from the team.',
-        startDate: DateTime(2025, 9, 1),
-        endDate: DateTime(2025, 10, 31),
-        createdAt: DateTime(2025, 8, 25),
-        updatedAt: DateTime(2025, 8, 25),
-        status: TopicStatus.closed,
-        authorId: 'Emma Wilson',
-      ),
-      Topic(
-        title: 'Customer Experience',
-        shortDescription: 'What improvements would enhance customer satisfaction?',
-        description: 'We want to understand pain points and opportunities to improve our customer experience.',
-        startDate: DateTime(2025, 11, 1),
-        endDate: DateTime(2026, 1, 31),
-        createdAt: DateTime(2025, 10, 30),
-        updatedAt: DateTime(2025, 10, 30),
-        status: TopicStatus.open,
-        authorId: 'James Lee',
-      ),
-      Topic(
-        title: 'Team Collaboration Tools',
-        shortDescription: 'Which tools would best support our team collaboration?',
-        description: 'Evaluation of collaboration tools to enhance team productivity and communication.',
-        startDate: DateTime(2025, 11, 5),
-        endDate: DateTime(2025, 12, 31),
-        createdAt: DateTime(2025, 11, 1),
-        updatedAt: DateTime(2025, 11, 1),
-        status: TopicStatus.open,
-        authorId: 'Lisa Martinez',
-      ),
-    ];
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl${ApiRoutes.topics}'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final List<dynamic> topicsData = responseData['data'] as List<dynamic>;
+        
+        // Mapper les données de l'API vers des objets Topic
+        return topicsData.map((topicJson) {
+          return Topic(
+            id: topicJson['_id'] as String,
+            title: topicJson['title'] as String,
+            shortDescription: topicJson['short_description'] as String,
+            description: topicJson['description'] as String,
+            startDate: DateTime.parse(topicJson['startDate'] as String),
+            endDate: DateTime.parse(topicJson['endDate'] as String),
+            createdAt: DateTime.parse(topicJson['createdAt'] as String),
+            updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
+            status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
+            authorId: topicJson['authorId'] as String,
+          );
+        }).toList();
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to load topics');
+      }
+    } catch (e) {
+      print('Error fetching topics: $e');
+      rethrow;
+    }
+  }
+
+  /// Mappe le statut de l'API vers l'enum TopicStatus
+  TopicStatus _mapApiStatusToTopicStatus(String apiStatus) {
+    switch (apiStatus.toLowerCase()) {
+      case 'scheduled':
+      case 'open':
+        return TopicStatus.open;
+      case 'closed':
+        return TopicStatus.closed;
+      case 'archived':
+        return TopicStatus.archived;
+      default:
+        return TopicStatus.open;
+    }
   }
 
   /// Récupère les statistiques du dashboard
   Future<Map<String, int>> getDashboardStats() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    
-    return {
-      'activeTopics': 5,
-      'userContributions': 12,
-      'totalParticipants': 847,
-    };
+    try {
+      // TODO: Créer une route API pour les stats
+      // Pour l'instant, on calcule depuis les topics
+      final topics = await getTopics();
+      final activeCount = topics.where((t) => t.isActive).length;
+      
+      return {
+        'activeTopics': activeCount,
+        'userContributions': 0, // TODO: À implémenter avec l'API
+        'totalParticipants': 0, // TODO: À implémenter avec l'API
+      };
+    } catch (e) {
+      print('Error fetching dashboard stats: $e');
+      return {
+        'activeTopics': 0,
+        'userContributions': 0,
+        'totalParticipants': 0,
+      };
+    }
   }
 
   /// Récupère un topic spécifique par son ID
   Future<Topic?> getTopicById(String id) async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return null;
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl${ApiRoutes.topics}/$id'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final topicJson = responseData['data'] as Map<String, dynamic>;
+        
+        return Topic(
+          id: topicJson['_id'] as String,
+          title: topicJson['title'] as String,
+          shortDescription: topicJson['short_description'] as String,
+          description: topicJson['description'] as String,
+          startDate: DateTime.parse(topicJson['startDate'] as String),
+          endDate: DateTime.parse(topicJson['endDate'] as String),
+          createdAt: DateTime.parse(topicJson['createdAt'] as String),
+          updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
+          status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
+          authorId: topicJson['authorId'] as String,
+        );
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching topic by id: $e');
+      return null;
+    }
   }
 
   /// Recherche des topics par mots-clés
