@@ -21,3 +21,15 @@ export interface Topic {
     status: TopicStatus; /*!> The current state of the topic */
     authorId: string; /*!> Identifier of the user who created the topic */
 };
+
+export interface Summary {
+    title: string; /*!> Title of the discussion topic */
+    short_description: string; /*!> Short description providing context */
+    description: string; /*!> Long description providing more information about the topic */
+    startDate: Date; /*!> Date when the topic becomes active */
+    endDate: Date; /*!> Date when the topic closes */
+    createdAt: Date; /*!> Timestamp when the topic was created */
+    updatedAt: Date; /*!> Timestamp of the last topic update */
+    status: TopicStatus; /*!> The current state of the topic */
+    authorId: string; /*!> Identifier of the user who created the topic */
+};

@@ -41,8 +41,23 @@ async function createTopic(request: FastifyRequest<{ Body: CreateBody }>, reply:
     });
 }
 
+/**
+ * @function getSummaryTopic
+ * @description Return the Topic by the id given on the url
+ */
+async function getSummaryTopic(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.getTopicById(request.params.id, request.server);
+
+
+    reply.status(200).send({
+        message: 'Successfully retrieved topic',
+        data: result
+    });
+}
+
 export default {
     getAllTopics,
     getTopicById,
-    createTopic
+    createTopic,
+    getSummaryTopic
 };

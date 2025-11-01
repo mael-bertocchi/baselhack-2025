@@ -1,7 +1,7 @@
 import { RequestError } from '@core/errors';
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { Topic, TopicStatus } from '@modules/topics/topics.model';
+import { Topic, TopicStatus, Summary} from '@modules/topics/topics.model';
 import { CreateBody } from './topics.types';
 
 /**
@@ -77,10 +77,42 @@ async function createTopic(data: CreateBody, fastify: FastifyInstance) {
     return topic;
 }
 
+/**
+ * @function getSummaryCollection
+ * @param fastify 
+ * @returns db collection
+ * @description Return the summary collection of the table on db
+ */
+function getSummaryCollection(fastify: FastifyInstance): Collection<Topic> {
+    const db = fastify.mongo.db;
 
+    if (!db) {
+        throw new Error('Database connection is not available');
+    }
+
+    return db.collection<Topic>('Summary');
+}
+
+/**
+ * @function getSummaryById
+ * @description Get all topics
+ */
+async function getSummaryById(id: string, fastify: FastifyInstance) {
+    const db = fastify.mongo.db;
+    const summaryCollection = getSummaryCollection(fastify);
+
+    const Summary: WithId<Summary> | null = await summaryCollection.findOne({ _id: new (fastify.mongo).ObjectId(id) });
+
+    if (!Summary) {
+        throw new RequestError('Topic not found', 404);
+    }
+
+    return Summary;
+}
 
 export default {
     getAllTopics,
     getTopicById,
-    createTopic
+    createTopic,
+    getSummaryById
 };

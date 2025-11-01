@@ -12,6 +12,7 @@ async function topicsRoutes(app: FastifyInstance): Promise<void> {
             schema: createSchema
         }, topicsController.createTopic);
     app.get('/:id', topicsController.getTopicById);
+    app.get('/:id/summary', topicsController.getSummaryTopic);
 }
 
 export default topicsRoutes;
