@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../../../../theme/AppColors.dart';
 import '../../Components/TopicCard.dart';
 import '../Models/Idea.dart';
@@ -361,12 +362,78 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                SelectableText(
-                                  widget.topic.shortDescription,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.textSecondary,
-                                    height: 1.6,
+                                MarkdownBody(
+                                  data: widget.topic.shortDescription,
+                                  selectable: true,
+                                  styleSheet: MarkdownStyleSheet(
+                                    p: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.textSecondary,
+                                      height: 1.6,
+                                    ),
+                                    strong: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    em: const TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                    code: TextStyle(
+                                      fontSize: 15,
+                                      backgroundColor: AppColors.background,
+                                      color: AppColors.blue,
+                                      fontFamily: 'monospace',
+                                    ),
+                                    codeblockDecoration: BoxDecoration(
+                                      color: AppColors.background,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: const Color(0xFFE5E7EB),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    blockquote: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.textSecondary,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    blockquoteDecoration: BoxDecoration(
+                                      color: AppColors.background,
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: const Border(
+                                        left: BorderSide(
+                                          color: AppColors.blue,
+                                          width: 4,
+                                        ),
+                                      ),
+                                    ),
+                                    a: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    h1: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    h2: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    h3: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    listBullet: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.blue,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 32),
@@ -381,12 +448,78 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                   ),
                                 ),
                                 const SizedBox(height: 12),
-                                SelectableText(
-                                  widget.topic.description,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    color: AppColors.textSecondary,
-                                    height: 1.6,
+                                MarkdownBody(
+                                  data: widget.topic.description,
+                                  selectable: true,
+                                  styleSheet: MarkdownStyleSheet(
+                                    p: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.textSecondary,
+                                      height: 1.6,
+                                    ),
+                                    strong: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    em: const TextStyle(
+                                      fontSize: 16,
+                                      fontStyle: FontStyle.italic,
+                                      color: AppColors.textSecondary,
+                                    ),
+                                    code: TextStyle(
+                                      fontSize: 15,
+                                      backgroundColor: AppColors.background,
+                                      color: AppColors.blue,
+                                      fontFamily: 'monospace',
+                                    ),
+                                    codeblockDecoration: BoxDecoration(
+                                      color: AppColors.background,
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(
+                                        color: const Color(0xFFE5E7EB),
+                                        width: 1,
+                                      ),
+                                    ),
+                                    blockquote: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.textSecondary,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                    blockquoteDecoration: BoxDecoration(
+                                      color: AppColors.background,
+                                      borderRadius: BorderRadius.circular(4),
+                                      border: const Border(
+                                        left: BorderSide(
+                                          color: AppColors.blue,
+                                          width: 4,
+                                        ),
+                                      ),
+                                    ),
+                                    a: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    h1: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    h2: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    h3: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.textPrimary,
+                                    ),
+                                    listBullet: const TextStyle(
+                                      fontSize: 16,
+                                      color: AppColors.blue,
+                                    ),
                                   ),
                                 ),
                                 const SizedBox(height: 32),

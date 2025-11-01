@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import '../../../../theme/AppColors.dart';
 
 /// Type représentant le statut d'un topic
@@ -248,7 +249,6 @@ class _TopicCardState extends State<TopicCard> {
           padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
             children: [
               // Header avec statut
               Row(
@@ -299,19 +299,81 @@ class _TopicCardState extends State<TopicCard> {
               ),
               const SizedBox(height: 12),
 
-              // Short Description
-              Text(
-                widget.topic.shortDescription,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: AppColors.textSecondary,
-                  height: 1.6,
+              // Short Description with Markdown support
+              Expanded(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Stack(
+                      children: [
+                        ClipRect(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              maxHeight: constraints.maxHeight,
+                            ),
+                            child: OverflowBox(
+                              maxHeight: double.infinity,
+                              alignment: Alignment.topLeft,
+                              child: MarkdownBody(
+                                data: widget.topic.shortDescription,
+                                styleSheet: MarkdownStyleSheet(
+                                  p: const TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.textSecondary,
+                                    height: 1.6,
+                                  ),
+                                  strong: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                  em: const TextStyle(
+                                    fontSize: 14,
+                                    fontStyle: FontStyle.italic,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  code: TextStyle(
+                                    fontSize: 13,
+                                    backgroundColor: AppColors.background,
+                                    color: AppColors.blue,
+                                    fontFamily: 'monospace',
+                                  ),
+                                  a: const TextStyle(
+                                    fontSize: 14,
+                                    color: AppColors.blue,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                shrinkWrap: true,
+                                softLineBreak: true,
+                              ),
+                            ),
+                          ),
+                        ),
+                        // Fade out gradient at the bottom
+                        Positioned(
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          height: 40,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.white.withOpacity(0.0),
+                                  Colors.white,
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
                 ),
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
               ),
-              const Spacer(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 16),
 
               // Footer avec auteur et bouton
               Row(

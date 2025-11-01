@@ -1,3 +1,4 @@
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
@@ -37,7 +38,7 @@ class CreateTopicService {
         'startDate': startDate.toUtc().toIso8601String(),
         'endDate': endDate.toUtc().toIso8601String(),
         'status': status,
-        'authorId': authorId,
+        'authorId': '${AuthService.instance.currentUser!.firstName} ${AuthService.instance.currentUser!.lastName}',
       });
 
       final response = await http.post(
