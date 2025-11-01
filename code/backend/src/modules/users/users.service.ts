@@ -1,3 +1,4 @@
+import { FastifyReply, FastifyRequest } from 'fastify';
 import { RequestError } from '@core/errors';
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
@@ -34,7 +35,16 @@ async function getCurrentUser(authUser: AuthenticatedUser, fastify: FastifyInsta
     return user;
 }
 
+async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
+    const usersCollection = getUsersCollection(fastify);
+
+    const users: WithId<User>[] = await usersCollection.find({}).toArray();
+    
+    return users;
+}
+
 
 export default {
-    getCurrentUser
+    getCurrentUser,
+    getUsers
 };
