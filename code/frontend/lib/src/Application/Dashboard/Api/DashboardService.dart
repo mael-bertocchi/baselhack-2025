@@ -1,4 +1,4 @@
-import 'package:frontend/src/Application/Dashboard/UI/Components/SurveyCard.dart';
+import 'package:frontend/src/Application/Dashboard/UI/Components/TopicCard.dart';
 
 /// Service pour gérer les appels API du dashboard
 /// 
@@ -11,148 +11,125 @@ class DashboardApiService {
   DashboardApiService._internal();
 
   // TODO: Ajouter votre base URL API
-  // static const String baseUrl = 'https://api.example.com';
+  // static const String baseUrl = 'https://api.example.com'\;
 
-  /// Récupère la liste des surveys
+  /// Récupère la liste des topics
   /// 
   /// Exemple d'implémentation avec HTTP:
   /// ```dart
-  /// Future<List<Survey>> getSurveys() async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/surveys'));
+  /// Future<List<Topic>> getTopics() async {
+  ///   final response = await http.get(Uri.parse('$baseUrl/topics'));
   ///   if (response.statusCode == 200) {
   ///     final List<dynamic> data = json.decode(response.body);
-  ///     return data.map((json) => Survey.fromJson(json)).toList();
+  ///     return data.map((json) => Topic.fromJson(json)).toList();
   ///   }
-  ///   throw Exception('Failed to load surveys');
+  ///   throw Exception('Failed to load topics');
   /// }
   /// ```
-  Future<List<Survey>> getSurveys() async {
+  Future<List<Topic>> getTopics() async {
     // Simuler un délai réseau
     await Future.delayed(const Duration(milliseconds: 500));
     
     // TODO: Remplacer par un vrai appel API
-    return const [
-      Survey(
+    return [
+      Topic(
         title: 'Digital Transformation Strategy',
-        description: 'How should we prioritize digital initiatives across the organization?',
-        status: 'Active',
-        category: 'Strategy',
-        ideasCount: 24,
-        participantsCount: 18,
+        shortDescription: 'How should we prioritize digital initiatives across the organization?',
+        description: 'Our organization is at a critical juncture in our digital journey. We need diverse perspectives from team members across all departments to make informed decisions about our digital transformation priorities.',
+        startDate: DateTime(2025, 11, 1),
+        endDate: DateTime(2025, 12, 15),
+        createdAt: DateTime(2025, 10, 25),
+        updatedAt: DateTime(2025, 10, 25),
+        status: TopicStatus.open,
+        authorId: 'Michael Chen',
       ),
-      Survey(
+      Topic(
         title: 'Workplace Flexibility',
-        description: 'What flexible work arrangements would improve productivity?',
-        status: 'Active',
-        category: 'HR',
-        ideasCount: 32,
-        participantsCount: 25,
+        shortDescription: 'What flexible work arrangements would improve productivity?',
+        description: 'As we evolve our workplace policies, we want to understand what flexibility options would best support our team\047s productivity and work-life balance.',
+        startDate: DateTime(2025, 12, 1),
+        endDate: DateTime(2026, 1, 15),
+        createdAt: DateTime(2025, 11, 1),
+        updatedAt: DateTime(2025, 11, 1),
+        status: TopicStatus.open,
+        authorId: 'Sarah Johnson',
       ),
-      Survey(
+      Topic(
         title: 'Product Innovation',
-        description: 'What new features should we develop for our next product release?',
-        status: 'Active',
-        category: 'Product',
-        ideasCount: 18,
-        participantsCount: 14,
+        shortDescription: 'What new features should we develop for our next product release?',
+        description: 'We\047re planning our Q2 2026 product roadmap and need input on features that will deliver the most value to our customers.',
+        startDate: DateTime(2025, 11, 1),
+        endDate: DateTime(2025, 12, 20),
+        createdAt: DateTime(2025, 10, 28),
+        updatedAt: DateTime(2025, 10, 28),
+        status: TopicStatus.open,
+        authorId: 'Alex Rodriguez',
       ),
-      Survey(
+      Topic(
         title: 'Sustainability Goals',
-        description: 'How can we reduce our environmental impact?',
-        status: 'Closed',
-        category: 'Sustainability',
-        ideasCount: 42,
-        participantsCount: 31,
+        shortDescription: 'How can we reduce our environmental impact?',
+        description: 'We are committed to reducing our carbon footprint and need innovative ideas from the team.',
+        startDate: DateTime(2025, 9, 1),
+        endDate: DateTime(2025, 10, 31),
+        createdAt: DateTime(2025, 8, 25),
+        updatedAt: DateTime(2025, 8, 25),
+        status: TopicStatus.closed,
+        authorId: 'Emma Wilson',
       ),
-      Survey(
+      Topic(
         title: 'Customer Experience',
-        description: 'What improvements would enhance customer satisfaction?',
-        status: 'Active',
-        category: 'Customer',
-        ideasCount: 15,
-        participantsCount: 12,
+        shortDescription: 'What improvements would enhance customer satisfaction?',
+        description: 'We want to understand pain points and opportunities to improve our customer experience.',
+        startDate: DateTime(2025, 11, 1),
+        endDate: DateTime(2026, 1, 31),
+        createdAt: DateTime(2025, 10, 30),
+        updatedAt: DateTime(2025, 10, 30),
+        status: TopicStatus.open,
+        authorId: 'James Lee',
       ),
-      Survey(
+      Topic(
         title: 'Team Collaboration Tools',
-        description: 'Which tools would best support our team collaboration?',
-        status: 'Active',
-        category: 'Operations',
-        ideasCount: 28,
-        participantsCount: 22,
+        shortDescription: 'Which tools would best support our team collaboration?',
+        description: 'Evaluation of collaboration tools to enhance team productivity and communication.',
+        startDate: DateTime(2025, 11, 5),
+        endDate: DateTime(2025, 12, 31),
+        createdAt: DateTime(2025, 11, 1),
+        updatedAt: DateTime(2025, 11, 1),
+        status: TopicStatus.open,
+        authorId: 'Lisa Martinez',
       ),
     ];
   }
 
   /// Récupère les statistiques du dashboard
-  /// 
-  /// Exemple d'implémentation avec HTTP:
-  /// ```dart
-  /// Future<Map<String, int>> getDashboardStats() async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/dashboard/stats'));
-  ///   if (response.statusCode == 200) {
-  ///     return Map<String, int>.from(json.decode(response.body));
-  ///   }
-  ///   throw Exception('Failed to load stats');
-  /// }
-  /// ```
   Future<Map<String, int>> getDashboardStats() async {
-    // Simuler un délai réseau
     await Future.delayed(const Duration(milliseconds: 300));
     
-    // TODO: Remplacer par un vrai appel API
     return {
-      'activeSurveys': 5,
+      'activeTopics': 5,
       'userContributions': 12,
       'totalParticipants': 847,
     };
   }
 
-  /// Récupère une survey spécifique par son ID
-  /// 
-  /// Exemple d'implémentation:
-  /// ```dart
-  /// Future<Survey> getSurveyById(String id) async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/surveys/$id'));
-  ///   if (response.statusCode == 200) {
-  ///     return Survey.fromJson(json.decode(response.body));
-  ///   }
-  ///   throw Exception('Failed to load survey');
-  /// }
-  /// ```
-  Future<Survey?> getSurveyById(String id) async {
-    // TODO: Implémenter l'appel API
+  /// Récupère un topic spécifique par son ID
+  Future<Topic?> getTopicById(String id) async {
     await Future.delayed(const Duration(milliseconds: 200));
     return null;
   }
 
-  /// Recherche des surveys par mots-clés
-  /// 
-  /// Exemple d'implémentation:
-  /// ```dart
-  /// Future<List<Survey>> searchSurveys(String query) async {
-  ///   final response = await http.get(
-  ///     Uri.parse('$baseUrl/surveys/search?q=$query'),
-  ///   );
-  ///   if (response.statusCode == 200) {
-  ///     final List<dynamic> data = json.decode(response.body);
-  ///     return data.map((json) => Survey.fromJson(json)).toList();
-  ///   }
-  ///   throw Exception('Failed to search surveys');
-  /// }
-  /// ```
-  Future<List<Survey>> searchSurveys(String query) async {
-    // TODO: Implémenter l'appel API
-    // Pour l'instant, on retourne toutes les surveys et on filtre côté client
-    final allSurveys = await getSurveys();
+  /// Recherche des topics par mots-clés
+  Future<List<Topic>> searchTopics(String query) async {
+    final allTopics = await getTopics();
     
-    if (query.isEmpty) return allSurveys;
+    if (query.isEmpty) return allTopics;
     
     final lowerQuery = query.toLowerCase();
-    return allSurveys.where((survey) {
-      return survey.title.toLowerCase().contains(lowerQuery) ||
-          survey.description.toLowerCase().contains(lowerQuery) ||
-          survey.category.toLowerCase().contains(lowerQuery) ||
-          survey.status.toLowerCase().contains(lowerQuery);
+    return allTopics.where((topic) {
+      return topic.title.toLowerCase().contains(lowerQuery) ||
+          topic.shortDescription.toLowerCase().contains(lowerQuery) ||
+          topic.description.toLowerCase().contains(lowerQuery) ||
+          topic.statusDisplay.toLowerCase().contains(lowerQuery);
     }).toList();
   }
 }
