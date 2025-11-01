@@ -82,7 +82,7 @@ class AuthService extends ChangeNotifier {
       if (_accessToken != null && _refreshToken != null) {
         try {
           // Try to use the access token to get user info
-          await _loadUserInfo();
+          await loadUserInfo();
         } catch (e) {
           // If access token is expired, try to refresh
           try {
@@ -103,30 +103,35 @@ class AuthService extends ChangeNotifier {
   }
 
   /// Load user information using the current access token
-  Future<void> _loadUserInfo() async {
-    if (_accessToken == null) return;
+  Future<void> loadUserInfo() async {
+    // if (_accessToken == null) return;
     
-    final response = await http.get(
-      Uri.parse('$baseUrl${ApiRoutes.userMe}'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $_accessToken',
-      },
+    // Uncomment and use the real HTTP request when backend is available:
+    // final response = await http.get(
+    //   Uri.parse('$baseUrl${ApiRoutes.userMe}'),
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer $_accessToken',
+    //   },
+    // );
+    //
+    // if (response.statusCode == 200) {
+    //   final data = jsonDecode(response.body);
+    //   _currentUser = User.fromJson(data['data'] as Map<String, dynamic>);
+    //   notifyListeners();
+    // } else {
+    //   throw Exception('Failed to load user info');
+    // }
+
+    // Temporary/mock user assignment for local development
+    _currentUser = User(
+      id: '1',
+      email: 'ytc@mail.com',
+      firstName: 'Yann',
+      lastName: 'T.C.',
+      role: 'User'.toRole(),
     );
-
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      _currentUser = User.fromJson(data['data'] as Map<String, dynamic>);
-      notifyListeners();
-    } else {
-      throw Exception('Failed to load user info');
-    }
-  }
-
-  /// Check if current user has any of the specified roles
-  bool hasAnyRole(List<Role> roles) {
-    if (_currentUser == null) return false;
-    return roles.contains(_currentUser!.role);
+    notifyListeners();
   }
 
   /// Sign in with email and password
@@ -218,7 +223,7 @@ class AuthService extends ChangeNotifier {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl${ApiRoutes.refresh}'),
+        Uri.parse('$baseUrl${ApiRoutes.refreshToken}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'refreshToken': _refreshToken,
@@ -259,90 +264,5 @@ class AuthService extends ChangeNotifier {
     await TokenStorage.instance.clearAllTokens();
     
     notifyListeners();
-  }
-
-  /// Make an authenticated HTTP request with automatic token refresh
-  Future<http.Response> makeAuthenticatedRequest(
-    String method,
-    String endpoint, {
-    Map<String, dynamic>? body,
-    Map<String, String>? additionalHeaders,
-  }) async {
-    if (_accessToken == null) {
-      throw Exception('Not authenticated');
-    }
-
-    final headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer $_accessToken',
-      ...?additionalHeaders,
-    };
-
-    http.Response response;
-    final uri = Uri.parse('$baseUrl$endpoint');
-
-    switch (method.toUpperCase()) {
-      case 'GET':
-        response = await http.get(uri, headers: headers);
-        break;
-      case 'POST':
-        response = await http.post(
-          uri,
-          headers: headers,
-          body: body != null ? jsonEncode(body) : null,
-        );
-        break;
-      case 'PUT':
-        response = await http.put(
-          uri,
-          headers: headers,
-          body: body != null ? jsonEncode(body) : null,
-        );
-        break;
-      case 'DELETE':
-        response = await http.delete(uri, headers: headers);
-        break;
-      default:
-        throw Exception('Unsupported HTTP method: $method');
-    }
-
-    // If we get a 401, try to refresh the token and retry once
-    if (response.statusCode == 401) {
-      try {
-        await refreshAccessToken();
-        
-        // Retry the request with the new token
-        headers['Authorization'] = 'Bearer $_accessToken';
-        
-        switch (method.toUpperCase()) {
-          case 'GET':
-            response = await http.get(uri, headers: headers);
-            break;
-          case 'POST':
-            response = await http.post(
-              uri,
-              headers: headers,
-              body: body != null ? jsonEncode(body) : null,
-            );
-            break;
-          case 'PUT':
-            response = await http.put(
-              uri,
-              headers: headers,
-              body: body != null ? jsonEncode(body) : null,
-            );
-            break;
-          case 'DELETE':
-            response = await http.delete(uri, headers: headers);
-            break;
-        }
-      } catch (e) {
-        // If refresh fails, logout
-        await logout();
-        rethrow;
-      }
-    }
-
-    return response;
   }
 }

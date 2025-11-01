@@ -10,6 +10,10 @@ export 'l10n/app_localizations.dart';
 // Re-export main routes and pages (add more exports here as you need them)
 // Export pages (keep AppRoutes out of this barrel to avoid circular imports)
 export 'src/pages/Login/LoginPage.dart';
+export 'src/pages/Dashboard/DashboardPage.dart';
+export 'src/pages/Unauthorized/UnauthorizedPage.dart';
+export 'src/pages/NotFound/NotFoundPage.dart';
+
 // Re-export routes now that AppRoutes doesn't import this barrel (avoids circular import)
 export 'src/routes/AppRoutes.dart';
 

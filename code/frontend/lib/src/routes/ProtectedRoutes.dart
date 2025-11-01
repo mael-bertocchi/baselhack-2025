@@ -1,24 +1,94 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/pages/Login/LoginPage.dart';
-import 'package:frontend/src/pages/Unauthorized/UnauthorizedPage.dart';
+import 'package:frontend/src/routes/AppRoutes.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
-/// A small widget that wraps another page and enforces authentication and roles.
+/// A route wrapper that enforces authentication and role-based access control.
 ///
-/// If the user is not authenticated, it shows the `LoginPage`.
-/// If the user is authenticated but lacks the required roles, it shows
-/// an `UnauthorizedPage`.
-class ProtectedRoute extends StatelessWidget {
+/// Security checks performed (in order):
+/// 1. Waits for AuthService to initialize
+/// 2. Validates user is authenticated (has valid token + user data)
+/// 3. Validates user has one of the required roles (if specified)
+///
+/// If any check fails, redirects to the appropriate page:
+/// - Not authenticated → Login page
+/// - Authenticated but insufficient permissions → Unauthorized page
+class ProtectedRoute extends StatefulWidget {
   final WidgetBuilder builder;
   final List<Role> requiredRoles;
 
-  const ProtectedRoute({Key? key, required this.builder, this.requiredRoles = const []}) : super(key: key);
+  const ProtectedRoute({
+    super.key,
+    required this.builder,
+    this.requiredRoles = const [],
+  });
+
+  @override
+  State<ProtectedRoute> createState() => _ProtectedRouteState();
+}
+
+class _ProtectedRouteState extends State<ProtectedRoute> {
+  @override
+  void initState() {
+    super.initState();
+    // Defer the check to after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAccessAndNavigate();
+    });
+  }
+
+  Future<void> _checkAccessAndNavigate() async {
+    if (!mounted) return;
+
+    final auth = AuthService.instance;
+
+    // Wait for initialization with timeout to prevent infinite loading
+    int attempts = 0;
+    while (!auth.isInitialized && attempts < 50) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      attempts++;
+      if (!mounted) return;
+    }
+
+    // If still not initialized after 5 seconds, redirect to login
+    if (!auth.isInitialized) {
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      }
+      return;
+    }
+
+    // Check authentication (validates both token and user data)
+    if (!auth.isAuthenticated) {
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      }
+      return;
+    }
+
+    // Check authorization (role-based access control)
+    if (widget.requiredRoles.isNotEmpty) {
+      final userRole = auth.currentUser?.role;
+      final hasRequiredRole = userRole != null && widget.requiredRoles.contains(userRole);
+      
+      if (!hasRequiredRole) {
+        if (mounted) {
+          Navigator.of(context).pushReplacementNamed(AppRoutes.unauthorized);
+        }
+        return;
+      }
+    }
+
+    // All checks passed - setState will trigger a rebuild showing the actual content
+    if (mounted) {
+      setState(() {});
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final auth = AuthService.instance;
 
-    // Wait for auth service to initialize before checking authentication
+    // Show loading while checking
     if (!auth.isInitialized) {
       return const Scaffold(
         body: Center(
@@ -27,16 +97,30 @@ class ProtectedRoute extends StatelessWidget {
       );
     }
 
+    // If not authenticated or not authorized, show loading while redirecting
     if (!auth.isAuthenticated) {
-      // Not authenticated -> show login
-      return const LoginPage();
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
     }
 
-    if (requiredRoles.isNotEmpty && !requiredRoles.contains(auth.currentUser?.role)) {
-      // Authenticated but not authorized
-      return const UnauthorizedPage();
+    // Check role authorization
+    if (widget.requiredRoles.isNotEmpty) {
+      final userRole = auth.currentUser?.role;
+      final hasRequiredRole = userRole != null && widget.requiredRoles.contains(userRole);
+      
+      if (!hasRequiredRole) {
+        return const Scaffold(
+          body: Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
+      }
     }
 
-    return builder(context);
+    // User is authenticated and authorized - show protected content
+    return widget.builder(context);
   }
 }
