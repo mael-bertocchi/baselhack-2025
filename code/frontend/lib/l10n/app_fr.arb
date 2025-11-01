@@ -223,5 +223,100 @@
   "save": "Enregistrer",
   "@save": {
     "description": "Save button"
+  },
+
+  "createUser": "Créer un utilisateur",
+  "@createUser": {
+    "description": "Create user button"
+  },
+
+  "firstName": "Prénom",
+  "@firstName": {
+    "description": "First name field label"
+  },
+
+  "lastName": "Nom",
+  "@lastName": {
+    "description": "Last name field label"
+  },
+
+  "email": "Email",
+  "@email": {
+    "description": "Email field label"
+  },
+
+  "password": "Mot de passe",
+  "@password": {
+    "description": "Password field label"
+  },
+
+  "fieldRequired": "Ce champ est requis",
+  "@fieldRequired": {
+    "description": "Required field error message"
+  },
+
+  "invalidEmail": "Adresse email invalide",
+  "@invalidEmail": {
+    "description": "Invalid email error message"
+  },
+
+  "userCreatedSuccessfully": "Utilisateur créé avec succès",
+  "@userCreatedSuccessfully": {
+    "description": "Success message after user creation"
+  },
+
+  "createUserFailed": "Échec de la création de l'utilisateur",
+  "@createUserFailed": {
+    "description": "Error message when user creation fails"
+  },
+
+  "deleteUser": "Supprimer l'utilisateur",
+  "@deleteUser": {
+    "description": "Delete user button"
+  },
+
+  "deleteUserConfirm": "Êtes-vous sûr de vouloir supprimer cet utilisateur ?",
+  "@deleteUserConfirm": {
+    "description": "Delete user confirmation message"
+  },
+
+  "delete": "Supprimer",
+  "@delete": {
+    "description": "Delete button"
+  },
+
+  "userDeletedSuccessfully": "Utilisateur supprimé avec succès",
+  "@userDeletedSuccessfully": {
+    "description": "Success message after user deletion"
+  },
+
+  "deleteUserFailed": "Échec de la suppression de l'utilisateur",
+  "@deleteUserFailed": {
+    "description": "Error message when user deletion fails"
+  },
+
+  "changeRole": "Changer le rôle",
+  "@changeRole": {
+    "description": "Change role label"
+  },
+
+  "role": "Rôle",
+  "@role": {
+    "description": "Role label"
+  },
+
+  "roleChangedSuccessfully": "Rôle changé avec succès",
+  "@roleChangedSuccessfully": {
+    "description": "Success message after role change"
+  },
+
+  "changeRoleFailed": "Échec du changement de rôle",
+  "@changeRoleFailed": {
+    "description": "Error message when role change fails"
+  },
+
+  "searchUsers": "Rechercher par nom, email ou rôle...",
+  "@searchUsers": {
+    "description": "Search users placeholder"
   }
 }

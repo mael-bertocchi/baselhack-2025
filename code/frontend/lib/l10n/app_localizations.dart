@@ -354,6 +354,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// Create user button
+  ///
+  /// In en, this message translates to:
+  /// **'Create User'**
+  String get createUser;
+
+  /// First name field label
+  ///
+  /// In en, this message translates to:
+  /// **'First Name'**
+  String get firstName;
+
+  /// Last name field label
+  ///
+  /// In en, this message translates to:
+  /// **'Last Name'**
+  String get lastName;
+
+  /// Email field label
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// Password field label
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// Required field error message
+  ///
+  /// In en, this message translates to:
+  /// **'This field is required'**
+  String get fieldRequired;
+
+  /// Invalid email error message
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address'**
+  String get invalidEmail;
+
+  /// Success message after user creation
+  ///
+  /// In en, this message translates to:
+  /// **'User created successfully'**
+  String get userCreatedSuccessfully;
+
+  /// Error message when user creation fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create user'**
+  String get createUserFailed;
+
+  /// Delete user button
+  ///
+  /// In en, this message translates to:
+  /// **'Delete User'**
+  String get deleteUser;
+
+  /// Delete user confirmation message
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete this user?'**
+  String get deleteUserConfirm;
+
+  /// Success message after user deletion
+  ///
+  /// In en, this message translates to:
+  /// **'User deleted successfully'**
+  String get userDeletedSuccessfully;
+
+  /// Error message when user deletion fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to delete user'**
+  String get deleteUserFailed;
+
+  /// Change role label
+  ///
+  /// In en, this message translates to:
+  /// **'Change Role'**
+  String get changeRole;
+
+  /// Role label
+  ///
+  /// In en, this message translates to:
+  /// **'Role'**
+  String get role;
+
+  /// Success message after role change
+  ///
+  /// In en, this message translates to:
+  /// **'Role changed successfully'**
+  String get roleChangedSuccessfully;
+
+  /// Error message when role change fails
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to change role'**
+  String get changeRoleFailed;
+
+  /// Search users placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Search users by name, email or role...'**
+  String get searchUsers;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

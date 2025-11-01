@@ -138,4 +138,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get createUser => 'Create User';
+
+  @override
+  String get firstName => 'First Name';
+
+  @override
+  String get lastName => 'Last Name';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get fieldRequired => 'This field is required';
+
+  @override
+  String get invalidEmail => 'Invalid email address';
+
+  @override
+  String get userCreatedSuccessfully => 'User created successfully';
+
+  @override
+  String get createUserFailed => 'Failed to create user';
+
+  @override
+  String get deleteUser => 'Delete User';
+
+  @override
+  String get deleteUserConfirm => 'Are you sure you want to delete this user?';
+
+  @override
+  String get userDeletedSuccessfully => 'User deleted successfully';
+
+  @override
+  String get deleteUserFailed => 'Failed to delete user';
+
+  @override
+  String get changeRole => 'Change Role';
+
+  @override
+  String get role => 'Role';
+
+  @override
+  String get roleChangedSuccessfully => 'Role changed successfully';
+
+  @override
+  String get changeRoleFailed => 'Failed to change role';
+
+  @override
+  String get searchUsers => 'Search users by name, email or role...';
 }

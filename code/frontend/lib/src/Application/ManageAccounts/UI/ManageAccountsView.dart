@@ -13,13 +13,47 @@ class ManageAccountsView extends StatefulWidget {
 
 class _ManageAccountsViewState extends State<ManageAccountsView> {
   List<UserAccount>? _users;
+  List<UserAccount>? _filteredUsers;
   bool _isLoading = true;
   String? _error;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _loadUsers();
+    _searchController.addListener(_filterUsers);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterUsers() {
+    if (_users == null) return;
+
+    final query = _searchController.text.toLowerCase();
+    
+    if (query.isEmpty) {
+      setState(() {
+        _filteredUsers = _users;
+      });
+      return;
+    }
+
+    setState(() {
+      _filteredUsers = _users!.where((user) {
+        final fullName = user.fullName.toLowerCase();
+        final email = user.email.toLowerCase();
+        final role = _getRoleDisplay(context, user.role).toLowerCase();
+        
+        return fullName.contains(query) ||
+               email.contains(query) ||
+               role.contains(query);
+      }).toList();
+    });
   }
 
   Future<void> _loadUsers() async {
@@ -33,6 +67,7 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
       if (mounted) {
         setState(() {
           _users = users;
+          _filteredUsers = users;
           _isLoading = false;
         });
       }
@@ -82,6 +117,8 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
       appBar: AppBar(
         backgroundColor: AppColors.white,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
           onPressed: () => Navigator.of(context).pop(),
@@ -94,6 +131,23 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
             fontWeight: FontWeight.w700,
           ),
         ),
+        actions: [
+          // Create User button
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: TextButton.icon(
+              onPressed: () => _showCreateUserDialog(context, l10n),
+              icon: const Icon(Icons.add, color: AppColors.blue),
+              label: Text(
+                l10n.createUser,
+                style: const TextStyle(
+                  color: AppColors.blue,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       body: _buildBody(context, l10n),
     );
@@ -163,17 +217,115 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: _loadUsers,
-      color: AppColors.blue,
-      child: ListView.builder(
-        padding: const EdgeInsets.all(20),
-        itemCount: _users!.length,
-        itemBuilder: (context, index) {
-          final user = _users![index];
-          return _buildUserCard(context, user, l10n);
-        },
-      ),
+    return Column(
+      children: [
+        // Search bar
+        Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: AppColors.background,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: SizedBox(
+            height: 56,
+            child: ValueListenableBuilder<TextEditingValue>(
+              valueListenable: _searchController,
+              builder: (context, value, child) {
+                return TextField(
+                  controller: _searchController,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: l10n.searchUsers,
+                    hintStyle: TextStyle(
+                      color: AppColors.textSecondary.withOpacity(0.6),
+                      fontSize: 16,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.search,
+                      color: AppColors.blue,
+                      size: 24,
+                    ),
+                    suffixIcon: value.text.isNotEmpty
+                        ? IconButton(
+                            icon: const Icon(
+                              Icons.clear,
+                              color: AppColors.textSecondary,
+                              size: 20,
+                            ),
+                            onPressed: () {
+                              _searchController.clear();
+                            },
+                          )
+                        : null,
+                    filled: true,
+                    fillColor: AppColors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE5E7EB),
+                        width: 1,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE5E7EB),
+                        width: 1,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(
+                        color: AppColors.blue,
+                        width: 2,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 16,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ),
+        
+        // Users list
+        Expanded(
+          child: _filteredUsers == null || _filteredUsers!.isEmpty
+              ? Center(
+                  child: Text(
+                    l10n.noUsersFound,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: AppColors.textSecondary,
+                    ),
+                  ),
+                )
+              : RefreshIndicator(
+                  onRefresh: _loadUsers,
+                  color: AppColors.blue,
+                  child: ListView.builder(
+                    padding: const EdgeInsets.all(20),
+                    itemCount: _filteredUsers!.length,
+                    itemBuilder: (context, index) {
+                      final user = _filteredUsers![index];
+                      return _buildUserCard(context, user, l10n);
+                    },
+                  ),
+                ),
+        ),
+      ],
     );
   }
 
@@ -234,19 +386,97 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
+                      // Role selector dropdown
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
                         decoration: BoxDecoration(
                           color: _getRoleColor(user.role).withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: _getRoleColor(user.role).withOpacity(0.3),
+                            width: 1,
+                          ),
                         ),
-                        child: Text(
-                          _getRoleDisplay(context, user.role),
+                        child: DropdownButton<Role>(
+                          value: user.role,
+                          underline: const SizedBox(),
+                          isDense: true,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: _getRoleColor(user.role),
+                            size: 20,
+                          ),
                           style: TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             color: _getRoleColor(user.role),
                           ),
+                          borderRadius: BorderRadius.circular(6),
+                          dropdownColor: AppColors.white,
+                          items: [
+                            DropdownMenuItem(
+                              value: Role.user,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    size: 16,
+                                    color: _getRoleColor(Role.user),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getRoleDisplay(context, Role.user),
+                                    style: TextStyle(
+                                      color: _getRoleColor(Role.user),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: Role.manager,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.business_center,
+                                    size: 16,
+                                    color: _getRoleColor(Role.manager),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getRoleDisplay(context, Role.manager),
+                                    style: TextStyle(
+                                      color: _getRoleColor(Role.manager),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: Role.administrator,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.admin_panel_settings,
+                                    size: 16,
+                                    color: _getRoleColor(Role.administrator),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getRoleDisplay(context, Role.administrator),
+                                    style: TextStyle(
+                                      color: _getRoleColor(Role.administrator),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                          onChanged: (Role? newRole) {
+                            if (newRole != null && newRole != user.role) {
+                              _handleRoleChange(user, newRole, l10n);
+                            }
+                          },
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -272,6 +502,17 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
               ),
               onPressed: () => _showChangePasswordDialog(context, user, l10n),
               tooltip: l10n.changePassword,
+            ),
+            
+            // Delete user button
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                color: AppColors.pink,
+                size: 20,
+              ),
+              onPressed: () => _showDeleteUserDialog(context, user, l10n),
+              tooltip: l10n.deleteUser,
             ),
           ],
         ),
@@ -422,6 +663,319 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
             ],
           );
         },
+      ),
+    );
+  }
+
+  void _showCreateUserDialog(BuildContext context, AppLocalizations l10n) {
+    final formKey = GlobalKey<FormState>();
+    final firstNameController = TextEditingController();
+    final lastNameController = TextEditingController();
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
+    bool isLoading = false;
+
+    showDialog(
+      context: context,
+      builder: (dialogContext) => StatefulBuilder(
+        builder: (context, setState) {
+          return AlertDialog(
+            title: Text(
+              l10n.createUser,
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            content: SingleChildScrollView(
+              child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextFormField(
+                      controller: firstNameController,
+                      decoration: InputDecoration(
+                        labelText: l10n.firstName,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.person_outline),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.fieldRequired;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: lastNameController,
+                      decoration: InputDecoration(
+                        labelText: l10n.lastName,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.person_outline),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.fieldRequired;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: l10n.email,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.email_outlined),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.fieldRequired;
+                        }
+                        if (!value.contains('@')) {
+                          return l10n.invalidEmail;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: l10n.password,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return l10n.fieldRequired;
+                        }
+                        if (value.length < 6) {
+                          return l10n.passwordTooShort;
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    TextFormField(
+                      controller: confirmPasswordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        labelText: l10n.confirmPassword,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        prefixIcon: const Icon(Icons.lock_outline),
+                      ),
+                      validator: (value) {
+                        if (value != passwordController.text) {
+                          return l10n.passwordsDoNotMatch;
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            actions: [
+              TextButton(
+                onPressed: isLoading ? null : () => Navigator.of(dialogContext).pop(),
+                child: Text(
+                  l10n.cancel,
+                  style: const TextStyle(color: AppColors.textSecondary),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: isLoading
+                    ? null
+                    : () async {
+                        if (formKey.currentState!.validate()) {
+                          setState(() {
+                            isLoading = true;
+                          });
+
+                          try {
+                            await UserManagementService().createUser(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              email: emailController.text,
+                              password: passwordController.text,
+                              confirmPassword: confirmPasswordController.text,
+                            );
+
+                            if (dialogContext.mounted) {
+                              Navigator.of(dialogContext).pop();
+                            }
+
+                            // Reload users list
+                            _loadUsers();
+
+                            if (this.context.mounted) {
+                              ScaffoldMessenger.of(this.context).showSnackBar(
+                                SnackBar(
+                                  content: Text(l10n.userCreatedSuccessfully),
+                                  backgroundColor: AppColors.blue,
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            setState(() {
+                              isLoading = false;
+                            });
+
+                            if (dialogContext.mounted) {
+                              ScaffoldMessenger.of(dialogContext).showSnackBar(
+                                SnackBar(
+                                  content: Text('${l10n.createUserFailed}: $e'),
+                                  backgroundColor: AppColors.pink,
+                                ),
+                              );
+                            }
+                          }
+                        }
+                      },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.blue,
+                  foregroundColor: AppColors.white,
+                ),
+                child: isLoading
+                    ? const SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(AppColors.white),
+                        ),
+                      )
+                    : Text(l10n.save),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Future<void> _handleRoleChange(UserAccount user, Role newRole, AppLocalizations l10n) async {
+    try {
+      await UserManagementService().changeRole(user.id, newRole);
+
+      // Reload users list to reflect the change
+      _loadUsers();
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(l10n.roleChangedSuccessfully),
+            backgroundColor: AppColors.blue,
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${l10n.changeRoleFailed}: $e'),
+            backgroundColor: AppColors.pink,
+          ),
+        );
+      }
+    }
+  }
+
+  void _showDeleteUserDialog(BuildContext context, UserAccount user, AppLocalizations l10n) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text(
+          l10n.deleteUser,
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              l10n.deleteUserConfirm,
+              style: const TextStyle(
+                fontSize: 16,
+                color: AppColors.textPrimary,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              '${user.fullName} (${user.email})',
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: Text(
+              l10n.cancel,
+              style: const TextStyle(color: AppColors.textSecondary),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+
+              try {
+                await UserManagementService().deleteUser(user.id);
+
+                // Reload users list
+                _loadUsers();
+
+                if (this.context.mounted) {
+                  ScaffoldMessenger.of(this.context).showSnackBar(
+                    SnackBar(
+                      content: Text(l10n.userDeletedSuccessfully),
+                      backgroundColor: AppColors.blue,
+                    ),
+                  );
+                }
+              } catch (e) {
+                if (this.context.mounted) {
+                  ScaffoldMessenger.of(this.context).showSnackBar(
+                    SnackBar(
+                      content: Text('${l10n.deleteUserFailed}: $e'),
+                      backgroundColor: AppColors.pink,
+                    ),
+                  );
+                }
+              }
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.pink,
+              foregroundColor: AppColors.white,
+            ),
+            child: Text(l10n.delete),
+          ),
+        ],
       ),
     );
   }
