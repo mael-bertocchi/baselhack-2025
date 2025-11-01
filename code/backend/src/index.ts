@@ -1,14 +1,15 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
-import topicsRoutes from "@modules/topics/topics.routes";
-import healthRoutes from "@modules/health/health.routes";
-import corsPlugin from "@plugins/cors";
 import authRoutes from "@modules/auth/auth.route";
+import healthRoutes from "@modules/health/health.routes";
+import topicResultRoutes from "@modules/topic-result/topic-result.routes";
+import topicsRoutes from "@modules/topics/topics.routes";
 import usersRoutes from "@modules/users/users.routes";
-import dbPlugin from "@plugins/database";
-import rateLimiterPlugin from "@plugins/rate-limiter";
-import jwtPlugin from "@plugins/jwt";
 import authGuardPlugin from "@plugins/auth-guard";
+import corsPlugin from "@plugins/cors";
+import dbPlugin from "@plugins/database";
+import jwtPlugin from "@plugins/jwt";
+import rateLimiterPlugin from "@plugins/rate-limiter";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
@@ -27,7 +28,8 @@ async function startApp(): Promise<void> {
     const app: FastifyInstance = fastify({
         logger: true,
         bodyLimit: 10 * 1024 * 1024,
-        connectionTimeout: 10 * 1000
+        connectionTimeout: 0,
+        requestTimeout: 5 * 60 * 1000
     });
 
     await app.register(rateLimiterPlugin);
@@ -57,6 +59,7 @@ async function startApp(): Promise<void> {
 	await app.register(authRoutes, { prefix: `${API_VERSION}/auth` });
     await app.register(usersRoutes, { prefix: `${API_VERSION}/users` });
     await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics` });
+    await app.register(topicResultRoutes, { prefix: `${API_VERSION}/topic-results` });
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {
         reply.status(404).send({

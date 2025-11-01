@@ -4,7 +4,7 @@ from typing import Any, Dict
 import jwt
 
 # Configuration via environment variables
-PUBLIC_KEY_PEM_PATH = environment.get_variable("PUBLIC_KEY_PEM_PATH")
+AGENT_AUTHENTICATION_PUBLIC_KEY_PATH = environment.get_variable("AGENT_AUTHENTICATION_PUBLIC_KEY_PATH")
 EXPECTED_ISS = environment.get_variable("EXPECTED_ISS", "fastify-api")
 EXPECTED_AUD = environment.get_variable("EXPECTED_AUD", "python-agent")
 LEEWAY = int(environment.get_variable("JWT_LEEWAY_SECONDS", "60"))
@@ -13,11 +13,11 @@ def raise_unauthorized(msg: str):
     raise HTTPException(status_code=401, detail=msg)
 
 def verify_jwt(token: str) -> Dict[str, Any]:
-    if not PUBLIC_KEY_PEM_PATH:
+    if not AGENT_AUTHENTICATION_PUBLIC_KEY_PATH:
         raise_unauthorized("Public key not configured on agent")
 
     try:
-        with open(PUBLIC_KEY_PEM_PATH, "r") as key_file:
+        with open(AGENT_AUTHENTICATION_PUBLIC_KEY_PATH, "r") as key_file:
             public_key = key_file.read()
         payload = jwt.decode(token, public_key, algorithms=["RS256"], audience=EXPECTED_AUD, issuer=EXPECTED_ISS, leeway=LEEWAY)
         return payload
