@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/theme/app_colors.dart';
+import 'package:frontend/src/theme/AppColors.dart';
 
 /// TextField personnalisé avec label et helper text
 class CustomTextField extends StatefulWidget {

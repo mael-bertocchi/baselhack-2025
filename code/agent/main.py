@@ -1,7 +1,9 @@
-from mistralai import Mistral
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from fastapi import FastAPI
 from dotenv import load_dotenv
+from mistralai import Mistral
+from fastapi import FastAPI
+import json
 import os
 
 # Load environment variables
@@ -31,7 +33,7 @@ model = "mistral-medium-latest"
 class ChatRequest(BaseModel):
     prompt: str
 
-# Define endpoint for analyzing crowd opinions
+# Non-streaming endpoint
 @app.post("/analyze")
 def analyze(data: ChatRequest):
     chat_response = client.chat.complete(model=model, messages=[
@@ -40,3 +42,21 @@ def analyze(data: ChatRequest):
     ])
 
     return {"response": chat_response.choices[0].message.content}
+
+# Streaming endpoint
+@app.post("/analyze/stream")
+def analyze_stream(data: ChatRequest):
+    def generate():
+        stream_response = client.chat.stream(model=model, messages=[
+            {"role": "system", "content": BASE_PROMPT},
+            {"role": "user", "content": data.prompt},
+        ])
+
+        for chunk in stream_response:
+            if chunk.data.choices[0].delta.content:
+                content = chunk.data.choices[0].delta.content
+                yield f"data: {json.dumps({'content': content})}\n\n"
+
+        yield f"data: {json.dumps({'done': True})}\n\n"
+
+    return StreamingResponse(generate(), media_type="text/event-stream")

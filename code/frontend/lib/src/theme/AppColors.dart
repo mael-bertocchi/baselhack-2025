@@ -19,7 +19,7 @@ class AppColors {
   // ============================================================================
   
   /// Bleu clair
-  static const Color blueLight = Color(0xFF93C5FD);
+  static const Color blueLight = Color.fromARGB(255, 86, 165, 255);
   
   /// Bleu foncé
   static const Color blueDark = Color(0xFF1E40AF);

@@ -3,7 +3,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'package:frontend/front.dart';
 
-void main() => runApp(const MyApp());
+// Conditional import for web URL strategy
+import 'main_web.dart' if (dart.library.io) 'main_non_web.dart';
+
+void main() {
+  // Remove the # from URLs on web (no-op on mobile)
+  configureUrlStrategy();
+  runApp(const MyApp());
+}
 
 /// Entrypoint app that uses the centralized [AppRoutes].
 class MyApp extends StatelessWidget {
@@ -12,7 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-  title: AppLocalizations.of(context)?.appTitle ?? 'BaselHack Frontend',
+      title: 'BaselHack Frontend',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
@@ -41,6 +48,7 @@ class MyApp extends StatelessWidget {
       },
       initialRoute: AppRoutes.login,
       routes: AppRoutes.routes,
+      onUnknownRoute: AppRoutes.onUnknownRoute,
     );
   }
 }
