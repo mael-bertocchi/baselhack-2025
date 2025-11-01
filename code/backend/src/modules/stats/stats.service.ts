@@ -1,10 +1,7 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
-import { RequestError } from '@core/errors';
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
 import { Topic, User } from '@modules/stats/stats.model';
-import { AuthenticatedUser } from '@modules/auth/auth.types';
-import bcrypt from 'bcrypt';
+import { Submission } from '@modules/submissions/submissions.model';
 
 
 /**
@@ -60,7 +57,36 @@ async function nbUsers(fastify: FastifyInstance) {
     return count;
 }
 
+/**
+ * @function getSubmissionCollection
+ * @param fastify
+ * @returns db collection
+ * @description Return the submission collection of the table on db
+ */
+function getSubmissionCollection(fastify: FastifyInstance): Collection<Submission> {
+    const db = fastify.mongo.db;
+
+    if (!db) {
+        throw new Error('Database connection is not available');
+    }
+
+    return db.collection<Submission>('submission');
+}
+
+/**
+ * @function nbSubmission
+ * @description Return the good number of user
+ */
+async function nbSubmission(fastify: FastifyInstance) {
+    const submissionCollection = getSubmissionCollection(fastify);
+
+    const count = await submissionCollection.countDocuments();
+
+    return count;
+}
+
 export default {
     nbTopics,
-    nbUsers
+    nbUsers,
+    nbSubmission
 };
