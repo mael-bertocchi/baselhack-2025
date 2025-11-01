@@ -12,8 +12,7 @@ export interface SignupBody {
 }
 
 export interface RefreshBody {
-    accessToken?: string;
-    refreshToken?: string;
+    refreshToken: string;
 }
 
 export interface AuthenticatedUser {

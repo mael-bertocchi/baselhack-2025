@@ -10,9 +10,6 @@ declare module 'fastify' {
     // function signature instead of `typeof jwtGuard` to avoid value/type
     // resolution issues in declaration files.
     interface FastifyInstance {
-        authenticate: (
-            request: import('fastify').FastifyRequest,
-            reply: import('fastify').FastifyReply
-        ) => Promise<void> | void;
+        authGuard: typeof jwtGuard;
     }
 }
