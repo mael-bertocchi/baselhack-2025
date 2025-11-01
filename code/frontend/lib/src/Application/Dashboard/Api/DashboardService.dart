@@ -38,6 +38,7 @@ class DashboardApiService {
             createdAt: DateTime.parse(topicJson['createdAt'] as String),
             updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
             status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
+            
             authorId: topicJson['authorId'] as String,
           );
         }).toList();

@@ -215,11 +215,6 @@
     "description": "Error message when password change fails"
   },
 
-  "cancel": "Abbrechen",
-  "@cancel": {
-    "description": "Cancel button"
-  },
-
   "save": "Speichern",
   "@save": {
     "description": "Save button"
@@ -318,5 +313,495 @@
   "searchUsers": "Suche nach Name, E-Mail oder Rolle...",
   "@searchUsers": {
     "description": "Search users placeholder"
+  },
+
+  "welcomeBack": "Willkommen zurück!",
+  "@welcomeBack": {
+    "description": "Welcome message on dashboard"
+  },
+
+  "welcomeMessage": "Teilen Sie Ihre verschiedenen Perspektiven und helfen Sie mit, bessere Entscheidungen gemeinsam zu treffen",
+  "@welcomeMessage": {
+    "description": "Welcome description on dashboard"
+  },
+
+  "activeTopics": "Aktive Themen",
+  "@activeTopics": {
+    "description": "Active topics stat label"
+  },
+
+  "yourContributions": "Ihre Beiträge",
+  "@yourContributions": {
+    "description": "User contributions stat label"
+  },
+
+  "totalParticipants": "Gesamtteilnehmer",
+  "@totalParticipants": {
+    "description": "Total participants stat label"
+  },
+
+  "until": "Bis",
+  "@until": {
+    "description": "Until prefix for dates"
+  },
+
+  "by": "Von",
+  "@by": {
+    "description": "Author prefix"
+  },
+
+  "viewTopic": "Thema ansehen",
+  "@viewTopic": {
+    "description": "View topic button"
+  },
+
+  "welcomeToConsensusHub": "Willkommen bei Consensus Hub",
+  "@welcomeToConsensusHub": {
+    "description": "Login page title"
+  },
+
+  "signInMessage": "Melden Sie sich an, um Ihre Einblicke zu teilen",
+  "@signInMessage": {
+    "description": "Login page subtitle"
+  },
+
+  "emailAddress": "E-Mail-Adresse",
+  "@emailAddress": {
+    "description": "Email field label"
+  },
+
+  "emailPlaceholder": "sie@beispiel.com",
+  "@emailPlaceholder": {
+    "description": "Email field placeholder"
+  },
+
+  "emailHelperText": "Tipp: Verwenden Sie admin@endress.com für die Administrator-Ansicht",
+  "@emailHelperText": {
+    "description": "Email field helper text"
+  },
+
+  "password": "Passwort",
+  "@password": {
+    "description": "Password field label"
+  },
+
+  "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+  "@passwordPlaceholder": {
+    "description": "Password placeholder"
+  },
+
+  "signIn": "Anmelden",
+  "@signIn": {
+    "description": "Sign in button"
+  },
+
+  "pleaseEnterEmail": "Bitte geben Sie Ihre E-Mail ein",
+  "@pleaseEnterEmail": {
+    "description": "Email validation message"
+  },
+
+  "pleaseEnterPassword": "Bitte geben Sie Ihr Passwort ein",
+  "@pleaseEnterPassword": {
+    "description": "Password validation message"
+  },
+
+  "loginFailedMessage": "Anmeldung fehlgeschlagen: {error}",
+  "@loginFailedMessage": {
+    "description": "Login error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "backToSurveys": "Zurück zu Umfragen",
+  "@backToSurveys": {
+    "description": "Back button text"
+  },
+
+  "createdBy": "Erstellt von",
+  "@createdBy": {
+    "description": "Created by prefix"
+  },
+
+  "from": "Vom",
+  "@from": {
+    "description": "Date range from"
+  },
+
+  "to": "bis",
+  "@to": {
+    "description": "Date range to"
+  },
+
+  "lastUpdated": "Zuletzt aktualisiert",
+  "@lastUpdated": {
+    "description": "Last updated prefix"
+  },
+
+  "activeTopic": "Aktives Thema",
+  "@activeTopic": {
+    "description": "Active topic badge"
+  },
+
+  "closedTopic": "Geschlossenes Thema",
+  "@closedTopic": {
+    "description": "Closed topic badge"
+  },
+
+  "scheduledTopic": "Geplantes Thema",
+  "@scheduledTopic": {
+    "description": "Scheduled topic badge"
+  },
+
+  "archivedTopic": "Archiviertes Thema",
+  "@archivedTopic": {
+    "description": "Archived topic badge"
+  },
+
+  "summary": "Zusammenfassung",
+  "@summary": {
+    "description": "Summary section title"
+  },
+
+  "detailedDescription": "Detaillierte Beschreibung",
+  "@detailedDescription": {
+    "description": "Detailed description section title"
+  },
+
+  "timeline": "Zeitachse",
+  "@timeline": {
+    "description": "Timeline section title"
+  },
+
+  "topicOpens": "Thema öffnet",
+  "@topicOpens": {
+    "description": "Timeline event"
+  },
+
+  "topicCloses": "Thema schließt",
+  "@topicCloses": {
+    "description": "Timeline event"
+  },
+
+  "created": "Erstellt",
+  "@created": {
+    "description": "Created label"
+  },
+
+  "shareYourIdea": "Teilen Sie Ihre Idee",
+  "@shareYourIdea": {
+    "description": "Share idea section title"
+  },
+
+  "anonymousMessage": "Alle Einreichungen sind anonym - Ihre Perspektive zählt!",
+  "@anonymousMessage": {
+    "description": "Anonymous submission message"
+  },
+
+  "yourIdea": "Ihre Idee",
+  "@yourIdea": {
+    "description": "Idea field label"
+  },
+
+  "ideaPlaceholder": "Teilen Sie Ihre Gedanken, Ideen oder Bedenken... (Seien Sie spezifisch und konstruktiv)",
+  "@ideaPlaceholder": {
+    "description": "Idea field placeholder"
+  },
+
+  "multipleSubmissionsMessage": "Sie können mehrere Ideen einreichen. Alle Einreichungen sind anonym.",
+  "@multipleSubmissionsMessage": {
+    "description": "Multiple submissions info"
+  },
+
+  "submitIdea": "Idee einreichen",
+  "@submitIdea": {
+    "description": "Submit idea button"
+  },
+
+  "submitting": "Wird gesendet...",
+  "@submitting": {
+    "description": "Submitting state"
+  },
+
+  "allIdeas": "Alle Ideen",
+  "@allIdeas": {
+    "description": "All ideas section title"
+  },
+
+  "noIdeasYet": "Noch keine Ideen",
+  "@noIdeasYet": {
+    "description": "No ideas message"
+  },
+
+  "beTheFirst": "Seien Sie der Erste, der seine Gedanken teilt!",
+  "@beTheFirst": {
+    "description": "First idea encouragement"
+  },
+
+  "ideaSubmittedSuccess": "Idee erfolgreich eingereicht!",
+  "@ideaSubmittedSuccess": {
+    "description": "Idea submission success"
+  },
+
+  "ideaSubmissionFailed": "Fehler beim Einreichen der Idee: {error}",
+  "@ideaSubmissionFailed": {
+    "description": "Idea submission error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "topicNotFound": "Thema nicht gefunden",
+  "@topicNotFound": {
+    "description": "Topic not found error"
+  },
+
+  "errorLoadingTopic": "Fehler beim Laden des Themas",
+  "@errorLoadingTopic": {
+    "description": "Topic loading error title"
+  },
+
+  "retry": "Wiederholen",
+  "@retry": {
+    "description": "Retry button"
+  },
+
+  "justNow": "Gerade eben",
+  "@justNow": {
+    "description": "Time ago for recent items"
+  },
+
+  "minutesAgo": "Vor {minutes}m",
+  "@minutesAgo": {
+    "description": "Minutes ago format",
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+
+  "hoursAgo": "Vor {hours}h",
+  "@hoursAgo": {
+    "description": "Hours ago format",
+    "placeholders": {
+      "hours": {
+        "type": "int"
+      }
+    }
+  },
+
+  "daysAgo": "Vor {days}d",
+  "@daysAgo": {
+    "description": "Days ago format",
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+
+  "createNewTopic": "Neues Diskussionsthema erstellen",
+  "@createNewTopic": {
+    "description": "Create topic page title"
+  },
+
+  "createTopicSubtitle": "Füllen Sie die Details aus, um eine neue Community-Diskussion zu starten",
+  "@createTopicSubtitle": {
+    "description": "Create topic page subtitle"
+  },
+
+  "title": "Titel",
+  "@title": {
+    "description": "Title field label"
+  },
+
+  "titlePlaceholder": "Geben Sie einen klaren und prägnanten Titel ein",
+  "@titlePlaceholder": {
+    "description": "Title field placeholder"
+  },
+
+  "shortDescription": "Kurze Beschreibung",
+  "@shortDescription": {
+    "description": "Short description field label"
+  },
+
+  "shortDescriptionPlaceholder": "Kurze Übersicht über das Thema (wird in Karten angezeigt)",
+  "@shortDescriptionPlaceholder": {
+    "description": "Short description placeholder"
+  },
+
+  "fullDescription": "Vollständige Beschreibung",
+  "@fullDescription": {
+    "description": "Full description field label"
+  },
+
+  "fullDescriptionPlaceholder": "Detaillierte Informationen zum Thema",
+  "@fullDescriptionPlaceholder": {
+    "description": "Full description placeholder"
+  },
+
+  "duration": "Dauer",
+  "@duration": {
+    "description": "Duration section title"
+  },
+
+  "startDate": "Startdatum",
+  "@startDate": {
+    "description": "Start date field label"
+  },
+
+  "endDate": "Enddatum",
+  "@endDate": {
+    "description": "End date field label"
+  },
+
+  "topicCreatedSuccess": "Thema erfolgreich erstellt!",
+  "@topicCreatedSuccess": {
+    "description": "Topic creation success message"
+  },
+
+  "topicCreationFailed": "Fehler beim Erstellen des Themas: {error}",
+  "@topicCreationFailed": {
+    "description": "Topic creation error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "discardChanges": "Änderungen verwerfen?",
+  "@discardChanges": {
+    "description": "Discard dialog title"
+  },
+
+  "unsavedChangesMessage": "Sie haben nicht gespeicherte Änderungen. Sind Sie sicher, dass Sie gehen möchten?",
+  "@unsavedChangesMessage": {
+    "description": "Unsaved changes warning"
+  },
+
+  "continueEditing": "Bearbeitung fortsetzen",
+  "@continueEditing": {
+    "description": "Continue editing button"
+  },
+
+  "discard": "Verwerfen",
+  "@discard": {
+    "description": "Discard button"
+  },
+
+  "titleRequired": "Titel ist erforderlich",
+  "@titleRequired": {
+    "description": "Title validation error"
+  },
+
+  "titleTooShort": "Titel muss mindestens 3 Zeichen lang sein",
+  "@titleTooShort": {
+    "description": "Title length validation"
+  },
+
+  "titleTooLong": "Titel darf 255 Zeichen nicht überschreiten",
+  "@titleTooLong": {
+    "description": "Title max length validation"
+  },
+
+  "shortDescriptionRequired": "Kurze Beschreibung ist erforderlich",
+  "@shortDescriptionRequired": {
+    "description": "Short description validation"
+  },
+
+  "shortDescriptionTooShort": "Kurze Beschreibung muss mindestens 5 Zeichen lang sein",
+  "@shortDescriptionTooShort": {
+    "description": "Short description length validation"
+  },
+
+  "shortDescriptionTooLong": "Kurze Beschreibung darf 500 Zeichen nicht überschreiten",
+  "@shortDescriptionTooLong": {
+    "description": "Short description max length validation"
+  },
+
+  "descriptionRequired": "Beschreibung ist erforderlich",
+  "@descriptionRequired": {
+    "description": "Description validation"
+  },
+
+  "descriptionTooShort": "Beschreibung muss mindestens 10 Zeichen lang sein",
+  "@descriptionTooShort": {
+    "description": "Description length validation"
+  },
+
+  "descriptionTooLong": "Beschreibung darf 2500 Zeichen nicht überschreiten",
+  "@descriptionTooLong": {
+    "description": "Description max length validation"
+  },
+
+  "startDateRequired": "Startdatum ist erforderlich",
+  "@startDateRequired": {
+    "description": "Start date validation"
+  },
+
+  "endDateRequired": "Enddatum ist erforderlich",
+  "@endDateRequired": {
+    "description": "End date validation"
+  },
+
+  "endDateMustBeAfterStart": "Enddatum muss nach dem Startdatum liegen",
+  "@endDateMustBeAfterStart": {
+    "description": "Date range validation"
+  },
+
+  "updateDiscussionTopic": "Diskussionsthema aktualisieren",
+  "@updateDiscussionTopic": {
+    "description": "Update topic page title"
+  },
+
+  "modifyTopicDetails": "Details dieses Diskussionsthemas ändern",
+  "@modifyTopicDetails": {
+    "description": "Update topic page subtitle"
+  },
+
+  "pageNotFound": "Seite nicht gefunden",
+  "@pageNotFound": {
+    "description": "404 page title"
+  },
+
+  "notFoundNumber": "404",
+  "@notFoundNumber": {
+    "description": "404 number"
+  },
+
+  "pageNotFoundMessage": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+  "@pageNotFoundMessage": {
+    "description": "404 message"
+  },
+
+  "goToDashboard": "Zum Dashboard gehen",
+  "@goToDashboard": {
+    "description": "Go to dashboard button"
+  },
+
+  "goToLogin": "Zur Anmeldung gehen",
+  "@goToLogin": {
+    "description": "Go to login button"
+  },
+
+  "accessDenied": "Zugriff verweigert",
+  "@accessDenied": {
+    "description": "Unauthorized page title"
+  },
+
+  "noPermissionMessage": "Sie haben keine Berechtigung, auf diese Seite zuzugreifen.",
+  "@noPermissionMessage": {
+    "description": "Unauthorized message"
+  },
+
+  "userNotAuthenticated": "Benutzer nicht authentifiziert",
+  "@userNotAuthenticated": {
+    "description": "Authentication error"
   }
 }
