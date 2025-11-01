@@ -1,0 +1,72 @@
+[
+  {
+    "topicId": "topic_001",
+    "submittedDate": "2025-03-11T09:15:00Z",
+    "createdAt": "2025-03-11T09:15:00Z",
+    "updatedAt": "2025-03-11T09:45:00Z",
+    "text": "I believe proper training is essential before rolling out the new productivity tool."
+  },
+  {
+    "topicId": "topic_001",
+    "submittedDate": "2025-03-12T10:00:00Z",
+    "createdAt": "2025-03-12T10:00:00Z",
+    "updatedAt": "2025-03-12T10:30:00Z",
+    "text": "We should schedule a pilot phase with a small team to test the tool first."
+  },
+  {
+    "topicId": "topic_002",
+    "submittedDate": "2025-10-02T14:22:00Z",
+    "createdAt": "2025-10-02T14:22:00Z",
+    "updatedAt": "2025-10-02T15:00:00Z",
+    "text": "Improving navigation will greatly enhance user satisfaction."
+  },
+  {
+    "topicId": "topic_002",
+    "submittedDate": "2025-10-03T09:45:00Z",
+    "createdAt": "2025-10-03T09:45:00Z",
+    "updatedAt": "2025-10-03T10:15:00Z",
+    "text": "Faster load times should be prioritized in the next sprint."
+  },
+  {
+    "topicId": "topic_003",
+    "submittedDate": "2024-12-05T16:00:00Z",
+    "createdAt": "2024-12-05T16:00:00Z",
+    "updatedAt": "2024-12-05T16:30:00Z",
+    "text": "Performance optimization is crucial, but accessibility cannot be neglected."
+  },
+  {
+    "topicId": "topic_003",
+    "submittedDate": "2024-12-06T11:30:00Z",
+    "createdAt": "2024-12-06T11:30:00Z",
+    "updatedAt": "2024-12-06T12:00:00Z",
+    "text": "Adding keyboard navigation support would help improve accessibility."
+  },
+  {
+    "topicId": "topic_004",
+    "submittedDate": "2025-09-20T10:45:00Z",
+    "createdAt": "2025-09-20T10:45:00Z",
+    "updatedAt": "2025-09-20T11:30:00Z",
+    "text": "Implementing waste separation bins will encourage sustainable practices."
+  },
+  {
+    "topicId": "topic_004",
+    "submittedDate": "2025-09-21T13:15:00Z",
+    "createdAt": "2025-09-21T13:15:00Z",
+    "updatedAt": "2025-09-21T13:45:00Z",
+    "text": "Encouraging reusable containers for lunch can reduce plastic waste."
+  },
+  {
+    "topicId": "topic_005",
+    "submittedDate": "2025-02-05T13:20:00Z",
+    "createdAt": "2025-02-05T13:20:00Z",
+    "updatedAt": "2025-02-05T14:00:00Z",
+    "text": "A creative workshop like cooking or painting could be very engaging."
+  },
+  {
+    "topicId": "topic_005",
+    "submittedDate": "2025-02-06T10:30:00Z",
+    "createdAt": "2025-02-06T10:30:00Z",
+    "updatedAt": "2025-02-06T11:00:00Z",
+    "text": "An escape room challenge could also be fun and encourage teamwork."
+  }
+]

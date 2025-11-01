@@ -1,0 +1,92 @@
+[
+  {
+    "firstName": "Alice",
+    "lastName": "Dupont",
+    "email": "alice.dupont@company.com",
+    "role": "Administrator",
+    "password": "Alice123!",
+    "createdAt": "2025-01-12T09:45:23Z",
+    "updatedAt": "2025-03-02T11:10:45Z"
+  },
+  {
+    "firstName": "Bruno",
+    "lastName": "Martin",
+    "email": "bruno.martin@company.com",
+    "role": "Manager",
+    "password": "Bruno2025",
+    "createdAt": "2025-01-15T14:22:01Z",
+    "updatedAt": "2025-04-08T10:33:11Z"
+  },
+  {
+    "firstName": "Camille",
+    "lastName": "Leroy",
+    "email": "camille.leroy@company.com",
+    "role": "User",
+    "password": "Camille!1",
+    "createdAt": "2025-02-01T08:12:09Z",
+    "updatedAt": "2025-02-15T09:55:20Z"
+  },
+  {
+    "firstName": "David",
+    "lastName": "Nguyen",
+    "email": "david.nguyen@company.com",
+    "role": "User",
+    "password": "David1234",
+    "createdAt": "2025-02-10T12:34:45Z",
+    "updatedAt": "2025-03-12T13:45:32Z"
+  },
+  {
+    "firstName": "Emma",
+    "lastName": "Schmidt",
+    "email": "emma.schmidt@company.com",
+    "role": "Manager",
+    "password": "Emma@2025",
+    "createdAt": "2025-02-20T09:00:00Z",
+    "updatedAt": "2025-04-05T10:00:00Z"
+  },
+  {
+    "firstName": "Farid",
+    "lastName": "Bennani",
+    "email": "farid.bennani@company.com",
+    "role": "User",
+    "password": "Farid678",
+    "createdAt": "2025-03-01T11:15:30Z",
+    "updatedAt": "2025-03-20T14:45:10Z"
+  },
+  {
+    "firstName": "Giulia",
+    "lastName": "Rossi",
+    "email": "giulia.rossi@company.com",
+    "role": "User",
+    "password": "Giulia!23",
+    "createdAt": "2025-03-05T10:10:10Z",
+    "updatedAt": "2025-03-22T12:15:00Z"
+  },
+  {
+    "firstName": "Hugo",
+    "lastName": "Morel",
+    "email": "hugo.morel@company.com",
+    "role": "Manager",
+    "password": "Hugo2025!",
+    "createdAt": "2025-03-10T13:05:00Z",
+    "updatedAt": "2025-04-01T09:40:00Z"
+  },
+  {
+    "firstName": "Isabelle",
+    "lastName": "Keller",
+    "email": "isabelle.keller@company.com",
+    "role": "Administrator",
+    "password": "IsaKeller1",
+    "createdAt": "2025-03-18T15:25:40Z",
+    "updatedAt": "2025-04-10T17:12:55Z"
+  },
+  {
+    "firstName": "Jonas",
+    "lastName": "Peterson",
+    "email": "jonas.peterson@company.com",
+    "role": "User",
+    "password": "Jonas_pass",
+    "createdAt": "2025-03-25T08:00:00Z",
+    "updatedAt": "2025-04-15T11:00:00Z"
+  }
+]
