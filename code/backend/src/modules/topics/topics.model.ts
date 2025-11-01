@@ -33,3 +33,10 @@ export interface Summary {
     status: TopicStatus; /*!> The current state of the topic */
     authorId: string; /*!> Identifier of the user who created the topic */
 };
+
+export interface Submission {
+    topicId: string; /*!> Identifier of the related topic */
+    createdAt: Date; /*!> Timestamp when the submission was created */
+    updatedAt: Date; /*!> Timestamp when the submission was last updated */
+    text: string; /*!> The textual content of the submission */
+};

@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { TopicParams, CreateBody } from './topics.types';
+import { TopicParams, CreateBody, SubmissionBody } from './topics.types';
 import topicsService from './topics.service';
 
 /**
@@ -48,9 +48,21 @@ async function createTopic(request: FastifyRequest<{ Body: CreateBody }>, reply:
 async function getSummaryTopic(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
     const result = await topicsService.getTopicById(request.params.id, request.server);
 
-
     reply.status(200).send({
         message: 'Successfully retrieved topic',
+        data: result
+    });
+}
+
+/**
+ * @function sendSubmission
+ * @description Return the Topic by the id given on the url
+ */
+async function sendSubmission(request: FastifyRequest<{ Params: TopicParams, Body: SubmissionBody }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.sendSubmission(request.params.id, request.body, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully sent submission',
         data: result
     });
 }
@@ -59,5 +71,6 @@ export default {
     getAllTopics,
     getTopicById,
     createTopic,
-    getSummaryTopic
+    getSummaryTopic,
+    sendSubmission
 };

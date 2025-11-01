@@ -13,3 +13,7 @@ export interface CreateBody {
     status?: TopicStatus;
     authorId: string;
 }
+
+export interface SubmissionBody {
+    text: string; /*!> The textual content of the submission */
+}

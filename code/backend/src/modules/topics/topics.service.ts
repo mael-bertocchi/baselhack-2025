@@ -1,8 +1,8 @@
 import { RequestError } from '@core/errors';
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { Topic, TopicStatus, Summary} from '@modules/topics/topics.model';
-import { CreateBody } from './topics.types';
+import { Topic, TopicStatus, Summary, Submission} from '@modules/topics/topics.model';
+import { CreateBody, SubmissionBody } from './topics.types';
 
 /**
  * @function getTopicsCollection
@@ -110,9 +110,52 @@ async function getSummaryById(id: string, fastify: FastifyInstance) {
     return Summary;
 }
 
+/**
+ * @function getSubmissionCollection
+ * @param fastify 
+ * @returns db collection
+ * @description Return the submission collection of the table on db
+ */
+function getSubmissionCollection(fastify: FastifyInstance): Collection<Submission> {
+    const db = fastify.mongo.db;
+
+    if (!db) {
+        throw new Error('Database connection is not available');
+    }
+
+    return db.collection<Submission>('submission');
+}
+
+/**
+ * @function sendSubmission
+ * @description send Submission to an ID 
+ */
+async function sendSubmission(id: string, data: SubmissionBody, fastify: FastifyInstance) {
+    const submissionCollection = getSubmissionCollection(fastify);
+
+    const now = new Date();
+    const newSubmission = {
+        topicId: id,
+        createdAt: now,
+        updatedAt: now,
+        text: data.text
+    }
+
+    const result = await submissionCollection.insertOne(newSubmission);
+
+    const submission = await submissionCollection.findOne({ _id: result.insertedId });
+
+    if (!submission) {
+        throw new RequestError('Failed to send submission', 500);
+    }
+
+    return submission;
+}
+
 export default {
     getAllTopics,
     getTopicById,
     createTopic,
-    getSummaryById
+    getSummaryById,
+    sendSubmission
 };
