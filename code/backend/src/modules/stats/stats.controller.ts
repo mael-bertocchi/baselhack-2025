@@ -16,6 +16,21 @@ async function nbTopics(request: FastifyRequest, reply: FastifyReply): Promise<v
     });
 }
 
+/**
+ * @function nbUsers
+ * @description Return the logged in user information
+ */
+async function nbUsers(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+
+    const result = await statsService.nbUsers(request.server);
+
+    reply.status(200).send({
+        message: 'The count is good brother !',
+        data: result
+    });
+}
+
 export default {
-    nbTopics
+    nbTopics,
+    nbUsers
 };
