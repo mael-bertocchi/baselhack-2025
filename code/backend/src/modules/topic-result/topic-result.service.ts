@@ -137,11 +137,11 @@ async function getAllTopicResults(fastify: FastifyInstance) {
 
 /**
  * @function getTopicResultById
- * @description Get a topic result by id
+ * @description Get a topic result by topicId (string)
  */
 async function getTopicResultById(id: string, fastify: FastifyInstance) {
     const topicResultsCollection = getTopicResultsCollection(fastify);
-    const topicResult: Maybe<WithId<TopicResult>> = await topicResultsCollection.findOne({ _id: new (fastify.mongo).ObjectId(id) });
+    const topicResult: Maybe<WithId<TopicResult>> = await topicResultsCollection.findOne({ topicId: id });
 
     if (!topicResult) {
         throw new RequestError('Topic result not found', 404);

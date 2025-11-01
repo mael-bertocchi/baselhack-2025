@@ -221,7 +221,7 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
       children: [
         // Search bar
         Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 20),
           decoration: BoxDecoration(
             color: AppColors.background,
             boxShadow: [
@@ -232,70 +232,75 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
               ),
             ],
           ),
-          child: SizedBox(
-            height: 56,
-            child: ValueListenableBuilder<TextEditingValue>(
-              valueListenable: _searchController,
-              builder: (context, value, child) {
-                return TextField(
-                  controller: _searchController,
-                  style: const TextStyle(
-                    color: AppColors.textPrimary,
-                    fontSize: 16,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: l10n.searchUsers,
-                    hintStyle: TextStyle(
-                      color: AppColors.textSecondary.withOpacity(0.6),
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.1,
+            ),
+            child: SizedBox(
+              height: 56,
+              child: ValueListenableBuilder<TextEditingValue>(
+                valueListenable: _searchController,
+                builder: (context, value, child) {
+                  return TextField(
+                    controller: _searchController,
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
                       fontSize: 16,
                     ),
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: AppColors.blue,
-                      size: 24,
-                    ),
-                    suffixIcon: value.text.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.clear,
-                              color: AppColors.textSecondary,
-                              size: 20,
-                            ),
-                            onPressed: () {
-                              _searchController.clear();
-                            },
-                          )
-                        : null,
-                    filled: true,
-                    fillColor: AppColors.white,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFE5E7EB),
-                        width: 1,
+                    decoration: InputDecoration(
+                      hintText: l10n.searchUsers,
+                      hintStyle: TextStyle(
+                        color: AppColors.textSecondary.withOpacity(0.6),
+                        fontSize: 16,
                       ),
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFE5E7EB),
-                        width: 1,
-                      ),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(
+                      prefixIcon: const Icon(
+                        Icons.search,
                         color: AppColors.blue,
-                        width: 2,
+                        size: 24,
+                      ),
+                      suffixIcon: value.text.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(
+                                Icons.clear,
+                                color: AppColors.textSecondary,
+                                size: 20,
+                              ),
+                              onPressed: () {
+                                _searchController.clear();
+                              },
+                            )
+                          : null,
+                      filled: true,
+                      fillColor: AppColors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Color(0xFFE5E7EB),
+                          width: 1,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Color(0xFFE5E7EB),
+                          width: 1,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: AppColors.blue,
+                          width: 2,
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 16,
                       ),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 16,
-                    ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
@@ -315,12 +320,19 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
               : RefreshIndicator(
                   onRefresh: _loadUsers,
                   color: AppColors.blue,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(20),
-                    itemCount: _filteredUsers!.length,
-                    itemBuilder: (context, index) {
-                      final user = _filteredUsers![index];
-                      return _buildUserCard(context, user, l10n);
+                  child: LayoutBuilder(
+                    builder: (context, constraints) {
+                      return ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.1,
+                          vertical: 20,
+                        ),
+                        itemCount: _filteredUsers!.length,
+                        itemBuilder: (context, index) {
+                          final user = _filteredUsers![index];
+                          return _buildUserCard(context, user, l10n);
+                        },
+                      );
                     },
                   ),
                 ),
