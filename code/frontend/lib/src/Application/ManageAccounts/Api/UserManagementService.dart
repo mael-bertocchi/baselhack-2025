@@ -125,4 +125,121 @@ class UserManagementService {
       rethrow;
     }
   }
+
+  /// Change le rôle d'un utilisateur
+  Future<UserAccount> changeRole(String userId, Role newRole) async {
+    try {
+      // Récupérer le token d'authentification
+      final token = await TokenStorage.instance.getAccessToken();
+      if (token == null) {
+        throw Exception('User not authenticated');
+      }
+
+      // Convert Role enum to string
+      String roleString;
+      switch (newRole) {
+        case Role.administrator:
+          roleString = 'Administrator';
+          break;
+        case Role.manager:
+          roleString = 'Manager';
+          break;
+        case Role.user:
+          roleString = 'User';
+          break;
+      }
+
+      final response = await http.patch(
+        Uri.parse('$baseUrl${ApiRoutes.changeRole.path}/$userId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'role': roleString,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return UserAccount.fromJson(responseData['data'] as Map<String, dynamic>);
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to change role');
+      }
+    } catch (e) {
+      print('Error changing role: $e');
+      rethrow;
+    }
+  }
+
+  /// Crée un nouvel utilisateur
+  Future<void> createUser({
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+    required String confirmPassword,
+  }) async {
+    try {
+      // Récupérer le token d'authentification
+      final token = await TokenStorage.instance.getAccessToken();
+      if (token == null) {
+        throw Exception('User not authenticated');
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl${ApiRoutes.signup.path}'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({
+          'firstName': firstName,
+          'lastName': lastName,
+          'email': email,
+          'password': password,
+          'confirmPassword': confirmPassword,
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return;
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to create user');
+      }
+    } catch (e) {
+      print('Error creating user: $e');
+      rethrow;
+    }
+  }
+
+  /// Supprime un utilisateur
+  Future<void> deleteUser(String userId) async {
+    try {
+      // Récupérer le token d'authentification
+      final token = await TokenStorage.instance.getAccessToken();
+      if (token == null) {
+        throw Exception('User not authenticated');
+      }
+
+      final response = await http.delete(
+        Uri.parse('$baseUrl${ApiRoutes.users.path}/$userId'),
+        headers: {
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return;
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to delete user');
+      }
+    } catch (e) {
+      print('Error deleting user: $e');
+      rethrow;
+    }
+  }
 }
