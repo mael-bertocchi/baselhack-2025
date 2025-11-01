@@ -1,7 +1,6 @@
 import { RequestError } from '@core/errors';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { AuthenticatedUser } from './auth.types';
-import { extractAuthCookies } from './auth.cookies';
 
 function extractTokenFromAuthorizationHeader(request: FastifyRequest): string | null {
     const authorization = request.headers['authorization'] ?? request.headers['Authorization'];
@@ -20,12 +19,6 @@ function extractTokenFromAuthorizationHeader(request: FastifyRequest): string | 
 }
 
 function getAccessToken(request: FastifyRequest): string | null {
-    const cookies = extractAuthCookies(request.headers.cookie);
-
-    if (cookies.accessToken) {
-        return cookies.accessToken;
-    }
-
     return extractTokenFromAuthorizationHeader(request);
 }
 

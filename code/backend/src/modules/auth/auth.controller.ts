@@ -2,7 +2,6 @@ import { RequestError } from '@core/errors';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { SigninBody, SignupBody, RefreshBody } from './auth.types';
 import authService from './auth.service';
-import { extractAuthCookies, setAuthCookies } from './auth.cookies';
 
 /**
  * @function signin
@@ -14,12 +13,12 @@ async function signin(
 ): Promise<void> {
     const { accessToken, refreshToken, user } = await authService.signin(request.body, request.server);
 
-    setAuthCookies(reply, accessToken, refreshToken);
-
     reply.status(200).send({
         message: 'Signin successful',
         data: {
-            user
+            user,
+            accessToken,
+            refreshToken
         }
     });
 }
@@ -34,12 +33,12 @@ async function signup(
 ): Promise<void> {
     const { accessToken, refreshToken, user } = await authService.signup(request.body, request.server);
 
-    setAuthCookies(reply, accessToken, refreshToken);
-
     reply.status(201).send({
         message: 'Signup successful',
         data: {
-            user
+            user,
+            accessToken,
+            refreshToken
         }
     });
 }
@@ -52,26 +51,23 @@ async function refresh(
     request: FastifyRequest<{ Body: RefreshBody }>,
     reply: FastifyReply
 ): Promise<void> {
-    const cookies = extractAuthCookies(request.headers.cookie);
-    const refreshToken = request.body.refreshToken ?? cookies.refreshToken;
-    const accessToken = request.body.accessToken ?? cookies.accessToken;
+    const { refreshToken } = request.body;
 
     if (!refreshToken) {
         throw new RequestError('Refresh token is required', 400);
     }
 
     const { accessToken: newAccessToken, refreshToken: newRefreshToken } = await authService.refresh(
-        {
-            refreshToken,
-            accessToken
-        },
+        { refreshToken },
         request.server
     );
 
-    setAuthCookies(reply, newAccessToken, newRefreshToken);
-
     reply.status(200).send({
-        message: 'Token refresh successful'
+        message: 'Token refresh successful',
+        data: {
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken
+        }
     });
 }
 
