@@ -4,7 +4,7 @@ import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
 import { User } from '@modules/users/users.model';
 import { AuthenticatedUser } from '@modules/auth/auth.types';
-import { PasswordBody } from './users.types';
+import { PasswordBody, RoleBody } from './users.types';
 import bcrypt from 'bcrypt';
 
 
@@ -77,6 +77,30 @@ async function changePassword(id: string, data: PasswordBody, fastify: FastifyIn
 }
 
 /**
+ * @function changeRole
+ * @description Change the role of the user who he want to change
+ */
+async function changeRole(id: string, data: RoleBody, fastify: FastifyInstance) {
+    const usersCollection = getUsersCollection(fastify);
+
+    const user: WithId<User> | null = await usersCollection.findOne({ 
+        _id: new (fastify.mongo).ObjectId(id) 
+    });
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    await usersCollection.updateOne(
+        { _id: new (fastify.mongo).ObjectId(id) },
+        { $set: { role: data.role } }
+    );
+
+    user.role = data.role;
+    return user;
+}
+
+/**
  * @function deleteUser
  * @description Delete a user by id
  */
@@ -94,5 +118,6 @@ export default {
     getCurrentUser,
     getUsers,
     changePassword,
+    changeRole,
     deleteUser
 };

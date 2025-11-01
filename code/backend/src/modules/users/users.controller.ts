@@ -1,7 +1,7 @@
 import { Result } from './../../../node_modules/arg/index.d';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import usersService from './users.service';
-import { PasswordBody, UserParams } from './users.types';
+import { PasswordBody, RoleBody, UserParams } from './users.types';
 
 /**
  * @function getCurrentUser
@@ -52,6 +52,25 @@ async function changePassword(
     });
 }
 
+async function changeRole(
+    request: FastifyRequest<{
+        Body: RoleBody,
+        Params: { id: string }
+    }>, 
+    reply: FastifyReply
+): Promise<void> {
+    const result = await usersService.changeRole(
+        request.params.id,
+        request.body, 
+        request.server
+    );
+
+    reply.status(200).send({
+        message: 'Successfully changed the role of user',
+        data: result
+    });
+}
+
 /**
  * @function deleteUser
  * @description Delete a user by id
@@ -72,5 +91,6 @@ export default {
     getCurrentUser,
     getUsers,
     changePassword,
+    changeRole,
     deleteUser
 };
