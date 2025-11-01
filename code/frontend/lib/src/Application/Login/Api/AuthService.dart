@@ -129,9 +129,10 @@ class AuthService extends ChangeNotifier {
       email: 'ytc@mail.com',
       firstName: 'Yann',
       lastName: 'T.C.',
-      role: 'User'.toRole(),
+      role: 'Administrator'.toRole(),
     );
     notifyListeners();
+    print(_currentUser?.role);
   }
 
   /// Sign in with email and password

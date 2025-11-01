@@ -3,6 +3,7 @@ import 'package:frontend/src/pages/Dashboard/DashboardPage.dart';
 import 'package:frontend/src/pages/Login/LoginPage.dart';
 import 'package:frontend/src/pages/Unauthorized/UnauthorizedPage.dart';
 import 'package:frontend/src/pages/NotFound/NotFoundPage.dart';
+import 'package:frontend/src/pages/CreateTopic/CreateTopicPageWrapper.dart';
 import 'package:frontend/src/routes/ProtectedRoutes.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String notFound = '/404';
   static const String login = '/login';
   static const String dashboard = '/dashboard';
+  static const String createTopic = '/create-topic';
 
   /// Main route map for MaterialApp
   static Map<String, WidgetBuilder> routes = {
@@ -25,6 +27,10 @@ class AppRoutes {
     dashboard: (context) => ProtectedRoute(
           builder: (ctx) => const DashboardPage(),
           requiredRoles: [Role.user, Role.manager, Role.administrator],
+        ),
+    createTopic: (context) => ProtectedRoute(
+          builder: (ctx) => const CreateTopicPageWrapper(),
+          requiredRoles: [Role.administrator],
         ),
   };
 

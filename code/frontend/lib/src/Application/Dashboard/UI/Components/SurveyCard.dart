@@ -123,7 +123,7 @@ class Topic {
     }
     final now = DateTime.now();
     if (now.isBefore(startDate)) {
-      return 'Soon';
+      return 'Scheduled';
     } else if (now.isAfter(endDate)) {
       return 'Closed';
     }
@@ -190,7 +190,7 @@ class _TopicCardState extends State<TopicCard> {
         return const Color(0xFF7C3AED); // Violet
       case 'closed':
         return const Color(0xFF14B8A6); // Cyan/Teal
-      case 'soon':
+      case 'scheduled':
         return const Color(0xFFEC4899); // Rose/Pink
       case 'archived':
         return const Color(0xFF6B7280); // Gris
@@ -206,7 +206,7 @@ class _TopicCardState extends State<TopicCard> {
         return const Color(0xFFF3E8FF); // Violet clair
       case 'closed':
         return const Color(0xFFCCFBF1); // Cyan très clair
-      case 'soon':
+      case 'scheduled':
         return const Color(0xFFFCE7F3); // Rose clair
       case 'archived':
         return const Color(0xFFF3F4F6); // Gris clair
