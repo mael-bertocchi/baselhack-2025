@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/l10n/app_localizations.dart';
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:frontend/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
 import 'package:frontend/src/Application/Dashboard/UI/TopicDetail/UI/TopicDetailView.dart';
 import 'Components/StatCard.dart';
@@ -137,6 +139,10 @@ class _DashboardViewState extends State<DashboardView> {
   void _removeProfileMenu() {
     _profileMenuOverlay?.remove();
     _profileMenuOverlay = null;
+  }
+
+  void _navigateToCreateTopic() {
+    Navigator.of(context).pushNamed(AppRoutes.createTopic);
   }
 
   // Widget pour la barre de recherche
@@ -621,7 +627,7 @@ class _DashboardViewState extends State<DashboardView> {
         ),
         ),
       ),
-      floatingActionButton: _isAdmin
+      floatingActionButton: AuthService.instance.currentUser?.role == Role.manager || AuthService.instance.currentUser?.role == Role.administrator
           ? FloatingActionButton.extended(
               onPressed: _navigateToCreateTopic,
               backgroundColor: AppColors.blue,

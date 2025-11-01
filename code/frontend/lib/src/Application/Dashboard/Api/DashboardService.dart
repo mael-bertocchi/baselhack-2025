@@ -1,3 +1,4 @@
+import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
@@ -18,7 +19,7 @@ class DashboardApiService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl${ApiRoutes.topics}'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ${AuthService.instance.accessToken}'},
       );
 
       if (response.statusCode == 200) {
@@ -93,7 +94,7 @@ class DashboardApiService {
     try {
       final response = await http.get(
         Uri.parse('$baseUrl${ApiRoutes.topics}/$id'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ${AuthService.instance.accessToken}'},
       );
 
       if (response.statusCode == 200) {

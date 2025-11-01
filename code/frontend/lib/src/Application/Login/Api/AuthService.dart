@@ -40,8 +40,26 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
+    // Handle both 'id' (from auth endpoints) and '_id' (from MongoDB documents)
+    final String userId;
+    if (json.containsKey('id')) {
+      userId = json['id'] as String;
+    } else if (json.containsKey('_id')) {
+      // MongoDB _id can be either a string or an object with $oid
+      final idValue = json['_id'];
+      if (idValue is String) {
+        userId = idValue;
+      } else if (idValue is Map && idValue.containsKey('\$oid')) {
+        userId = idValue['\$oid'] as String;
+      } else {
+        userId = idValue.toString();
+      }
+    } else {
+      throw ArgumentError('User JSON must contain either "id" or "_id"');
+    }
+    
     return User(
-      id: json['id'] as String,
+      id: userId,
       email: json['email'] as String,
       firstName: json['firstName'] as String? ?? '',
       lastName: json['lastName'] as String? ?? '',
@@ -87,6 +105,8 @@ class AuthService extends ChangeNotifier {
           // If access token is expired, try to refresh
           try {
             await refreshAccessToken();
+            // After refreshing, load user info
+            await loadUserInfo();
           } catch (refreshError) {
             // If refresh fails, clear everything
             await logout();
@@ -104,35 +124,24 @@ class AuthService extends ChangeNotifier {
 
   /// Load user information using the current access token
   Future<void> loadUserInfo() async {
-    // if (_accessToken == null) return;
+    if (_accessToken == null) return;
     
     // Uncomment and use the real HTTP request when backend is available:
-    // final response = await http.get(
-    //   Uri.parse('$baseUrl${ApiRoutes.userMe}'),
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'Authorization': 'Bearer $_accessToken',
-    //   },
-    // );
-    //
-    // if (response.statusCode == 200) {
-    //   final data = jsonDecode(response.body);
-    //   _currentUser = User.fromJson(data['data'] as Map<String, dynamic>);
-    //   notifyListeners();
-    // } else {
-    //   throw Exception('Failed to load user info');
-    // }
-
-    // Temporary/mock user assignment for local development
-    _currentUser = User(
-      id: '1',
-      email: 'ytc@mail.com',
-      firstName: 'Yann',
-      lastName: 'T.C.',
-      role: 'User'.toRole(),
+    final response = await http.get(
+      Uri.parse('$baseUrl${ApiRoutes.userMe}'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $_accessToken',
+      },
     );
-    notifyListeners();
-    print(_currentUser?.role);
+    
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      _currentUser = User.fromJson(data['data'] as Map<String, dynamic>);
+      notifyListeners();
+    } else {
+      throw Exception('Failed to load user info');
+    }
   }
 
   /// Sign in with email and password
