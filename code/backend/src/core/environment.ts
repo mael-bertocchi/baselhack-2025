@@ -51,6 +51,28 @@ function validateBoolean(name: string, value: Maybe<string>): boolean {
  * @constant environment
  * @description Contains the validated environment variables for the application
  */
+function parseOptionalBoolean(name: string, value: Maybe<string>): boolean | undefined {
+    if (value === undefined || value === null || value === '') {
+        return undefined;
+    }
+
+    return validateBoolean(name, value);
+}
+
+function parseSameSite(value: Maybe<string>): 'Strict' | 'Lax' | 'None' {
+    const normalized = value?.trim().toLowerCase();
+
+    switch (normalized) {
+        case 'strict':
+            return 'Strict';
+        case 'none':
+            return 'None';
+        case 'lax':
+        default:
+            return 'Lax';
+    }
+}
+
 const normalizeOrigin = (origin: string): string => origin.replace(/\/$/, '');
 
 const environment: Environment = {
@@ -62,7 +84,12 @@ const environment: Environment = {
     CORS_ALLOWED_ORIGINS: (process.env.CORS_ALLOWED_ORIGINS ?? 'http://localhost:5173')
         .split(',')
         .map((origin) => normalizeOrigin(origin.trim()))
-        .filter((origin) => origin.length > 0)
+        .filter((origin) => origin.length > 0),
+    COOKIE_SAME_SITE: parseSameSite(process.env.COOKIE_SAME_SITE ?? ((process.env.NODE_ENV ?? 'development') === 'production' ? 'None' : 'Lax')),
+    COOKIE_SECURE:
+        parseOptionalBoolean('COOKIE_SECURE', process.env.COOKIE_SECURE) ??
+        ((process.env.NODE_ENV ?? 'development') === 'production'),
+    COOKIE_DOMAIN: process.env.COOKIE_DOMAIN?.trim() || undefined
 };
 
 export default environment;

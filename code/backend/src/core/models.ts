@@ -15,4 +15,7 @@ export interface Environment {
     JWT_REFRESH_EXPIRES_IN: string; /*!< JWT refresh token expiration time */
     JWT_SECRET: string; /*!< JWT secret key (optional) */
     CORS_ALLOWED_ORIGINS: string[]; /*!< List of allowed origins for CORS */
+    COOKIE_SAME_SITE: 'Strict' | 'Lax' | 'None'; /*!< SameSite policy for auth cookies */
+    COOKIE_SECURE: boolean; /*!< Whether auth cookies require a secure context */
+    COOKIE_DOMAIN?: string; /*!< Optional cookie domain override */
 }

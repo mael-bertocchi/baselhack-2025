@@ -7,6 +7,7 @@ interface CookieOptions {
     sameSite?: 'Strict' | 'Lax' | 'None';
     path?: string;
     maxAge?: number;
+    domain?: string;
 }
 
 function parseDurationToSeconds(duration: string): number | undefined {
@@ -64,19 +65,26 @@ function serializeCookie(name: string, value: string, options: CookieOptions = {
         cookieString += `; SameSite=${options.sameSite}`;
     }
 
+    if (options.domain) {
+        cookieString += `; Domain=${options.domain}`;
+    }
+
     return cookieString;
 }
 
 export function setAuthCookies(reply: FastifyReply, accessToken: string, refreshToken: string): void {
     const accessMaxAge = parseDurationToSeconds(environment.JWT_ACCESS_EXPIRES_IN);
     const refreshMaxAge = parseDurationToSeconds(environment.JWT_REFRESH_EXPIRES_IN);
-    const isProduction = (process.env.NODE_ENV ?? 'development') === 'production';
+    const sameSite = environment.COOKIE_SAME_SITE;
+    const secure = environment.COOKIE_SECURE;
+    const domain = environment.COOKIE_DOMAIN;
 
     const baseOptions: CookieOptions = {
         httpOnly: true,
         path: '/',
-        secure: isProduction,
-        sameSite: isProduction ? 'None' : 'Lax'
+        secure,
+        sameSite,
+        domain
     };
 
     const accessCookie = serializeCookie('accessToken', accessToken, {
