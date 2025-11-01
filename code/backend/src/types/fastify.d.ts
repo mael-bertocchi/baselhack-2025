@@ -6,9 +6,6 @@ declare module 'fastify' {
         authUser?: AuthenticatedUser;
     }
 
-    // `authenticate` is a decorator added by our auth plugin. Use a concrete
-    // function signature instead of `typeof jwtGuard` to avoid value/type
-    // resolution issues in declaration files.
     interface FastifyInstance {
         authGuard: typeof jwtGuard;
     }
