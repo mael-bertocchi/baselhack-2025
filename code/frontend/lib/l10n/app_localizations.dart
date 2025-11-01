@@ -205,6 +205,18 @@ abstract class AppLocalizations {
   /// **'Try Again'**
   String get tryAgain;
 
+  /// Dashboard welcome title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome Back!'**
+  String get welcomeBack;
+
+  /// Dashboard subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Share your diverse perspectives and help shape better decisions together'**
+  String get sharePerspectives;
+
   /// Loading message
   ///
   /// In en, this message translates to:
@@ -462,6 +474,522 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Search users by name, email or role...'**
   String get searchUsers;
+
+  /// Login page welcome title
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Consensus Hub'**
+  String get welcomeToConsensusHub;
+
+  /// Login page subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in to your account to share your insights'**
+  String get signInToAccount;
+
+  /// Email field label
+  ///
+  /// In en, this message translates to:
+  /// **'Email Address'**
+  String get emailAddress;
+
+  /// Email field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'you@example.com'**
+  String get emailPlaceholder;
+
+  /// Email field helper text
+  ///
+  /// In en, this message translates to:
+  /// **'Tip: Use admin@endress.com for admin view'**
+  String get emailHelperText;
+
+  /// Password field placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password'**
+  String get passwordPlaceholder;
+
+  /// Sign in button
+  ///
+  /// In en, this message translates to:
+  /// **'Sign In'**
+  String get signIn;
+
+  /// Email required error
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your email'**
+  String get pleaseEnterEmail;
+
+  /// Password required error
+  ///
+  /// In en, this message translates to:
+  /// **'Please enter your password'**
+  String get pleaseEnterPassword;
+
+  /// Login error message
+  ///
+  /// In en, this message translates to:
+  /// **'Login failed: {error}'**
+  String loginFailed(String error);
+
+  /// Access denied title
+  ///
+  /// In en, this message translates to:
+  /// **'Access Denied'**
+  String get accessDenied;
+
+  /// No permission message
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to access this content.'**
+  String get noPermission;
+
+  /// Go to dashboard button
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Dashboard'**
+  String get goToDashboard;
+
+  /// Topic not found error
+  ///
+  /// In en, this message translates to:
+  /// **'Topic not found'**
+  String get topicNotFound;
+
+  /// Failed to load topic error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load topic: {error}'**
+  String failedToLoadTopic(String error);
+
+  /// Idea submitted success message
+  ///
+  /// In en, this message translates to:
+  /// **'Idea submitted successfully!'**
+  String get ideaSubmittedSuccessfully;
+
+  /// Failed to submit idea error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to submit idea: {error}'**
+  String failedToSubmitIdea(String error);
+
+  /// Share idea title
+  ///
+  /// In en, this message translates to:
+  /// **'Share Your Idea'**
+  String get shareYourIdea;
+
+  /// Anonymous submissions message
+  ///
+  /// In en, this message translates to:
+  /// **'All submissions are anonymous - your perspective matters!'**
+  String get anonymousSubmissions;
+
+  /// Your idea label
+  ///
+  /// In en, this message translates to:
+  /// **'Your Idea'**
+  String get yourIdea;
+
+  /// Idea input placeholder
+  ///
+  /// In en, this message translates to:
+  /// **'Share your thoughts, ideas, or concerns... (Be specific and constructive)'**
+  String get ideaPlaceholder;
+
+  /// Multiple submissions note
+  ///
+  /// In en, this message translates to:
+  /// **'You can submit multiple ideas. All submissions are anonymous.'**
+  String get multipleSubmissionsNote;
+
+  /// Submitting state
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting...'**
+  String get submitting;
+
+  /// Submit idea button
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Idea'**
+  String get submitIdea;
+
+  /// All ideas title
+  ///
+  /// In en, this message translates to:
+  /// **'All Ideas'**
+  String get allIdeas;
+
+  /// Retry button
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get retry;
+
+  /// No ideas message
+  ///
+  /// In en, this message translates to:
+  /// **'No ideas yet'**
+  String get noIdeasYet;
+
+  /// Be first to share message
+  ///
+  /// In en, this message translates to:
+  /// **'Be the first to share your thoughts!'**
+  String get beFirstToShare;
+
+  /// Time ago format
+  ///
+  /// In en, this message translates to:
+  /// **'{time} ago'**
+  String timeAgo(String time);
+
+  /// Just now time
+  ///
+  /// In en, this message translates to:
+  /// **'Just now'**
+  String get justNow;
+
+  /// Days short format
+  ///
+  /// In en, this message translates to:
+  /// **'{count}d'**
+  String daysShort(int count);
+
+  /// Hours short format
+  ///
+  /// In en, this message translates to:
+  /// **'{count}h'**
+  String hoursShort(int count);
+
+  /// Minutes short format
+  ///
+  /// In en, this message translates to:
+  /// **'{count}m'**
+  String minutesShort(int count);
+
+  /// Start date label
+  ///
+  /// In en, this message translates to:
+  /// **'Start Date'**
+  String get startDate;
+
+  /// End date label
+  ///
+  /// In en, this message translates to:
+  /// **'End Date'**
+  String get endDate;
+
+  /// Topic created success message
+  ///
+  /// In en, this message translates to:
+  /// **'Topic created successfully!'**
+  String get topicCreatedSuccessfully;
+
+  /// Failed to create topic error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to create topic: {error}'**
+  String failedToCreateTopic(String error);
+
+  /// Discard changes dialog title
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes?'**
+  String get discardChanges;
+
+  /// Unsaved changes message
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Are you sure you want to leave?'**
+  String get unsavedChangesMessage;
+
+  /// Continue editing button
+  ///
+  /// In en, this message translates to:
+  /// **'Continue Editing'**
+  String get continueEditing;
+
+  /// Discard button
+  ///
+  /// In en, this message translates to:
+  /// **'Discard'**
+  String get discard;
+
+  /// Create new discussion topic title
+  ///
+  /// In en, this message translates to:
+  /// **'Create a New Discussion Topic'**
+  String get createNewDiscussionTopic;
+
+  /// Fill details to start subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Fill in the details to start a new community discussion'**
+  String get fillDetailsToStart;
+
+  /// Title label
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get title;
+
+  /// Title field hint
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a clear and concise title'**
+  String get titleHint;
+
+  /// Short description label
+  ///
+  /// In en, this message translates to:
+  /// **'Short Description'**
+  String get shortDescription;
+
+  /// Short description hint
+  ///
+  /// In en, this message translates to:
+  /// **'Brief overview of the topic (shown in cards)'**
+  String get shortDescriptionHint;
+
+  /// Full description label
+  ///
+  /// In en, this message translates to:
+  /// **'Full Description'**
+  String get fullDescription;
+
+  /// Full description hint
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed information about the topic'**
+  String get fullDescriptionHint;
+
+  /// Duration label
+  ///
+  /// In en, this message translates to:
+  /// **'Duration'**
+  String get duration;
+
+  /// Title required error
+  ///
+  /// In en, this message translates to:
+  /// **'Title is required'**
+  String get titleRequired;
+
+  /// Title min length error
+  ///
+  /// In en, this message translates to:
+  /// **'Title must be at least 3 characters'**
+  String get titleMinLength;
+
+  /// Title max length error
+  ///
+  /// In en, this message translates to:
+  /// **'Title must not exceed 255 characters'**
+  String get titleMaxLength;
+
+  /// Short description required error
+  ///
+  /// In en, this message translates to:
+  /// **'Short description is required'**
+  String get shortDescriptionRequired;
+
+  /// Short description min length error
+  ///
+  /// In en, this message translates to:
+  /// **'Short description must be at least 5 characters'**
+  String get shortDescriptionMinLength;
+
+  /// Short description max length error
+  ///
+  /// In en, this message translates to:
+  /// **'Short description must not exceed 500 characters'**
+  String get shortDescriptionMaxLength;
+
+  /// Description required error
+  ///
+  /// In en, this message translates to:
+  /// **'Description is required'**
+  String get descriptionRequired;
+
+  /// Description min length error
+  ///
+  /// In en, this message translates to:
+  /// **'Description must be at least 10 characters'**
+  String get descriptionMinLength;
+
+  /// Description max length error
+  ///
+  /// In en, this message translates to:
+  /// **'Description must not exceed 2500 characters'**
+  String get descriptionMaxLength;
+
+  /// Start date required error
+  ///
+  /// In en, this message translates to:
+  /// **'Start date is required'**
+  String get startDateRequired;
+
+  /// End date required error
+  ///
+  /// In en, this message translates to:
+  /// **'End date is required'**
+  String get endDateRequired;
+
+  /// End date after start error
+  ///
+  /// In en, this message translates to:
+  /// **'End date must be after start date'**
+  String get endDateAfterStart;
+
+  /// User not authenticated error
+  ///
+  /// In en, this message translates to:
+  /// **'User not authenticated'**
+  String get userNotAuthenticated;
+
+  /// Topic updated success message
+  ///
+  /// In en, this message translates to:
+  /// **'Topic updated successfully!'**
+  String get topicUpdatedSuccessfully;
+
+  /// Failed to update topic error
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to update topic: {error}'**
+  String failedToUpdateTopic(String error);
+
+  /// Topic ID not provided error
+  ///
+  /// In en, this message translates to:
+  /// **'Error: Topic ID not provided'**
+  String get errorTopicIdNotProvided;
+
+  /// Error loading topic title
+  ///
+  /// In en, this message translates to:
+  /// **'Error Loading Topic'**
+  String get errorLoadingTopic;
+
+  /// Back to surveys button
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Surveys'**
+  String get backToSurveys;
+
+  /// Detailed description label
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed Description'**
+  String get detailedDescription;
+
+  /// Topic opens label
+  ///
+  /// In en, this message translates to:
+  /// **'Topic Opens'**
+  String get topicOpens;
+
+  /// Topic closes label
+  ///
+  /// In en, this message translates to:
+  /// **'Topic Closes'**
+  String get topicCloses;
+
+  /// Update discussion topic title
+  ///
+  /// In en, this message translates to:
+  /// **'Update Discussion Topic'**
+  String get updateDiscussionTopic;
+
+  /// Modify details message
+  ///
+  /// In en, this message translates to:
+  /// **'Modify the details of this discussion topic'**
+  String get modifyDetailsMessage;
+
+  /// Go to login button
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Login'**
+  String get goToLogin;
+
+  /// Page not found title
+  ///
+  /// In en, this message translates to:
+  /// **'Page Not Found'**
+  String get pageNotFound;
+
+  /// Page not found message
+  ///
+  /// In en, this message translates to:
+  /// **'The page you are looking for does not exist.'**
+  String get pageNotFoundMessage;
+
+  /// Created by label
+  ///
+  /// In en, this message translates to:
+  /// **'Created by'**
+  String get createdBy;
+
+  /// From date label
+  ///
+  /// In en, this message translates to:
+  /// **'From'**
+  String get from;
+
+  /// To date label
+  ///
+  /// In en, this message translates to:
+  /// **'to'**
+  String get to;
+
+  /// Last updated label
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated'**
+  String get lastUpdated;
+
+  /// Timeline section label
+  ///
+  /// In en, this message translates to:
+  /// **'Timeline'**
+  String get timeline;
+
+  /// Created label
+  ///
+  /// In en, this message translates to:
+  /// **'Created'**
+  String get created;
+
+  /// Until date label
+  ///
+  /// In en, this message translates to:
+  /// **'Until'**
+  String get until;
+
+  /// Active topics stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Active Topics'**
+  String get activeTopics;
+
+  /// Your contributions stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Your Contributions'**
+  String get yourContributions;
+
+  /// Total participants stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Participants'**
+  String get totalParticipants;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

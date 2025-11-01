@@ -90,6 +90,16 @@
     "description": "Try again button"
   },
 
+  "welcomeBack": "Willkommen zurück!",
+  "@welcomeBack": {
+    "description": "Dashboard welcome title"
+  },
+
+  "sharePerspectives": "Teilen Sie Ihre vielfältigen Perspektiven und helfen Sie mit, gemeinsam bessere Entscheidungen zu treffen",
+  "@sharePerspectives": {
+    "description": "Dashboard subtitle"
+  },
+
   "loading": "Wird geladen...",
   "@loading": {
     "description": "Loading message"
@@ -318,5 +328,480 @@
   "searchUsers": "Suche nach Name, E-Mail oder Rolle...",
   "@searchUsers": {
     "description": "Search users placeholder"
+  },
+
+  "welcomeToConsensusHub": "Willkommen bei Consensus Hub",
+  "@welcomeToConsensusHub": {
+    "description": "Login page welcome title"
+  },
+
+  "signInToAccount": "Melden Sie sich bei Ihrem Konto an, um Ihre Erkenntnisse zu teilen",
+  "@signInToAccount": {
+    "description": "Login page subtitle"
+  },
+
+  "emailAddress": "E-Mail-Adresse",
+  "@emailAddress": {
+    "description": "Email field label"
+  },
+
+  "emailPlaceholder": "sie@beispiel.com",
+  "@emailPlaceholder": {
+    "description": "Email field placeholder"
+  },
+
+  "emailHelperText": "Tipp: Verwenden Sie admin@endress.com für die Admin-Ansicht",
+  "@emailHelperText": {
+    "description": "Email field helper text"
+  },
+
+  "passwordPlaceholder": "Geben Sie Ihr Passwort ein",
+  "@passwordPlaceholder": {
+    "description": "Password field placeholder"
+  },
+
+  "signIn": "Anmelden",
+  "@signIn": {
+    "description": "Sign in button"
+  },
+
+  "pleaseEnterEmail": "Bitte geben Sie Ihre E-Mail-Adresse ein",
+  "@pleaseEnterEmail": {
+    "description": "Email required error"
+  },
+
+  "pleaseEnterPassword": "Bitte geben Sie Ihr Passwort ein",
+  "@pleaseEnterPassword": {
+    "description": "Password required error"
+  },
+
+  "loginFailed": "Anmeldung fehlgeschlagen: {error}",
+  "@loginFailed": {
+    "description": "Login error message",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "accessDenied": "Zugriff verweigert",
+  "@accessDenied": {
+    "description": "Access denied title"
+  },
+
+  "noPermission": "Sie haben keine Berechtigung, auf diesen Inhalt zuzugreifen.",
+  "@noPermission": {
+    "description": "No permission message"
+  },
+
+  "goToDashboard": "Zum Dashboard gehen",
+  "@goToDashboard": {
+    "description": "Go to dashboard button"
+  },
+
+  "topicNotFound": "Thema nicht gefunden",
+  "@topicNotFound": {
+    "description": "Topic not found error"
+  },
+
+  "failedToLoadTopic": "Fehler beim Laden des Themas: {error}",
+  "@failedToLoadTopic": {
+    "description": "Failed to load topic error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "ideaSubmittedSuccessfully": "Idee erfolgreich eingereicht!",
+  "@ideaSubmittedSuccessfully": {
+    "description": "Idea submitted success message"
+  },
+
+  "failedToSubmitIdea": "Fehler beim Einreichen der Idee: {error}",
+  "@failedToSubmitIdea": {
+    "description": "Failed to submit idea error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "shareYourIdea": "Teilen Sie Ihre Idee",
+  "@shareYourIdea": {
+    "description": "Share idea title"
+  },
+
+  "anonymousSubmissions": "Alle Einreichungen sind anonym - Ihre Perspektive zählt!",
+  "@anonymousSubmissions": {
+    "description": "Anonymous submissions message"
+  },
+
+  "yourIdea": "Ihre Idee",
+  "@yourIdea": {
+    "description": "Your idea label"
+  },
+
+  "ideaPlaceholder": "Teilen Sie Ihre Gedanken, Ideen oder Bedenken... (Seien Sie konkret und konstruktiv)",
+  "@ideaPlaceholder": {
+    "description": "Idea input placeholder"
+  },
+
+  "multipleSubmissionsNote": "Sie können mehrere Ideen einreichen. Alle Einreichungen sind anonym.",
+  "@multipleSubmissionsNote": {
+    "description": "Multiple submissions note"
+  },
+
+  "submitting": "Wird gesendet...",
+  "@submitting": {
+    "description": "Submitting state"
+  },
+
+  "submitIdea": "Idee einreichen",
+  "@submitIdea": {
+    "description": "Submit idea button"
+  },
+
+  "allIdeas": "Alle Ideen",
+  "@allIdeas": {
+    "description": "All ideas title"
+  },
+
+  "retry": "Wiederholen",
+  "@retry": {
+    "description": "Retry button"
+  },
+
+  "noIdeasYet": "Noch keine Ideen",
+  "@noIdeasYet": {
+    "description": "No ideas message"
+  },
+
+  "beFirstToShare": "Seien Sie der Erste, der seine Gedanken teilt!",
+  "@beFirstToShare": {
+    "description": "Be first to share message"
+  },
+
+  "timeAgo": "Vor {time}",
+  "@timeAgo": {
+    "description": "Time ago format",
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+
+  "justNow": "Gerade eben",
+  "@justNow": {
+    "description": "Just now time"
+  },
+
+  "daysShort": "{count}T",
+  "@daysShort": {
+    "description": "Days short format",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "hoursShort": "{count}Std",
+  "@hoursShort": {
+    "description": "Hours short format",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "minutesShort": "{count}Min",
+  "@minutesShort": {
+    "description": "Minutes short format",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "startDate": "Startdatum",
+  "@startDate": {
+    "description": "Start date label"
+  },
+
+  "endDate": "Enddatum",
+  "@endDate": {
+    "description": "End date label"
+  },
+
+  "topicCreatedSuccessfully": "Thema erfolgreich erstellt!",
+  "@topicCreatedSuccessfully": {
+    "description": "Topic created success message"
+  },
+
+  "failedToCreateTopic": "Fehler beim Erstellen des Themas: {error}",
+  "@failedToCreateTopic": {
+    "description": "Failed to create topic error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "discardChanges": "Änderungen verwerfen?",
+  "@discardChanges": {
+    "description": "Discard changes dialog title"
+  },
+
+  "unsavedChangesMessage": "Sie haben nicht gespeicherte Änderungen. Möchten Sie wirklich fortfahren?",
+  "@unsavedChangesMessage": {
+    "description": "Unsaved changes message"
+  },
+
+  "continueEditing": "Bearbeitung fortsetzen",
+  "@continueEditing": {
+    "description": "Continue editing button"
+  },
+
+  "discard": "Verwerfen",
+  "@discard": {
+    "description": "Discard button"
+  },
+
+  "createNewDiscussionTopic": "Neues Diskussionsthema erstellen",
+  "@createNewDiscussionTopic": {
+    "description": "Create new discussion topic title"
+  },
+
+  "fillDetailsToStart": "Füllen Sie die Details aus, um eine neue Community-Diskussion zu starten",
+  "@fillDetailsToStart": {
+    "description": "Fill details to start subtitle"
+  },
+
+  "title": "Titel",
+  "@title": {
+    "description": "Title label"
+  },
+
+  "titleHint": "Geben Sie einen klaren und prägnanten Titel ein",
+  "@titleHint": {
+    "description": "Title field hint"
+  },
+
+  "shortDescription": "Kurzbeschreibung",
+  "@shortDescription": {
+    "description": "Short description label"
+  },
+
+  "shortDescriptionHint": "Kurzer Überblick über das Thema (in Karten angezeigt)",
+  "@shortDescriptionHint": {
+    "description": "Short description hint"
+  },
+
+  "fullDescription": "Vollständige Beschreibung",
+  "@fullDescription": {
+    "description": "Full description label"
+  },
+
+  "fullDescriptionHint": "Detaillierte Informationen zum Thema",
+  "@fullDescriptionHint": {
+    "description": "Full description hint"
+  },
+
+  "duration": "Dauer",
+  "@duration": {
+    "description": "Duration label"
+  },
+
+  "titleRequired": "Titel ist erforderlich",
+  "@titleRequired": {
+    "description": "Title required error"
+  },
+
+  "titleMinLength": "Titel muss mindestens 3 Zeichen lang sein",
+  "@titleMinLength": {
+    "description": "Title min length error"
+  },
+
+  "titleMaxLength": "Titel darf 255 Zeichen nicht überschreiten",
+  "@titleMaxLength": {
+    "description": "Title max length error"
+  },
+
+  "shortDescriptionRequired": "Kurzbeschreibung ist erforderlich",
+  "@shortDescriptionRequired": {
+    "description": "Short description required error"
+  },
+
+  "shortDescriptionMinLength": "Kurzbeschreibung muss mindestens 5 Zeichen lang sein",
+  "@shortDescriptionMinLength": {
+    "description": "Short description min length error"
+  },
+
+  "shortDescriptionMaxLength": "Kurzbeschreibung darf 500 Zeichen nicht überschreiten",
+  "@shortDescriptionMaxLength": {
+    "description": "Short description max length error"
+  },
+
+  "descriptionRequired": "Beschreibung ist erforderlich",
+  "@descriptionRequired": {
+    "description": "Description required error"
+  },
+
+  "descriptionMinLength": "Beschreibung muss mindestens 10 Zeichen lang sein",
+  "@descriptionMinLength": {
+    "description": "Description min length error"
+  },
+
+  "descriptionMaxLength": "Beschreibung darf 2500 Zeichen nicht überschreiten",
+  "@descriptionMaxLength": {
+    "description": "Description max length error"
+  },
+
+  "startDateRequired": "Startdatum ist erforderlich",
+  "@startDateRequired": {
+    "description": "Start date required error"
+  },
+
+  "endDateRequired": "Enddatum ist erforderlich",
+  "@endDateRequired": {
+    "description": "End date required error"
+  },
+
+  "endDateAfterStart": "Enddatum muss nach dem Startdatum liegen",
+  "@endDateAfterStart": {
+    "description": "End date after start error"
+  },
+
+  "userNotAuthenticated": "Benutzer nicht authentifiziert",
+  "@userNotAuthenticated": {
+    "description": "User not authenticated error"
+  },
+
+  "topicUpdatedSuccessfully": "Thema erfolgreich aktualisiert!",
+  "@topicUpdatedSuccessfully": {
+    "description": "Topic updated success message"
+  },
+
+  "failedToUpdateTopic": "Fehler beim Aktualisieren des Themas: {error}",
+  "@failedToUpdateTopic": {
+    "description": "Failed to update topic error",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "errorTopicIdNotProvided": "Fehler: Themen-ID nicht angegeben",
+  "@errorTopicIdNotProvided": {
+    "description": "Topic ID not provided error"
+  },
+
+  "errorLoadingTopic": "Fehler beim Laden des Themas",
+  "@errorLoadingTopic": {
+    "description": "Error loading topic title"
+  },
+
+  "backToSurveys": "Zurück zu Umfragen",
+  "@backToSurveys": {
+    "description": "Back to surveys button"
+  },
+
+  "detailedDescription": "Detaillierte Beschreibung",
+  "@detailedDescription": {
+    "description": "Detailed description label"
+  },
+
+  "topicOpens": "Thema öffnet",
+  "@topicOpens": {
+    "description": "Topic opens label"
+  },
+
+  "topicCloses": "Thema schließt",
+  "@topicCloses": {
+    "description": "Topic closes label"
+  },
+
+  "updateDiscussionTopic": "Diskussionsthema aktualisieren",
+  "@updateDiscussionTopic": {
+    "description": "Update discussion topic title"
+  },
+
+  "modifyDetailsMessage": "Details dieses Diskussionsthemas ändern",
+  "@modifyDetailsMessage": {
+    "description": "Modify details message"
+  },
+
+  "goToLogin": "Zur Anmeldung gehen",
+  "@goToLogin": {
+    "description": "Go to login button"
+  },
+
+  "pageNotFound": "Seite nicht gefunden",
+  "@pageNotFound": {
+    "description": "Page not found title"
+  },
+
+  "pageNotFoundMessage": "Die gesuchte Seite existiert nicht.",
+  "@pageNotFoundMessage": {
+    "description": "Page not found message"
+  },
+
+  "createdBy": "Erstellt von",
+  "@createdBy": {
+    "description": "Created by label"
+  },
+
+  "from": "Von",
+  "@from": {
+    "description": "From date label"
+  },
+
+  "to": "bis",
+  "@to": {
+    "description": "To date label"
+  },
+
+  "lastUpdated": "Zuletzt aktualisiert",
+  "@lastUpdated": {
+    "description": "Last updated label"
+  },
+
+  "timeline": "Zeitleiste",
+  "@timeline": {
+    "description": "Timeline section label"
+  },
+
+  "created": "Erstellt",
+  "@created": {
+    "description": "Created label"
+  },
+
+  "until": "Bis",
+  "@until": {
+    "description": "Until date label"
+  },
+
+  "activeTopics": "Aktive Themen",
+  "@activeTopics": {
+    "description": "Active topics stat label"
+  },
+
+  "yourContributions": "Ihre Beiträge",
+  "@yourContributions": {
+    "description": "Your contributions stat label"
+  },
+
+  "totalParticipants": "Gesamtteilnehmer",
+  "@totalParticipants": {
+    "description": "Total participants stat label"
   }
 }

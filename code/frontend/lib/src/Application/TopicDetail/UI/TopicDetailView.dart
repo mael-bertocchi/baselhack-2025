@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
 import '../../Dashboard/UI/Components/TopicCard.dart';
@@ -53,8 +54,10 @@ class TopicDetailViewState extends State<TopicDetailView> {
       final topic = await _dashboardService.getTopicById(widget.topicId);
       
       if (topic == null) {
+        if (!mounted) return;
+        final l10n = AppLocalizations.of(context)!;
         setState(() {
-          _error = 'Topic not found';
+          _error = l10n.topicNotFound;
           _isLoading = false;
         });
         return;
@@ -69,8 +72,10 @@ class TopicDetailViewState extends State<TopicDetailView> {
         _isLoading = false;
       });
     } catch (e) {
+      if (!mounted) return;
+      final l10n = AppLocalizations.of(context)!;
       setState(() {
-        _error = 'Failed to load topic: ${e.toString()}';
+        _error = l10n.failedToLoadTopic(e.toString());
         _isLoading = false;
       });
       if (mounted) {
@@ -113,12 +118,13 @@ class TopicDetailViewState extends State<TopicDetailView> {
       });
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Idea submitted successfully!'),
-            duration: Duration(seconds: 2),
+          SnackBar(
+            content: Text(l10n.ideaSubmittedSuccessfully),
+            duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Color(0xFF14B8A6),
+            backgroundColor: const Color(0xFF14B8A6),
           ),
         );
       }
@@ -128,9 +134,10 @@ class TopicDetailViewState extends State<TopicDetailView> {
       });
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to submit idea: ${e.toString()}'),
+            content: Text(l10n.failedToSubmitIdea(e.toString())),
             duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
             backgroundColor: const Color(0xFFEF4444),
@@ -196,6 +203,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: SharedAppBar(
@@ -219,9 +227,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
                           color: Color(0xFFEF4444),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
-                          'Error Loading Topic',
-                          style: TextStyle(
+                        Text(
+                          l10n.errorLoadingTopic,
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w700,
                             color: AppColors.textPrimary,
@@ -240,7 +248,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                         ElevatedButton.icon(
                           onPressed: _loadTopicAndSubmissions,
                           icon: const Icon(Icons.refresh),
-                          label: const Text('Try Again'),
+                          label: Text(l10n.tryAgain),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.blue,
                             foregroundColor: AppColors.white,
@@ -273,16 +281,16 @@ class TopicDetailViewState extends State<TopicDetailView> {
                 onTap: () => Navigator.of(context).pop(),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(
+                  children: [
+                    const Icon(
                       Icons.arrow_back,
                       color: AppColors.blue,
                       size: 20,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
-                      'Back to Surveys',
-                      style: TextStyle(
+                      l10n.backToSurveys,
+                      style: const TextStyle(
                         fontSize: 16,
                         color: AppColors.blue,
                         fontWeight: FontWeight.w600,
@@ -295,7 +303,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
               // Info ligne avec dates et auteur
               SelectableText(
-                'Created by: ${_topic!.authorId} • From ${_formatDate(_topic!.startDate)} to ${_formatDate(_topic!.endDate)} • Last updated ${_formatDate(_topic!.updatedAt)}',
+                '${l10n.createdBy}: ${_topic!.authorId} • ${l10n.from} ${_formatDate(_topic!.startDate)} ${l10n.to} ${_formatDate(_topic!.endDate)} • ${l10n.lastUpdated} ${_formatDate(_topic!.updatedAt)}',
                 style: const TextStyle(
                   fontSize: 14,
                   color: AppColors.textSecondary,
@@ -459,9 +467,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 const SizedBox(height: 32),
 
                                 // Full Description
-                                const Text(
-                                  'Detailed Description',
-                                  style: TextStyle(
+                                Text(
+                                  l10n.detailedDescription,
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.textPrimary,
@@ -545,9 +553,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 const SizedBox(height: 32),
 
                                 // Timeline
-                                const Text(
-                                  'Timeline',
-                                  style: TextStyle(
+                                Text(
+                                  l10n.timeline,
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.textPrimary,
@@ -555,19 +563,19 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 ),
                                 const SizedBox(height: 12),
                                 _buildTimelineItem(
-                                  'Topic Opens',
+                                  l10n.topicOpens,
                                   _formatDate(_topic!.startDate),
                                   Icons.play_circle_outline,
                                 ),
                                 const SizedBox(height: 8),
                                 _buildTimelineItem(
-                                  'Topic Closes',
+                                  l10n.topicCloses,
                                   _formatDate(_topic!.endDate),
                                   Icons.check_circle_outline,
                                 ),
                                 const SizedBox(height: 8),
                                 _buildTimelineItem(
-                                  'Created',
+                                  l10n.created,
                                   _formatDate(_topic!.createdAt),
                                   Icons.calendar_today,
                                 ),
@@ -605,26 +613,26 @@ class TopicDetailViewState extends State<TopicDetailView> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Share Your Idea',
-                        style: TextStyle(
+                      Text(
+                        l10n.shareYourIdea,
+                        style: const TextStyle(
                           fontSize: 28,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        'All submissions are anonymous - your perspective matters!',
-                        style: TextStyle(
+                      Text(
+                        l10n.anonymousSubmissions,
+                        style: const TextStyle(
                           fontSize: 15,
                           color: AppColors.textSecondary,
                         ),
                       ),
                       const SizedBox(height: 28),
-                      const Text(
-                        'Your Idea',
-                        style: TextStyle(
+                      Text(
+                        l10n.yourIdea,
+                        style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: AppColors.textPrimary,
@@ -647,7 +655,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                           );
                         },
                         decoration: InputDecoration(
-                          hintText: 'Share your thoughts, ideas, or concerns... (Be specific and constructive)',
+                          hintText: l10n.ideaPlaceholder,
                           hintStyle: const TextStyle(
                             color: Color(0xFF9CA3AF),
                             fontSize: 14,
@@ -677,9 +685,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const Text(
-                        'You can submit multiple ideas. All submissions are anonymous.',
-                        style: TextStyle(
+                      Text(
+                        l10n.multipleSubmissionsNote,
+                        style: const TextStyle(
                           fontSize: 13,
                           color: AppColors.textSecondary,
                         ),
@@ -700,7 +708,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 )
                               : const Icon(Icons.send, size: 18),
                           label: Text(
-                            _isSubmitting ? 'Submitting...' : 'Submit Idea',
+                            _isSubmitting ? l10n.submitting : l10n.submitIdea,
                             style: const TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
@@ -731,9 +739,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
               // Section All Ideas
               Row(
                 children: [
-                  const Text(
-                    'All Ideas',
-                    style: TextStyle(
+                  Text(
+                    l10n.allIdeas,
+                    style: const TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
@@ -801,7 +809,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                       ),
                       TextButton(
                         onPressed: _loadTopicAndSubmissions,
-                        child: const Text('Retry'),
+                        child: Text(l10n.retry),
                       ),
                     ],
                   ),
@@ -817,27 +825,27 @@ class TopicDetailViewState extends State<TopicDetailView> {
                     ),
                   ),
                   padding: const EdgeInsets.all(32),
-                  child: const Center(
+                  child: Center(
                     child: Column(
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.lightbulb_outline,
                           size: 48,
                           color: AppColors.textSecondary,
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
-                          'No ideas yet',
-                          style: TextStyle(
+                          l10n.noIdeasYet,
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w600,
                             color: AppColors.textPrimary,
                           ),
                         ),
-                        SizedBox(height: 8),
+                        const SizedBox(height: 8),
                         Text(
-                          'Be the first to share your thoughts!',
-                          style: TextStyle(
+                          l10n.beFirstToShare,
+                          style: const TextStyle(
                             fontSize: 14,
                             color: AppColors.textSecondary,
                           ),

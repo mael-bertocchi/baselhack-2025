@@ -3,6 +3,7 @@ import 'package:frontend/src/Application/Shared/UI/Components.dart';
 import 'package:frontend/src/theme/AppColors.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
 import 'package:frontend/src/routes/AppRoutes.dart';
+import 'package:frontend/l10n/app_localizations.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -25,6 +26,8 @@ class LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       backgroundColor: AppColors.background,
       body: SelectionArea(
@@ -45,9 +48,9 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 24),
 
-              const SelectableText(
-                'Welcome to Consensus Hub',
-                style: TextStyle(
+              SelectableText(
+                l10n.welcomeToConsensusHub,
+                style: const TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: AppColors.textPrimary,
@@ -55,9 +58,9 @@ class LoginViewState extends State<LoginView> {
               ),
               const SizedBox(height: 8),
 
-              const SelectableText(
-                'Sign in to your account to share your insights',
-                style: TextStyle(
+              SelectableText(
+                l10n.signInToAccount,
+                style: const TextStyle(
                   fontSize: 15,
                   color: AppColors.textSecondary,
                 ),
@@ -66,9 +69,9 @@ class LoginViewState extends State<LoginView> {
 
               CustomTextField(
                 controller: emailController,
-                labelText: 'Email Address',
-                hintText: 'you@example.com',
-                helperText: 'Tip: Use admin@endress.com for admin view',
+                labelText: l10n.emailAddress,
+                hintText: l10n.emailPlaceholder,
+                helperText: l10n.emailHelperText,
                 keyboardType: TextInputType.emailAddress,
                 prefixIcon: const Icon(
                   Icons.email_outlined,
@@ -79,8 +82,8 @@ class LoginViewState extends State<LoginView> {
 
               CustomTextField(
                 controller: passwordController,
-                labelText: 'Password',
-                hintText: 'Enter your password',
+                labelText: l10n.password,
+                hintText: l10n.passwordPlaceholder,
                 obscureText: !isPasswordVisible,
                 prefixIcon: const Icon(
                   Icons.lock_outline,
@@ -103,7 +106,7 @@ class LoginViewState extends State<LoginView> {
               const SizedBox(height: 32),
 
               CustomButton.primary(
-                text: 'Sign In',
+                text: l10n.signIn,
                 width: double.infinity,
                 onPressed: () async {
                   final email = emailController.text.trim();
@@ -111,14 +114,14 @@ class LoginViewState extends State<LoginView> {
                   if (email.isEmpty) {
                     // simple client-side feedback
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter your email')),
+                      SnackBar(content: Text(l10n.pleaseEnterEmail)),
                     );
                     return;
                   }
                   
                   if (password.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Please enter your password')),
+                      SnackBar(content: Text(l10n.pleaseEnterPassword)),
                     );
                     return;
                   }
@@ -136,7 +139,7 @@ class LoginViewState extends State<LoginView> {
                     if (mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Login failed: ${e.toString()}'),
+                          content: Text(l10n.loginFailed(e.toString())),
                           backgroundColor: Colors.red,
                         ),
                       );
