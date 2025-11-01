@@ -1,6 +1,7 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
 import authRoutes from "@modules/auth/auth.route";
+import topicsRoutes from "@modules/topics/topics.routes";
 import healthRoutes from "@modules/health/health.routes";
 import corsPlugin from "@plugins/cors";
 import dbPlugin from "@plugins/database";
@@ -51,6 +52,7 @@ async function startApp(): Promise<void> {
 
     await app.register(healthRoutes, { prefix: `${API_VERSION}/health` });
 	await app.register(authRoutes, { prefix: `${API_VERSION}/auth` });
+    await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics` });
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {
         reply.status(404).send({

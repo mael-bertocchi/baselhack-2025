@@ -12,7 +12,8 @@ export type TopicStatus = 'open' | 'closed' | 'archived';
  */
 export interface Topic {
     title: string; /*!> Title of the discussion topic */
-    description: string; /*!> Description providing context */
+    short_description: string; /*!> Short description providing context */
+    description: string; /*!> Long description providing more information about the topic */
     startDate: Date; /*!> Date when the topic becomes active */
     endDate: Date; /*!> Date when the topic closes */
     createdAt: Date; /*!> Timestamp when the topic was created */
