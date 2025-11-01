@@ -5,6 +5,7 @@ import healthRoutes from "@modules/health/health.routes";
 import topicResultRoutes from "@modules/topic-result/topic-result.routes";
 import topicsRoutes from "@modules/topics/topics.routes";
 import usersRoutes from "@modules/users/users.routes";
+import statsRoutes from "@modules/stats/stats.routes";
 import authGuardPlugin from "@plugins/auth-guard";
 import corsPlugin from "@plugins/cors";
 import dbPlugin from "@plugins/database";
@@ -60,6 +61,7 @@ async function startApp(): Promise<void> {
     await app.register(usersRoutes, { prefix: `${API_VERSION}/users` });
     await app.register(topicsRoutes, { prefix: `${API_VERSION}/topics` });
     await app.register(topicResultRoutes, { prefix: `${API_VERSION}/topic-results` });
+    await app.register(statsRoutes, { prefix: `${API_VERSION}/stats` })
 
     app.setNotFoundHandler((request: FastifyRequest, reply: FastifyReply) => {
         reply.status(404).send({
