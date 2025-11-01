@@ -103,5 +103,60 @@
         "type": "String"
       }
     }
+  },
+
+  "editTopic": "Modifier le sujet",
+  "@editTopic": {
+    "description": "Edit topic button"
+  },
+
+  "deleteTopic": "Supprimer le sujet",
+  "@deleteTopic": {
+    "description": "Delete topic button"
+  },
+
+  "confirmDelete": "Confirmer la suppression",
+  "@confirmDelete": {
+    "description": "Delete confirmation dialog title"
+  },
+
+  "deleteTopicMessage": "Êtes-vous sûr de vouloir supprimer ce sujet ? Cette action ne peut pas être annulée.",
+  "@deleteTopicMessage": {
+    "description": "Delete confirmation message"
+  },
+
+  "cancel": "Annuler",
+  "@cancel": {
+    "description": "Cancel button"
+  },
+
+  "delete": "Supprimer",
+  "@delete": {
+    "description": "Delete button"
+  },
+
+  "topicDeleted": "Sujet supprimé avec succès",
+  "@topicDeleted": {
+    "description": "Topic deletion success message"
+  },
+
+  "deleteTopicFailed": "Échec de la suppression du sujet",
+  "@deleteTopicFailed": {
+    "description": "Topic deletion error message"
+  },
+
+  "updateTopic": "Mettre à jour le sujet",
+  "@updateTopic": {
+    "description": "Update topic button"
+  },
+
+  "topicUpdated": "Sujet mis à jour avec succès",
+  "@topicUpdated": {
+    "description": "Topic update success message"
+  },
+
+  "updateTopicFailed": "Échec de la mise à jour du sujet",
+  "@updateTopicFailed": {
+    "description": "Topic update error message"
   }
 }
