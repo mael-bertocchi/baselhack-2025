@@ -56,7 +56,9 @@ const environment: Environment = {
     DB_URI: validateVariable('DB_URI', process.env.DB_URI),
     JWT_ACCESS_EXPIRES_IN: validateVariable('JWT_ACCESS_EXPIRES_IN', process.env.JWT_ACCESS_EXPIRES_IN),
     JWT_REFRESH_EXPIRES_IN: validateVariable('JWT_REFRESH_EXPIRES_IN', process.env.JWT_REFRESH_EXPIRES_IN),
-    JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET)
+    JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET),
+    AGENT_AUTHENTICATION_PRIVATE_KEY_PATH: validateVariable('AGENT_AUTHENTICATION_PRIVATE_KEY_PATH', process.env.AGENT_AUTHENTICATION_PRIVATE_KEY_PATH),
+    AGENT_URL: validateVariable('AGENT_URL', process.env.AGENT_URL),
 };
 
 export default environment;

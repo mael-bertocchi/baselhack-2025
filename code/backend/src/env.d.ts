@@ -10,5 +10,10 @@ declare namespace NodeJS {
     interface ProcessEnv {
         PORT: string;
         DB_URI: string;
+        JWT_ACCESS_EXPIRES_IN: string;
+        JWT_REFRESH_EXPIRES_IN: string;
+        JWT_SECRET: string;
+        AGENT_AUTHENTICATION_PRIVATE_KEY_PATH: string;
+        AGENT_URL: string;
     }
 }

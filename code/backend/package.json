@@ -27,10 +27,12 @@
     "@fastify/mongodb": "^9.0.2",
     "@fastify/rate-limit": "^10.3.0",
     "@types/bcrypt": "^6.0.0",
+    "@types/jsonwebtoken": "^9.0.10",
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "fastify": "^5.6.1",
     "fastify-plugin": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
