@@ -1,19 +1,17 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-
-interface TopicParams {
-    id: string;
-}
+import { TopicParams } from './topics.types';
+import topicsService from './topics.service';
 
 /**
  * @function getAllTopics
  * @description Return the list of the all topics.
  */
-function getAllTopics(request: FastifyRequest, reply: FastifyReply): void {
+async function getAllTopics(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.getAllTopics(request.server);
+
     reply.status(200).send({
         message: 'All topics.',
-        data: {
-            uptime: process.uptime()
-        }
+        data: result
     });
 }
 
