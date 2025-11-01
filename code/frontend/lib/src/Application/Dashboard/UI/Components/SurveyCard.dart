@@ -123,26 +123,26 @@ class _SurveyCardState extends State<SurveyCard> {
   Color _getStatusColor() {
     switch (widget.survey.status.toLowerCase()) {
       case 'active':
-        return AppColors.blue;
+        return const Color(0xFF7C3AED); // Violet
       case 'closed':
-        return AppColors.textSecondary;
+        return const Color(0xFF14B8A6); // Cyan/Teal
       case 'soon':
-        return AppColors.warning;
+        return const Color(0xFFEC4899); // Rose/Pink
       default:
-        return AppColors.warning;
+        return AppColors.blue;
     }
   }
 
   Color _getStatusBackgroundColor() {
     switch (widget.survey.status.toLowerCase()) {
       case 'active':
-        return AppColors.blueBackground;
+        return const Color(0xFFF3E8FF); // Violet clair
       case 'closed':
-        return AppColors.background;
+        return const Color(0xFFCCFBF1); // Cyan très clair
       case 'soon':
-        return const Color(0xFFFEF3C7);
+        return const Color(0xFFFCE7F3); // Rose clair
       default:
-        return const Color(0xFFFEF3C7);
+        return AppColors.blueBackground;
     }
   }
 
@@ -155,122 +155,136 @@ class _SurveyCardState extends State<SurveyCard> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         transform: Matrix4.translationValues(0, _isHovered ? -4 : 0, 0),
-        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: const Color(0xFFE5E7EB),
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(_isHovered ? 0.12 : 0.05),
-              blurRadius: _isHovered ? 20 : 10,
-              offset: Offset(0, _isHovered ? 8 : 2),
+              color: Colors.black.withOpacity(_isHovered ? 0.08 : 0.04),
+              blurRadius: _isHovered ? 16 : 8,
+              offset: Offset(0, _isHovered ? 6 : 2),
             ),
           ],
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header avec statut et catégorie
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 6,
-                  ),
-                  decoration: BoxDecoration(
-                    color: _getStatusBackgroundColor(),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: SelectableText(
-                    widget.survey.status,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: _getStatusColor(),
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Header avec statut et catégorie
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _getStatusBackgroundColor(),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      widget.survey.status,
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: _getStatusColor(),
+                      ),
                     ),
                   ),
-                ),
-                SelectableText(
-                  widget.survey.category,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: AppColors.textSecondary,
-                    fontWeight: FontWeight.w500,
+                  Text(
+                    widget.survey.category,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-
-            // Titre
-            SelectableText(
-              widget.survey.title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppColors.textPrimary,
+                ],
               ),
-            ),
-            const SizedBox(height: 8),
+              const SizedBox(height: 16),
 
-            // Description
-            SelectableText(
-              widget.survey.description,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.textSecondary,
-                height: 1.5,
+              // Titre
+              Text(
+                widget.survey.title,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.textPrimary,
+                  height: 1.3,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-              maxLines: 2,
-            ),
-            const SizedBox(height: 20),
+              const SizedBox(height: 12),
 
-            // Stats et bouton
-            Row(
-              children: [
-                // Nombre d'idées
-                const Icon(
-                  Icons.chat_bubble_outline,
-                  size: 18,
+              // Description
+              Text(
+                widget.survey.description,
+                style: const TextStyle(
+                  fontSize: 14,
                   color: AppColors.textSecondary,
+                  height: 1.6,
                 ),
-                const SizedBox(width: 6),
-                SelectableText(
-                  '${widget.survey.ideasCount} ideas',
-                  style: const TextStyle(
-                    fontSize: 13,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const Spacer(),
+              const SizedBox(height: 20),
+
+              // Stats et bouton
+              Row(
+                children: [
+                  // Nombre d'idées
+                  Icon(
+                    Icons.chat_bubble_outline,
+                    size: 18,
                     color: AppColors.textSecondary,
                   ),
-                ),
-                const SizedBox(width: 20),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${widget.survey.ideasCount} ideas',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
 
-                // Nombre de participants
-                const Icon(
-                  Icons.people_outline,
-                  size: 18,
-                  color: AppColors.textSecondary,
-                ),
-                const SizedBox(width: 6),
-                SelectableText(
-                  '${widget.survey.participantsCount} participants',
-                  style: const TextStyle(
-                    fontSize: 13,
+                  // Nombre de participants
+                  Icon(
+                    Icons.people_outline,
+                    size: 18,
                     color: AppColors.textSecondary,
                   ),
-                ),
-                const Spacer(),
+                  const SizedBox(width: 6),
+                  Text(
+                    '${widget.survey.participantsCount} participants',
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColors.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const Spacer(),
 
-                // Bouton View Survey
-                SizedBox(
-                  width: 140,
-                  child: ElevatedButton(
+                  // Bouton View Survey
+                  ElevatedButton(
                     onPressed: widget.onViewSurvey,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.blue,
+                      backgroundColor: AppColors.blueLight, // Teal/Cyan
                       foregroundColor: AppColors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 24,
+                        vertical: 12,
+                      ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -284,10 +298,10 @@ class _SurveyCardState extends State<SurveyCard> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
