@@ -1,5 +1,6 @@
 import topicsController from '@modules/topics/topics.controller';
 import { FastifyInstance } from 'fastify';
+import { createSchema } from './schemas/create.schema';
 
 /**
  * @function healthRoutes
@@ -7,6 +8,9 @@ import { FastifyInstance } from 'fastify';
  */
 async function topicsRoutes(app: FastifyInstance): Promise<void> {
     app.get('/', topicsController.getAllTopics);
+    app.post('/', {
+            schema: createSchema
+        }, topicsController.createTopic);
     app.get('/:id', topicsController.getTopicById);
 }
 

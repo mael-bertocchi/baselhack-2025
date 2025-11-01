@@ -1,7 +1,8 @@
 import { RequestError } from '@core/errors';
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { Topic } from '@modules/topics/topics.model';
+import { Topic, TopicStatus } from '@modules/topics/topics.model';
+import { CreateBody } from './topics.types';
 
 /**
  * @function getTopicsCollection
@@ -45,7 +46,41 @@ async function getTopicById(id: string, fastify: FastifyInstance) {
     return topic;
 }
 
+/**
+ * @function createTopic
+ * @description Create a new topic
+ */
+async function createTopic(data: CreateBody, fastify: FastifyInstance) {
+    const topicsCollection = getTopicsCollection(fastify);
+
+    const now = new Date();
+    const newTopic = {
+        title: data.title,
+        short_description: data.short_description,
+        description: data.description,
+        startDate: new Date(data.startDate),
+        endDate: new Date(data.endDate),
+        status: new Date(data.startDate) > now ? 'scheduled' : 'open' as TopicStatus,
+        authorId: data.authorId,
+        createdAt: now,
+        updatedAt: now,
+    }
+
+    const result = await topicsCollection.insertOne(newTopic);
+
+    const topic = await topicsCollection.findOne({ _id: result.insertedId });
+
+    if (!topic) {
+        throw new RequestError('Failed to create topic', 500);
+    }
+
+    return topic;
+}
+
+
+
 export default {
     getAllTopics,
-    getTopicById
+    getTopicById,
+    createTopic
 };

@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { TopicParams } from './topics.types';
+import { TopicParams, CreateBody } from './topics.types';
 import topicsService from './topics.service';
 
 /**
@@ -22,14 +22,27 @@ async function getAllTopics(request: FastifyRequest, reply: FastifyReply): Promi
 async function getTopicById(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
     const result = await topicsService.getTopicById(request.params.id, request.server);
 
-
     reply.status(200).send({
         message: 'Successfully retrieved topic',
         data: result
     });
 }
 
+/**
+ * @function createTopic
+ * @description Create a new topic
+ */
+async function createTopic(request: FastifyRequest<{ Body: CreateBody }>, reply: FastifyReply): Promise<void> {
+    const result = await topicsService.createTopic(request.body, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully created a topic',
+        data: result
+    });
+}
+
 export default {
     getAllTopics,
-    getTopicById
+    getTopicById,
+    createTopic
 };

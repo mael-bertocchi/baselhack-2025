@@ -4,7 +4,7 @@ import { Maybe } from '@core/models';
  * @type TopicStatus
  * @description Represents the current state of a topic discussion.
  */
-export type TopicStatus = 'open' | 'closed' | 'archived';
+export type TopicStatus = 'scheduled' | 'open' | 'closed';
 
 /**
  * @interface Topic
