@@ -1,11 +1,13 @@
 # Minimal dependencies inferred
 python-dotenv
 mistralai
+requests
 pydantic
 fastapi
 
+# JWT verification
+cryptography
+PyJWT
+
 # Optional for ASGI support
 uvicorn[standard]
-
-# Optional for simple HTTP testing scripts
-requests
