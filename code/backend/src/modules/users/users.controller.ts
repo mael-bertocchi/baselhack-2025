@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
-import topicsService from './users.service';
+import usersService from './users.service';
 
 /**
  * @function getCurrentUser
@@ -10,7 +10,7 @@ async function getCurrentUser(request: FastifyRequest, reply: FastifyReply): Pro
         throw new Error('User is not authenticated');
     }
 
-    const result = await topicsService.getCurrentUser(request.authUser, request.server);
+    const result = await usersService.getCurrentUser(request.authUser, request.server);
 
     reply.status(200).send({
         message: 'Successfully retrieved logged user',
