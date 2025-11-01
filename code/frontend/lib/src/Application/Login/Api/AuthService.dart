@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'TokenStorage.dart';
+import 'package:frontend/src/routes/ApiRoutes.dart';
 
 /// Role enum matching backend UserRole type
 enum Role { administrator, manager, user }
@@ -106,7 +107,7 @@ class AuthService extends ChangeNotifier {
     if (_accessToken == null) return;
     
     final response = await http.get(
-      Uri.parse('$baseUrl/v1/users/me'),
+      Uri.parse('$baseUrl${ApiRoutes.userMe}'),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $_accessToken',
@@ -132,7 +133,7 @@ class AuthService extends ChangeNotifier {
   Future<void> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/v1/auth/signin'),
+        Uri.parse('$baseUrl${ApiRoutes.signin}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
@@ -174,7 +175,7 @@ class AuthService extends ChangeNotifier {
   }) async {
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/v1/auth/signup'),
+        Uri.parse('$baseUrl${ApiRoutes.signup}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,
@@ -217,7 +218,7 @@ class AuthService extends ChangeNotifier {
 
     try {
       final response = await http.post(
-        Uri.parse('$baseUrl/v1/auth/refresh'),
+        Uri.parse('$baseUrl${ApiRoutes.refresh}'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'refreshToken': _refreshToken,
