@@ -1,158 +1,138 @@
-import 'package:frontend/src/Application/Dashboard/UI/Components/SurveyCard.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'dart:convert';
+import 'package:frontend/src/routes/ApiRoutes.dart';
+import 'package:frontend/src/Application/Dashboard/UI/Components/TopicCard.dart';
 
 /// Service pour gérer les appels API du dashboard
-/// 
-/// TODO: Remplacer les méthodes mockées par de vrais appels HTTP
-/// Exemple avec package:http ou package:dio
 class DashboardApiService {
   // Singleton pattern
   static final DashboardApiService _instance = DashboardApiService._internal();
   factory DashboardApiService() => _instance;
   DashboardApiService._internal();
 
-  // TODO: Ajouter votre base URL API
-  // static const String baseUrl = 'https://api.example.com';
+  static String get baseUrl => dotenv.env['API_URL']!;
 
-  /// Récupère la liste des surveys
-  /// 
-  /// Exemple d'implémentation avec HTTP:
-  /// ```dart
-  /// Future<List<Survey>> getSurveys() async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/surveys'));
-  ///   if (response.statusCode == 200) {
-  ///     final List<dynamic> data = json.decode(response.body);
-  ///     return data.map((json) => Survey.fromJson(json)).toList();
-  ///   }
-  ///   throw Exception('Failed to load surveys');
-  /// }
-  /// ```
-  Future<List<Survey>> getSurveys() async {
-    // Simuler un délai réseau
-    await Future.delayed(const Duration(milliseconds: 500));
-    
-    // TODO: Remplacer par un vrai appel API
-    return const [
-      Survey(
-        title: 'Digital Transformation Strategy',
-        description: 'How should we prioritize digital initiatives across the organization?',
-        status: 'Active',
-        category: 'Strategy',
-        ideasCount: 24,
-        participantsCount: 18,
-      ),
-      Survey(
-        title: 'Workplace Flexibility',
-        description: 'What flexible work arrangements would improve productivity?',
-        status: 'Active',
-        category: 'HR',
-        ideasCount: 32,
-        participantsCount: 25,
-      ),
-      Survey(
-        title: 'Product Innovation',
-        description: 'What new features should we develop for our next product release?',
-        status: 'Active',
-        category: 'Product',
-        ideasCount: 18,
-        participantsCount: 14,
-      ),
-      Survey(
-        title: 'Sustainability Goals',
-        description: 'How can we reduce our environmental impact?',
-        status: 'Closed',
-        category: 'Sustainability',
-        ideasCount: 42,
-        participantsCount: 31,
-      ),
-      Survey(
-        title: 'Customer Experience',
-        description: 'What improvements would enhance customer satisfaction?',
-        status: 'Active',
-        category: 'Customer',
-        ideasCount: 15,
-        participantsCount: 12,
-      ),
-      Survey(
-        title: 'Team Collaboration Tools',
-        description: 'Which tools would best support our team collaboration?',
-        status: 'Active',
-        category: 'Operations',
-        ideasCount: 28,
-        participantsCount: 22,
-      ),
-    ];
+  /// Récupère la liste des topics depuis l'API
+  Future<List<Topic>> getTopics() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl${ApiRoutes.topics}'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final List<dynamic> topicsData = responseData['data'] as List<dynamic>;
+        
+        // Mapper les données de l'API vers des objets Topic
+        return topicsData.map((topicJson) {
+          return Topic(
+            id: topicJson['_id'] as String,
+            title: topicJson['title'] as String,
+            shortDescription: topicJson['short_description'] as String,
+            description: topicJson['description'] as String,
+            startDate: DateTime.parse(topicJson['startDate'] as String),
+            endDate: DateTime.parse(topicJson['endDate'] as String),
+            createdAt: DateTime.parse(topicJson['createdAt'] as String),
+            updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
+            status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
+            authorId: topicJson['authorId'] as String,
+          );
+        }).toList();
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to load topics');
+      }
+    } catch (e) {
+      print('Error fetching topics: $e');
+      rethrow;
+    }
+  }
+
+  /// Mappe le statut de l'API vers l'enum TopicStatus
+  TopicStatus _mapApiStatusToTopicStatus(String apiStatus) {
+    switch (apiStatus.toLowerCase()) {
+      case 'scheduled':
+      case 'open':
+        return TopicStatus.open;
+      case 'closed':
+        return TopicStatus.closed;
+      case 'archived':
+        return TopicStatus.archived;
+      default:
+        return TopicStatus.open;
+    }
   }
 
   /// Récupère les statistiques du dashboard
-  /// 
-  /// Exemple d'implémentation avec HTTP:
-  /// ```dart
-  /// Future<Map<String, int>> getDashboardStats() async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/dashboard/stats'));
-  ///   if (response.statusCode == 200) {
-  ///     return Map<String, int>.from(json.decode(response.body));
-  ///   }
-  ///   throw Exception('Failed to load stats');
-  /// }
-  /// ```
   Future<Map<String, int>> getDashboardStats() async {
-    // Simuler un délai réseau
-    await Future.delayed(const Duration(milliseconds: 300));
-    
-    // TODO: Remplacer par un vrai appel API
-    return {
-      'activeSurveys': 5,
-      'userContributions': 12,
-      'totalParticipants': 847,
-    };
+    try {
+      // TODO: Créer une route API pour les stats
+      // Pour l'instant, on calcule depuis les topics
+      final topics = await getTopics();
+      final activeCount = topics.where((t) => t.isActive).length;
+      
+      return {
+        'activeTopics': activeCount,
+        'userContributions': 0, // TODO: À implémenter avec l'API
+        'totalParticipants': 0, // TODO: À implémenter avec l'API
+      };
+    } catch (e) {
+      print('Error fetching dashboard stats: $e');
+      return {
+        'activeTopics': 0,
+        'userContributions': 0,
+        'totalParticipants': 0,
+      };
+    }
   }
 
-  /// Récupère une survey spécifique par son ID
-  /// 
-  /// Exemple d'implémentation:
-  /// ```dart
-  /// Future<Survey> getSurveyById(String id) async {
-  ///   final response = await http.get(Uri.parse('$baseUrl/surveys/$id'));
-  ///   if (response.statusCode == 200) {
-  ///     return Survey.fromJson(json.decode(response.body));
-  ///   }
-  ///   throw Exception('Failed to load survey');
-  /// }
-  /// ```
-  Future<Survey?> getSurveyById(String id) async {
-    // TODO: Implémenter l'appel API
-    await Future.delayed(const Duration(milliseconds: 200));
-    return null;
+  /// Récupère un topic spécifique par son ID
+  Future<Topic?> getTopicById(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl${ApiRoutes.topics}/$id'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        final topicJson = responseData['data'] as Map<String, dynamic>;
+        
+        return Topic(
+          id: topicJson['_id'] as String,
+          title: topicJson['title'] as String,
+          shortDescription: topicJson['short_description'] as String,
+          description: topicJson['description'] as String,
+          startDate: DateTime.parse(topicJson['startDate'] as String),
+          endDate: DateTime.parse(topicJson['endDate'] as String),
+          createdAt: DateTime.parse(topicJson['createdAt'] as String),
+          updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
+          status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
+          authorId: topicJson['authorId'] as String,
+        );
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print('Error fetching topic by id: $e');
+      return null;
+    }
   }
 
-  /// Recherche des surveys par mots-clés
-  /// 
-  /// Exemple d'implémentation:
-  /// ```dart
-  /// Future<List<Survey>> searchSurveys(String query) async {
-  ///   final response = await http.get(
-  ///     Uri.parse('$baseUrl/surveys/search?q=$query'),
-  ///   );
-  ///   if (response.statusCode == 200) {
-  ///     final List<dynamic> data = json.decode(response.body);
-  ///     return data.map((json) => Survey.fromJson(json)).toList();
-  ///   }
-  ///   throw Exception('Failed to search surveys');
-  /// }
-  /// ```
-  Future<List<Survey>> searchSurveys(String query) async {
-    // TODO: Implémenter l'appel API
-    // Pour l'instant, on retourne toutes les surveys et on filtre côté client
-    final allSurveys = await getSurveys();
+  /// Recherche des topics par mots-clés
+  Future<List<Topic>> searchTopics(String query) async {
+    final allTopics = await getTopics();
     
-    if (query.isEmpty) return allSurveys;
+    if (query.isEmpty) return allTopics;
     
     final lowerQuery = query.toLowerCase();
-    return allSurveys.where((survey) {
-      return survey.title.toLowerCase().contains(lowerQuery) ||
-          survey.description.toLowerCase().contains(lowerQuery) ||
-          survey.category.toLowerCase().contains(lowerQuery) ||
-          survey.status.toLowerCase().contains(lowerQuery);
+    return allTopics.where((topic) {
+      return topic.title.toLowerCase().contains(lowerQuery) ||
+          topic.shortDescription.toLowerCase().contains(lowerQuery) ||
+          topic.description.toLowerCase().contains(lowerQuery) ||
+          topic.statusDisplay.toLowerCase().contains(lowerQuery);
     }).toList();
   }
 }

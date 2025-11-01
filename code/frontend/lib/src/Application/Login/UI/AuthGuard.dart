@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/routes/AppRoutes.dart';
 import '../Api/AuthService.dart';
 
-/// A wrapper widget that checks authentication before showing content
-/// Redirects to login if user is not authenticated
-class AuthGuard extends StatelessWidget {
+/// A wrapper widget that checks authentication before showing content.
+/// Redirects to login if user is not authenticated.
+/// Shows access denied screen if user lacks required roles.
+///
+/// This widget is an alternative to ProtectedRoute and can be used
+/// to wrap widgets directly in the widget tree rather than at the route level.
+///
+/// Security checks:
+/// 1. Validates user is authenticated (valid token + user data)
+/// 2. Validates user has one of the required roles (if specified)
+class AuthGuard extends StatefulWidget {
   final Widget child;
   final List<Role>? requiredRoles;
 
@@ -14,9 +23,66 @@ class AuthGuard extends StatelessWidget {
   });
 
   @override
+  State<AuthGuard> createState() => _AuthGuardState();
+}
+
+class _AuthGuardState extends State<AuthGuard> {
+  @override
+  void initState() {
+    super.initState();
+    // Defer the check to after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkAccessAndNavigate();
+    });
+  }
+
+  Future<void> _checkAccessAndNavigate() async {
+    if (!mounted) return;
+
+    final auth = AuthService.instance;
+
+    // Wait for initialization with timeout
+    int attempts = 0;
+    while (!auth.isInitialized && attempts < 50) {
+      await Future.delayed(const Duration(milliseconds: 100));
+      attempts++;
+      if (!mounted) return;
+    }
+
+    // If still not initialized or not authenticated, redirect to login
+    if (!auth.isInitialized || !auth.isAuthenticated) {
+      if (mounted) {
+        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+      }
+      return;
+    }
+
+    // If we have role requirements, check them
+    if (widget.requiredRoles != null && widget.requiredRoles!.isNotEmpty) {
+      final userRole = auth.currentUser?.role;
+      final hasRequiredRole = userRole != null && widget.requiredRoles!.contains(userRole);
+      
+      if (!hasRequiredRole) {
+        // Don't navigate, just show the access denied message
+        if (mounted) {
+          setState(() {});
+        }
+        return;
+      }
+    }
+
+    // All checks passed
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    // Wait for auth service to initialize
-    if (!AuthService.instance.isInitialized) {
+    final auth = AuthService.instance;
+
+    // Show loading while checking
+    if (!auth.isInitialized) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -24,12 +90,8 @@ class AuthGuard extends StatelessWidget {
       );
     }
 
-    // Check if user is authenticated
-    if (!AuthService.instance.isAuthenticated) {
-      // Redirect to login
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacementNamed('/login');
-      });
+    // If not authenticated, show loading while redirecting
+    if (!auth.isAuthenticated) {
       return const Scaffold(
         body: Center(
           child: CircularProgressIndicator(),
@@ -37,63 +99,62 @@ class AuthGuard extends StatelessWidget {
       );
     }
 
-    // Check if user has required roles
-    if (requiredRoles != null && !AuthService.instance.hasAnyRole(requiredRoles!)) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(
-                Icons.lock_outline,
-                size: 64,
-                color: Colors.grey,
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Access Denied',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+    // Check role authorization if specified
+    if (widget.requiredRoles != null && widget.requiredRoles!.isNotEmpty) {
+      final userRole = auth.currentUser?.role;
+      final hasRequiredRole = userRole != null && widget.requiredRoles!.contains(userRole);
+      
+      if (!hasRequiredRole) {
+        return Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.lock_outline,
+                  size: 64,
+                  color: Colors.grey,
                 ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'You do not have permission to access this page.',
-                style: TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pushReplacementNamed('/dashboard');
-                },
-                child: const Text('Go to Dashboard'),
-              ),
-            ],
+                const SizedBox(height: 16),
+                const Text(
+                  'Access Denied',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                const Text(
+                  'You do not have permission to access this content.',
+                  style: TextStyle(color: Colors.grey),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
+                  },
+                  child: const Text('Go to Dashboard'),
+                ),
+              ],
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
 
-    // User is authenticated and has required roles
-    return child;
+    // User is authenticated and authorized
+    return widget.child;
   }
 }
 
-/// Example usage in route configuration:
+/// Example usage in widget tree:
 /// 
 /// ```dart
-/// '/dashboard': (context) => const AuthGuard(
-///   child: DashboardPage(),
-/// ),
-/// 
-/// '/admin': (context) => const AuthGuard(
+/// AuthGuard(
 ///   requiredRoles: [Role.administrator],
-///   child: AdminPage(),
-/// ),
-/// 
-/// '/admin-or-manager': (context) => const AuthGuard(
-///   requiredRoles: [Role.administrator, Role.manager],
-///   child: ManagementPage(),
-/// ),
+///   child: AdminPanel(),
+/// )
 /// ```
+/// 
+/// For route-level protection, use ProtectedRoute in AppRoutes instead.
+

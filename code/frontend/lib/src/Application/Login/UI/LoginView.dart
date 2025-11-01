@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/Application/Shared/UI/Components.dart';
 import 'package:frontend/src/theme/AppColors.dart';
 import 'package:frontend/src/Application/Login/Api/AuthService.dart';
+import 'package:frontend/src/routes/AppRoutes.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -128,7 +129,7 @@ class LoginViewState extends State<LoginView> {
 
                     // After login, navigate to dashboard (replace current route).
                     if (mounted) {
-                      Navigator.of(context).pushReplacementNamed('/dashboard');
+                      Navigator.of(context).pushReplacementNamed(AppRoutes.dashboard);
                     }
                   } catch (e) {
                     // Show error message to user

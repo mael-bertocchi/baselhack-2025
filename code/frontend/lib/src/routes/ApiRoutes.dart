@@ -6,11 +6,14 @@ enum ApiRoutes {
   // Auth endpoints
   signin('/v1/auth/signin'),
   signup('/v1/auth/signup'),
-  refresh('/v1/auth/refresh'),
+  refreshToken('/v1/auth/refresh'),
   
   // User endpoints
   userMe('/v1/users/me'),
   
+  // Topic endpoints
+  topics('/v1/topics'),
+
   // Health endpoints
   health('/v1/health');
 

@@ -1,12 +1,13 @@
 import environment from "@core/environment";
 import { RequestError } from "@core/errors";
-import authRoutes from "@modules/auth/auth.route";
 import topicsRoutes from "@modules/topics/topics.routes";
 import healthRoutes from "@modules/health/health.routes";
 import corsPlugin from "@plugins/cors";
+import authRoutes from "@modules/auth/auth.route";
 import dbPlugin from "@plugins/database";
-import jwtPlugin from "@plugins/jwt";
 import rateLimiterPlugin from "@plugins/rate-limiter";
+import jwtPlugin from "@plugins/jwt";
+import authGuardPlugin from "@plugins/auth-guard";
 import fastify, { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 
 /**
@@ -32,6 +33,7 @@ async function startApp(): Promise<void> {
     await app.register(corsPlugin);
     await app.register(dbPlugin);
     await app.register(jwtPlugin);
+    await app.register(authGuardPlugin);
 
     app.setErrorHandler((err: unknown, request: FastifyRequest, reply: FastifyReply) => {
         if (err instanceof RequestError) {
