@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/app_localizations.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
-import 'package:frontend/src/routes/AppRoutes.dart';
+import 'package:alignify/l10n/app_localizations.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
 import 'Components/StatCard.dart';

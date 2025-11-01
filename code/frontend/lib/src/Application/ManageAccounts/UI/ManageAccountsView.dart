@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../Api/UserManagementService.dart';
 import '../../Login/Api/AuthService.dart';

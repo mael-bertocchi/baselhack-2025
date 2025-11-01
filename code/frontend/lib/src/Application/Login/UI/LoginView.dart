@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/Application/Shared/UI/Components.dart';
-import 'package:frontend/src/theme/AppColors.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
-import 'package:frontend/src/routes/AppRoutes.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/src/Application/Shared/UI/Components.dart';
+import 'package:alignify/src/theme/AppColors.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/routes/AppRoutes.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -40,11 +40,13 @@ class LoginViewState extends State<LoginView> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
 
-              CustomAvatar(
-                initials: 'C',
-                size: 64,
-                backgroundColor: AppColors.blueLight,
-                textColor: Colors.white,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  'assets/alignify_logo_icon.png',
+                  width: 64,
+                  fit: BoxFit.cover,
+                ),
               ),
               const SizedBox(height: 24),
 
@@ -71,7 +73,6 @@ class LoginViewState extends State<LoginView> {
                 controller: emailController,
                 labelText: l10n.emailAddress,
                 hintText: l10n.emailPlaceholder,
-                helperText: l10n.emailHelperText,
                 keyboardType: TextInputType.emailAddress,
                 prefixIcon: const Icon(
                   Icons.email_outlined,

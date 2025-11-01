@@ -1,6 +1,6 @@
 // Barrel file to provide a convenient single import for commonly used frontend symbols.
 // Usage:
-//   import 'package:frontend/front.dart';
+//   import 'package:alignify/front.dart';
 // Then access exported symbols directly or via a prefix:
 //   final page = DetailsPage();
 
@@ -18,5 +18,5 @@ export 'src/pages/NotFound/NotFoundPage.dart';
 export 'src/routes/AppRoutes.dart';
 
 // Add further exports below to make other modules available through
-// `package:frontend/front.dart`. For example:
+// `package:alignify/front.dart`. For example:
 // export 'src/widgets/my_widget.dart';

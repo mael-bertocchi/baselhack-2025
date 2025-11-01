@@ -3,9 +3,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
-import 'package:frontend/front.dart';
-import 'package:frontend/src/Application/Login/Api/AuthService.dart';
-import 'package:frontend/src/Application/Common/LocaleProvider.dart';
+import 'package:alignify/front.dart';
+import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Common/LocaleProvider.dart';
 
 // Conditional import for web URL strategy
 import 'main_web.dart' if (dart.library.io) 'main_non_web.dart';
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
     return Consumer<LocaleProvider>(
       builder: (context, localeProvider, child) {
         return MaterialApp(
-          title: 'BaselHack Frontend',
+          title: 'Alignify',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
             useMaterial3: true,

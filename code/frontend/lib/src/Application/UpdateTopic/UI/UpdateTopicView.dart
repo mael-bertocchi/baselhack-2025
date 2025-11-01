@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
 import '../../../widgets/SharedAppBar.dart';

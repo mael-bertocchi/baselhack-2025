@@ -100,7 +100,7 @@ abstract class AppLocalizations {
   /// Title for the application
   ///
   /// In en, this message translates to:
-  /// **'Consensus Hub'**
+  /// **'Alignify'**
   String get appTitle;
 
   /// Title for details pages
@@ -478,7 +478,7 @@ abstract class AppLocalizations {
   /// Login page welcome title
   ///
   /// In en, this message translates to:
-  /// **'Welcome to Consensus Hub'**
+  /// **'Welcome to Alignify'**
   String get welcomeToConsensusHub;
 
   /// Login page subtitle

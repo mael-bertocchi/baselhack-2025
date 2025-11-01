@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/routes/AppRoutes.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/src/routes/AppRoutes.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 import '../Api/AuthService.dart';
 
 /// A wrapper widget that checks authentication before showing content.

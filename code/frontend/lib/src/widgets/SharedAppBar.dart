@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/AppColors.dart';
 import '../Application/Dashboard/UI/Components/ProfileMenu.dart';
-import 'package:frontend/l10n/app_localizations.dart';
+import 'package:alignify/l10n/app_localizations.dart';
 
 /// Shared AppBar component used across the application
 /// Provides consistent branding and profile menu functionality
@@ -100,33 +100,24 @@ class _SharedAppBarState extends State<SharedAppBar> {
             ),
             child: Row(
               children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColors.blue,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'C',
-                      style: TextStyle(
-                        color: AppColors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/alignify_logo.png',
+                    //width: 40,
+                    height: 130,
+                    fit: BoxFit.cover,
                   ),
                 ),
                 const SizedBox(width: 12),
-                Text(
-                  widget.title ?? l10n.appTitle,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
+                // Text(
+                //   widget.title ?? l10n.appTitle,
+                //   style: const TextStyle(
+                //     fontSize: 20,
+                //     fontWeight: FontWeight.bold,
+                //     color: AppColors.textPrimary,
+                //   ),
+                // ),
               ],
             ),
           );

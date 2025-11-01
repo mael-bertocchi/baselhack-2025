@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Consensus Hub';
+  String get appTitle => 'Alignify';
 
   @override
   String get detailsTitle => 'Details';
@@ -200,7 +200,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchUsers => 'Search users by name, email or role...';
 
   @override
-  String get welcomeToConsensusHub => 'Welcome to Consensus Hub';
+  String get welcomeToConsensusHub => 'Welcome to Alignify';
 
   @override
   String get signInToAccount => 'Sign in to your account to share your insights';
