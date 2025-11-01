@@ -17,6 +17,9 @@ async function usersRoutes(app: FastifyInstance): Promise<void> {
     app.get('/', {
         onRequest: [app.authGuard]
     }, usersController.getUsers);
+    app.delete('/:id', {
+        onRequest: [app.authGuard]
+    }, usersController.deleteUser as any);
 }
 
 export default usersRoutes;

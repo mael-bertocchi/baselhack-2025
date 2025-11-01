@@ -41,7 +41,7 @@ async function signin(data: SigninBody, fastify: FastifyInstance) {
         throw new RequestError('Invalid email or password', 401);
     }
 
-    const payload = { email: user.email, sub: user._id.toString() };
+    const payload = { email: user.email, sub: user._id.toString(), role: user.role };
     const accessToken = generateAccessToken(payload, fastify);
     const refreshToken = generateRefreshToken(payload, fastify);
 

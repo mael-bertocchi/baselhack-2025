@@ -1,7 +1,7 @@
 import { Result } from './../../../node_modules/arg/index.d';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import usersService from './users.service';
-import { PasswordBody } from './users.types';
+import { PasswordBody, UserParams } from './users.types';
 
 /**
  * @function getCurrentUser
@@ -20,7 +20,6 @@ async function getCurrentUser(request: FastifyRequest, reply: FastifyReply): Pro
     });
 }
 
-
 /**
  * @function getUsers
  * @description Return all user on the db
@@ -29,7 +28,7 @@ async function getUsers(request: FastifyRequest, reply: FastifyReply): Promise<v
     const result = await usersService.getUsers(request, request.server);
 
     reply.status(200).send({
-        message: 'Successfully drop all user',
+        message: 'Successfully retrieved users',
         data: result
     });
 }
@@ -38,12 +37,12 @@ async function changePassword(
     request: FastifyRequest<{
         Body: PasswordBody,
         Params: { id: string }
-    }>, 
+    }>,
     reply: FastifyReply
 ): Promise<void> {
     const result = await usersService.changePassword(
         request.params.id,
-        request.body, 
+        request.body,
         request.server
     );
 
@@ -53,8 +52,25 @@ async function changePassword(
     });
 }
 
+/**
+ * @function deleteUser
+ * @description Delete a user by id
+ */
+async function deleteUser(request: FastifyRequest<{ Params: UserParams }>, reply: FastifyReply): Promise<void> {
+    if (request.authUser?.payload.role !== 'Administrator') {
+        throw new Error('Only administrators can delete users');
+    }
+
+    await usersService.deleteUser(request.params.id, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully deleted user',
+    });
+}
+
 export default {
     getCurrentUser,
     getUsers,
-    changePassword
+    changePassword,
+    deleteUser
 };

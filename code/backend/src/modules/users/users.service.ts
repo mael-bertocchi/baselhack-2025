@@ -46,7 +46,7 @@ async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
     const users: WithId<User>[] = await usersCollection.find({}).toArray();
-    
+
     return users;
 }
 
@@ -57,8 +57,8 @@ async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
 async function changePassword(id: string, data: PasswordBody, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
-    const user: WithId<User> | null = await usersCollection.findOne({ 
-        _id: new (fastify.mongo).ObjectId(id) 
+    const user: WithId<User> | null = await usersCollection.findOne({
+        _id: new (fastify.mongo).ObjectId(id)
     });
 
     if (!user) {
@@ -76,8 +76,23 @@ async function changePassword(id: string, data: PasswordBody, fastify: FastifyIn
     return user;
 }
 
+/**
+ * @function deleteUser
+ * @description Delete a user by id
+ */
+async function deleteUser(id: string, fastify: FastifyInstance) {
+    const usersCollection = getUsersCollection(fastify);
+
+    const result = await usersCollection.deleteOne({ _id: new (fastify.mongo).ObjectId(id) });
+
+    if (!result.acknowledged) {
+        throw new RequestError('Failed to delete user', 500);
+    }
+}
+
 export default {
     getCurrentUser,
     getUsers,
-    changePassword
+    changePassword,
+    deleteUser
 };
