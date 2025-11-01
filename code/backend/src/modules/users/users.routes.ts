@@ -9,6 +9,9 @@ async function usersRoutes(app: FastifyInstance): Promise<void> {
     app.get('/me', {
         onRequest: [app.authGuard]
     }, usersController.getCurrentUser);
+    app.get('/', {
+        onRequest: [app.authGuard]
+    }, usersController.getUsers);
 }
 
 export default usersRoutes;

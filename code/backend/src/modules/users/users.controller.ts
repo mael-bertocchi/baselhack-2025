@@ -18,6 +18,17 @@ async function getCurrentUser(request: FastifyRequest, reply: FastifyReply): Pro
     });
 }
 
+async function getUsers(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+    const result = await usersService.getUsers(request, request.server);
+
+    reply.status(200).send({
+        message: 'Successfully retrieved logged user',
+        data: result
+    });
+}
+
+
 export default {
-    getCurrentUser
+    getCurrentUser,
+    getUsers
 };
