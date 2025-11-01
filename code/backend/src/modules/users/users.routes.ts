@@ -7,7 +7,7 @@ import { FastifyInstance } from 'fastify';
  */
 async function usersRoutes(app: FastifyInstance): Promise<void> {
     app.get('/me', {
-        preHandler: app.authenticate
+        onRequest: [app.authGuard]
     }, usersController.getCurrentUser);
 }
 
