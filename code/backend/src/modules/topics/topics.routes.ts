@@ -9,27 +9,27 @@ import { submissionSchema } from './schemas/submission.schema';
  */
 async function topicsRoutes(app: FastifyInstance): Promise<void> {
     app.get('/', {
-        preHandler: app.authenticate
+        onRequest: [app.authGuard]
     }, topicsController.getAllTopics);
     app.post('/', {
-        preHandler: app.authenticate,
+        onRequest: [app.authGuard],
         schema: createSchema,
     }, topicsController.createTopic as any);
     app.put('/:id', {
-        preHandler: app.authenticate,
+        onRequest: [app.authGuard],
         schema: createSchema
     }, topicsController.modifyTopic as any);
     app.get('/:id', {
-        preHandler: app.authenticate
+        onRequest: [app.authGuard]
     }, topicsController.getTopicById as any);
     app.get('/:id/summary', {
-        preHandler: app.authenticate
+        onRequest: [app.authGuard]
     }, topicsController.getSummaryTopic as any);
     app.get('/:id/submissions', {
-        preHandler: app.authenticate
+        onRequest: [app.authGuard]
     }, topicsController.getSubmissions as any);
     app.post('/:id/submissions', {
-        preHandler: app.authenticate,
+        onRequest: [app.authGuard],
         schema: submissionSchema
     }, topicsController.sendSubmission as any);
 }
