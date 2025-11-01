@@ -111,23 +111,39 @@ class Topic {
   /// Vérifie si le topic est actuellement actif
   bool get isActive {
     final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final start = DateTime(startDate.year, startDate.month, startDate.day);
+    final end = DateTime(endDate.year, endDate.month, endDate.day);
+    
     return status == TopicStatus.open && 
-           now.isAfter(startDate) && 
-           now.isBefore(endDate);
+           (today.isAfter(start) || today.isAtSameMomentAs(start)) && 
+           (today.isBefore(end) || today.isAtSameMomentAs(end));
   }
 
   /// Retourne le statut sous forme de string pour l'affichage
   String get statusDisplay {
-    if (status == TopicStatus.closed || status == TopicStatus.archived) {
-      return status.name.capitalize();
+    // Utilise directement le statut défini
+    switch (status) {
+      case TopicStatus.open:
+        final now = DateTime.now();
+        final today = DateTime(now.year, now.month, now.day);
+        final start = DateTime(startDate.year, startDate.month, startDate.day);
+        final end = DateTime(endDate.year, endDate.month, endDate.day);
+        
+        // Si la date de début n'est pas encore arrivée
+        if (today.isBefore(start)) {
+          return 'Soon';
+        }
+        // Si la date de fin est dépassée
+        if (today.isAfter(end)) {
+          return 'Closed';
+        }
+        return 'Active';
+      case TopicStatus.closed:
+        return 'Closed';
+      case TopicStatus.archived:
+        return 'Archived';
     }
-    final now = DateTime.now();
-    if (now.isBefore(startDate)) {
-      return 'Soon';
-    } else if (now.isAfter(endDate)) {
-      return 'Closed';
-    }
-    return 'Active';
   }
 
   @override
