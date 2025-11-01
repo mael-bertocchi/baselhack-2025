@@ -34,11 +34,21 @@ async function getUsers(request: FastifyRequest, reply: FastifyReply): Promise<v
     });
 }
 
-async function changePassword(request: FastifyRequest<{Body: PasswordBody }>, reply: FastifyReply): Promise<void> {
-    const result = await usersService.changePassword(request.id, request.body, request.server);
+async function changePassword(
+    request: FastifyRequest<{
+        Body: PasswordBody,
+        Params: { id: string }
+    }>, 
+    reply: FastifyReply
+): Promise<void> {
+    const result = await usersService.changePassword(
+        request.params.id,
+        request.body, 
+        request.server
+    );
 
     reply.status(200).send({
-        message: 'Successfully change the password of user',
+        message: 'Successfully changed the password of user',
         data: result
     });
 }

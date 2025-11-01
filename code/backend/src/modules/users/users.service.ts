@@ -5,6 +5,8 @@ import { FastifyInstance } from 'fastify';
 import { User } from '@modules/users/users.model';
 import { AuthenticatedUser } from '@modules/auth/auth.types';
 import { PasswordBody } from './users.types';
+import bcrypt from 'bcrypt';
+
 
 /**
  * @function getUsersCollection
@@ -55,9 +57,22 @@ async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
 async function changePassword(id: string, data: PasswordBody, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
-    const user: WithId<User> | null = await usersCollection.findOne({ _id: new (fastify.mongo).ObjectId(id) });
+    const user: WithId<User> | null = await usersCollection.findOne({ 
+        _id: new (fastify.mongo).ObjectId(id) 
+    });
 
-    
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+
+    await usersCollection.updateOne(
+        { _id: new (fastify.mongo).ObjectId(id) },
+        { $set: { password: hashedPassword } }
+    );
+
+    user.password = hashedPassword;
     return user;
 }
 
