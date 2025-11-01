@@ -1,6 +1,7 @@
 export const refreshSchema = {
     body: {
         type: 'object',
+        required: ['refreshToken'],
         properties: {
             refreshToken: {
                 type: 'string',

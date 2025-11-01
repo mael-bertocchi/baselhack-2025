@@ -8,6 +8,6 @@ declare module 'fastify' {
     }
 
     interface FastifyInstance {
-        authenticate: typeof jwtGuard;
+        authGuard: typeof jwtGuard;
     }
 }

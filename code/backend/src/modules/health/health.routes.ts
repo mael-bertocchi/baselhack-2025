@@ -6,7 +6,9 @@ import { FastifyInstance } from 'fastify';
  * @description This function sets up the health routes for the application
  */
 async function healthRoutes(app: FastifyInstance): Promise<void> {
-    app.get('/', healthController.checkAppHealth);
+    app.get('/', {
+        onRequest: [app.authGuard]
+    }, healthController.checkAppHealth);
 }
 
 export default healthRoutes;
