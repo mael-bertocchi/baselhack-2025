@@ -15,8 +15,8 @@ export interface Topic {
     description: string; /*!> Description providing context */
     startDate: Date; /*!> Date when the topic becomes active */
     endDate: Date; /*!> Date when the topic closes */
-    createdAt: Date; /*!> Timestamp when the topic was created */
-    updatedAt: Date; /*!> Timestamp of the last topic update */
     status: TopicStatus; /*!> The current state of the topic */
     authorId: string; /*!> Identifier of the user who created the topic */
+    createdAt: Date; /*!> Timestamp when the topic was created */
+    updatedAt: Date; /*!> Timestamp of the last topic update */
 };
