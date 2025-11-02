@@ -340,7 +340,7 @@ class _TopicCardState extends State<TopicCard> {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'By ${widget.topic.authorId}',
+                      '${AppLocalizations.of(context)!.by} ${widget.topic.authorId}',
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,

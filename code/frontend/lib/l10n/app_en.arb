@@ -70,6 +70,16 @@
     "description": "Create topic button"
   },
 
+  "statusTopic": "{status} Topic",
+  "@statusTopic": {
+    "description": "Status topic label",
+    "placeholders": {
+      "status": {
+        "type": "String"
+      }
+    }
+  },
+
   "noTopicsFound": "No topics found",
   "@noTopicsFound": {
     "description": "No topics message"
@@ -803,6 +813,61 @@
   "until": "Until",
   "@until": {
     "description": "Until date label"
+  },
+
+  "viewTopic": "View Topic",
+  "@viewTopic": {
+    "description": "View topic button"
+  },
+
+  "by": "By",
+  "@by": {
+    "description": "By author prefix"
+  },
+
+  "summary": "Summary",
+  "@summary": {
+    "description": "Summary section title"
+  },
+
+  "aiGeneratedSummary": "AI-Generated Summary",
+  "@aiGeneratedSummary": {
+    "description": "AI-generated summary title"
+  },
+
+  "automatedAnalysisDesc": "Automated analysis of all submitted ideas and patterns",
+  "@automatedAnalysisDesc": {
+    "description": "AI summary description"
+  },
+
+  "lastUpdatedDate": "Last updated: {date}",
+  "@lastUpdatedDate": {
+    "description": "Last updated date label",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+
+  "justNow": "Just now",
+  "@justNow": {
+    "description": "Time ago label for recent actions"
+  },
+
+  "aiAnalysisCompleted": "AI analysis completed successfully!",
+  "@aiAnalysisCompleted": {
+    "description": "Success message for AI analysis"
+  },
+
+  "failedToAnalyzeTopic": "Failed to analyze topic: {error}",
+  "@failedToAnalyzeTopic": {
+    "description": "Error message for AI analysis failure",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
   },
 
   "activeTopics": "Active Topics",

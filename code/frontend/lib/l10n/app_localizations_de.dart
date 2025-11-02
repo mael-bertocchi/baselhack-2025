@@ -51,6 +51,11 @@ class AppLocalizationsDe extends AppLocalizations {
   String get createTopic => 'Thema erstellen';
 
   @override
+  String statusTopic(String status) {
+    return '$status Thema';
+  }
+
+  @override
   String get noTopicsFound => 'Keine Themen gefunden';
 
   @override
@@ -474,6 +479,34 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get until => 'Bis';
+
+  @override
+  String get viewTopic => 'Thema ansehen';
+
+  @override
+  String get by => 'Von';
+
+  @override
+  String get summary => 'Zusammenfassung';
+
+  @override
+  String get aiGeneratedSummary => 'KI-generierte Zusammenfassung';
+
+  @override
+  String get automatedAnalysisDesc => 'Automatisierte Analyse aller eingereichten Ideen und Muster';
+
+  @override
+  String lastUpdatedDate(String date) {
+    return 'Zuletzt aktualisiert: $date';
+  }
+
+  @override
+  String get aiAnalysisCompleted => 'KI-Analyse erfolgreich abgeschlossen!';
+
+  @override
+  String failedToAnalyzeTopic(String error) {
+    return 'Analyse des Themas fehlgeschlagen: $error';
+  }
 
   @override
   String get activeTopics => 'Aktive Themen';

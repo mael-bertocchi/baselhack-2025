@@ -51,6 +51,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get createTopic => 'Créer un sujet';
 
   @override
+  String statusTopic(String status) {
+    return 'Sujet $status';
+  }
+
+  @override
   String get noTopicsFound => 'Aucun sujet trouvé';
 
   @override
@@ -474,6 +479,34 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get until => 'Jusqu\'au';
+
+  @override
+  String get viewTopic => 'Voir le sujet';
+
+  @override
+  String get by => 'Par';
+
+  @override
+  String get summary => 'Résumé';
+
+  @override
+  String get aiGeneratedSummary => 'Résumé généré par IA';
+
+  @override
+  String get automatedAnalysisDesc => 'Analyse automatisée de toutes les idées et tendances soumises';
+
+  @override
+  String lastUpdatedDate(String date) {
+    return 'Dernière mise à jour : $date';
+  }
+
+  @override
+  String get aiAnalysisCompleted => 'Analyse IA terminée avec succès !';
+
+  @override
+  String failedToAnalyzeTopic(String error) {
+    return 'Échec de l\'analyse du sujet : $error';
+  }
 
   @override
   String get activeTopics => 'Sujets actifs';

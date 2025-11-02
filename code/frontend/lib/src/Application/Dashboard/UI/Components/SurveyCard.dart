@@ -6,6 +6,7 @@ import 'package:alignify/l10n/app_localizations.dart';
 /// Type représentant le statut d'un topic
 enum TopicStatus {
   open,
+  scheduled,
   closed,
   archived;
 
@@ -17,6 +18,8 @@ enum TopicStatus {
         return TopicStatus.open;
       case 'closed':
         return TopicStatus.closed;
+      case 'scheduled':
+        return TopicStatus.scheduled;
       case 'archived':
         return TopicStatus.archived;
       default:
@@ -243,6 +246,8 @@ class _TopicCardState extends State<TopicCard> {
         return l10n.active;
       case TopicStatus.closed:
         return l10n.closed;
+      case TopicStatus.scheduled:
+        return l10n.scheduled;
       case TopicStatus.archived:
         return l10n.archived;
     }
@@ -415,7 +420,7 @@ class _TopicCardState extends State<TopicCard> {
                   const SizedBox(width: 6),
                   Expanded(
                     child: Text(
-                      'By ${widget.topic.authorId}',
+                      '${l10n.by} ${widget.topic.authorId}',
                       style: const TextStyle(
                         fontSize: 14,
                         color: AppColors.textSecondary,
@@ -442,9 +447,9 @@ class _TopicCardState extends State<TopicCard> {
                       ),
                       elevation: 0,
                     ),
-                    child: const Text(
-                      'View Topic',
-                      style: TextStyle(
+                    child: Text(
+                      l10n.viewTopic,
+                      style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                       ),

@@ -51,6 +51,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createTopic => 'Create Topic';
 
   @override
+  String statusTopic(String status) {
+    return '$status Topic';
+  }
+
+  @override
   String get noTopicsFound => 'No topics found';
 
   @override
@@ -474,6 +479,34 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get until => 'Until';
+
+  @override
+  String get viewTopic => 'View Topic';
+
+  @override
+  String get by => 'By';
+
+  @override
+  String get summary => 'Summary';
+
+  @override
+  String get aiGeneratedSummary => 'AI-Generated Summary';
+
+  @override
+  String get automatedAnalysisDesc => 'Automated analysis of all submitted ideas and patterns';
+
+  @override
+  String lastUpdatedDate(String date) {
+    return 'Last updated: $date';
+  }
+
+  @override
+  String get aiAnalysisCompleted => 'AI analysis completed successfully!';
+
+  @override
+  String failedToAnalyzeTopic(String error) {
+    return 'Failed to analyze topic: $error';
+  }
 
   @override
   String get activeTopics => 'Active Topics';

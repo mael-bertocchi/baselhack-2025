@@ -181,6 +181,12 @@ abstract class AppLocalizations {
   /// **'Create Topic'**
   String get createTopic;
 
+  /// Status topic label
+  ///
+  /// In en, this message translates to:
+  /// **'{status} Topic'**
+  String statusTopic(String status);
+
   /// No topics message
   ///
   /// In en, this message translates to:
@@ -667,7 +673,7 @@ abstract class AppLocalizations {
   /// **'{time} ago'**
   String timeAgo(String time);
 
-  /// Just now time
+  /// Time ago label for recent actions
   ///
   /// In en, this message translates to:
   /// **'Just now'**
@@ -990,6 +996,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Until'**
   String get until;
+
+  /// View topic button
+  ///
+  /// In en, this message translates to:
+  /// **'View Topic'**
+  String get viewTopic;
+
+  /// By author prefix
+  ///
+  /// In en, this message translates to:
+  /// **'By'**
+  String get by;
+
+  /// Summary section title
+  ///
+  /// In en, this message translates to:
+  /// **'Summary'**
+  String get summary;
+
+  /// AI-generated summary title
+  ///
+  /// In en, this message translates to:
+  /// **'AI-Generated Summary'**
+  String get aiGeneratedSummary;
+
+  /// AI summary description
+  ///
+  /// In en, this message translates to:
+  /// **'Automated analysis of all submitted ideas and patterns'**
+  String get automatedAnalysisDesc;
+
+  /// Last updated date label
+  ///
+  /// In en, this message translates to:
+  /// **'Last updated: {date}'**
+  String lastUpdatedDate(String date);
+
+  /// Success message for AI analysis
+  ///
+  /// In en, this message translates to:
+  /// **'AI analysis completed successfully!'**
+  String get aiAnalysisCompleted;
+
+  /// Error message for AI analysis failure
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to analyze topic: {error}'**
+  String failedToAnalyzeTopic(String error);
 
   /// Active topics stat label
   ///

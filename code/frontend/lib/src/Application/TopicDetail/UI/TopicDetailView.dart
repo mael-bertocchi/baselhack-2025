@@ -134,12 +134,13 @@ class TopicDetailViewState extends State<TopicDetailView> {
       });
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('AI analysis completed successfully!'),
-            duration: Duration(seconds: 2),
+          SnackBar(
+            content: Text(l10n.aiAnalysisCompleted),
+            duration: const Duration(seconds: 2),
             behavior: SnackBarBehavior.floating,
-            backgroundColor: Color(0xFF14B8A6),
+            backgroundColor: const Color(0xFF14B8A6),
           ),
         );
       }
@@ -149,9 +150,10 @@ class TopicDetailViewState extends State<TopicDetailView> {
       });
 
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to analyze topic: ${e.toString()}'),
+            content: Text(l10n.failedToAnalyzeTopic(e.toString())),
             duration: const Duration(seconds: 3),
             behavior: SnackBarBehavior.floating,
             backgroundColor: const Color(0xFFEF4444),
@@ -222,7 +224,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
     } else if (difference.inMinutes > 0) {
       return '${difference.inMinutes}m ago';
     } else {
-      return 'Just now';
+      final l10n = AppLocalizations.of(context)!;
+      return l10n.justNow;
     }
   }
 
@@ -263,6 +266,24 @@ class TopicDetailViewState extends State<TopicDetailView> {
   String _formatDate(DateTime date) {
     final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     return '${months[date.month - 1]} ${date.day}, ${date.year}';
+  }
+
+  String _getStatusDisplayText() {
+    if (_topic == null) return '';
+    final l10n = AppLocalizations.of(context)!;
+    final displayStatus = _topic!.statusDisplay.toLowerCase();
+    switch (displayStatus) {
+      case 'active':
+        return l10n.active;
+      case 'closed':
+        return l10n.closed;
+      case 'scheduled':
+        return l10n.scheduled;
+      case 'archived':
+        return l10n.archived;
+      default:
+        return _topic!.statusDisplay;
+    }
   }
 
   @override
@@ -456,7 +477,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  '${_topic!.statusDisplay} Topic',
+                  l10n.statusTopic(_getStatusDisplayText()),
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -476,9 +497,9 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 const SizedBox(height: 22),
 
                                 // Short Description
-                                const Text(
-                                  'Summary',
-                                  style: TextStyle(
+                                Text(
+                                  l10n.summary,
+                                  style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w700,
                                     color: AppColors.textPrimary,
@@ -751,22 +772,22 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                 ),
                               ),
                               const SizedBox(width: 16),
-                              const Expanded(
+                              Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'AI-Generated Summary',
-                                      style: TextStyle(
+                                      l10n.aiGeneratedSummary,
+                                      style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w800,
                                         color: AppColors.textPrimary,
                                       ),
                                     ),
-                                    SizedBox(height: 4),
+                                    const SizedBox(height: 4),
                                     Text(
-                                      'Automated analysis of all submitted ideas and patterns',
-                                      style: TextStyle(
+                                      l10n.automatedAnalysisDesc,
+                                      style: const TextStyle(
                                         fontSize: 14,
                                         color: AppColors.textSecondary,
                                       ),
@@ -863,7 +884,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
                                     const SizedBox(width: 8),
                                     Expanded(
                                       child: Text(
-                                        'Last updated: ${_formatDate(_aiSummary!.updatedAt)}',
+                                        l10n.lastUpdatedDate(_formatDate(_aiSummary!.updatedAt)),
                                         style: const TextStyle(
                                           fontSize: 13,
                                           color: AppColors.textSecondary,
