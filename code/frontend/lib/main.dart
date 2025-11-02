@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import 'package:alignify/front.dart';
@@ -13,9 +12,6 @@ import 'main_web.dart' if (dart.library.io) 'main_non_web.dart';
 Future<void> main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Load environment variables
-  await dotenv.load(fileName: ".env");
   
   // Initialize AuthService (loads stored tokens if any)
   await AuthService.instance.init();

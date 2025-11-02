@@ -8,7 +8,6 @@ import 'package:alignify/src/pages/TopicDetails/TopicDetailsPage.dart';
 import 'package:alignify/src/pages/UpdateTopic/UpdateTopicPage.dart';
 import 'package:alignify/src/pages/ManageAccounts/ManageAccountsPage.dart';
 import 'package:alignify/src/routes/ProtectedRoutes.dart';
-import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
 import 'package:alignify/src/Application/Shared/Models/Models.dart';
 
 /// Centralized application routes for navigation
