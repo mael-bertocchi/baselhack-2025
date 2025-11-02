@@ -59,6 +59,10 @@ const environment: Environment = {
     JWT_SECRET: validateVariable('JWT_SECRET', process.env.JWT_SECRET),
     AGENT_AUTHENTICATION_PRIVATE_KEY_PATH: validateVariable('AGENT_AUTHENTICATION_PRIVATE_KEY_PATH', process.env.AGENT_AUTHENTICATION_PRIVATE_KEY_PATH),
     AGENT_URL: validateVariable('AGENT_URL', process.env.AGENT_URL),
+    DEFAULT_ADMIN_EMAIL: process.env.DEFAULT_ADMIN_EMAIL ?? null,
+    DEFAULT_ADMIN_PASSWORD: process.env.DEFAULT_ADMIN_PASSWORD ?? null,
+    DEFAULT_ADMIN_FIRST_NAME: process.env.DEFAULT_ADMIN_FIRST_NAME ?? null,
+    DEFAULT_ADMIN_LAST_NAME: process.env.DEFAULT_ADMIN_LAST_NAME ?? null
 };
 
 export default environment;

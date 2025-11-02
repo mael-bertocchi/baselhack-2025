@@ -1,0 +1,66 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      PORT: ${BACKEND_PORT:-8080}
+      DB_URI: ${DB_URI:-mongodb://mongo:27017/baselhack2025}
+      JWT_ACCESS_EXPIRES_IN: ${JWT_ACCESS_EXPIRES_IN:-15m}
+      JWT_REFRESH_EXPIRES_IN: ${JWT_REFRESH_EXPIRES_IN:-30d}
+      JWT_SECRET: ${JWT_SECRET:-change-me}
+      AGENT_AUTHENTICATION_PRIVATE_KEY_PATH: ${AGENT_AUTHENTICATION_PRIVATE_KEY_PATH:-/app/secrets/private_key.pem}
+      AGENT_URL: ${AGENT_URL:-http://agent:8000}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL:-}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-}
+      DEFAULT_ADMIN_FIRST_NAME: ${DEFAULT_ADMIN_FIRST_NAME:-}
+      DEFAULT_ADMIN_LAST_NAME: ${DEFAULT_ADMIN_LAST_NAME:-}
+    depends_on:
+      - mongo
+    volumes:
+      - ./secrets/private_key.pem:/app/secrets/private_key.pem:ro
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        API_URL: ${FRONTEND_API_URL:-/api}
+    depends_on:
+      - backend
+
+  agent:
+    build:
+      context: ./agent
+    environment:
+      MISTRAL_API_KEY: ${MISTRAL_API_KEY:?Set the MISTRAL_API_KEY environment variable}
+      AGENT_AUTHENTICATION_PUBLIC_KEY_PATH: ${AGENT_AUTHENTICATION_PUBLIC_KEY_PATH:-/app/secrets/public_key.pem}
+      EXPECTED_AUD: ${AGENT_EXPECTED_AUD:-python-agent}
+      EXPECTED_ISS: ${AGENT_EXPECTED_ISS:-fastify-api}
+      JWT_LEEWAY_SECONDS: ${JWT_LEEWAY_SECONDS:-60}
+    volumes:
+      - ./secrets/public_key.pem:/app/secrets/public_key.pem:ro
+    depends_on:
+      - backend
+
+  mongo:
+    image: mongo:7.0
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_DATABASE: baselhack2025
+    volumes:
+      - mongo-data:/data/db
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+
+  caddy:
+    image: caddy:2.8
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - frontend
+      - backend
+      - agent
+
+volumes:
+  mongo-data:

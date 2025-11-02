@@ -16,4 +16,8 @@ export interface Environment {
     JWT_SECRET: string; /*!< JWT secret key */
     AGENT_AUTHENTICATION_PRIVATE_KEY_PATH: string; /*!< Path to private key for agent authentication */
     AGENT_URL: string; /*!< URL of the AI agent service */
+    DEFAULT_ADMIN_EMAIL: Maybe<string>; /*!< Default administrator email (optional) */
+    DEFAULT_ADMIN_PASSWORD: Maybe<string>; /*!< Default administrator password (optional) */
+    DEFAULT_ADMIN_FIRST_NAME: Maybe<string>; /*!< Default administrator first name (optional) */
+    DEFAULT_ADMIN_LAST_NAME: Maybe<string>; /*!< Default administrator last name (optional) */
 }

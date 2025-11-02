@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+code/frontend/build
+.git
+.gitignore
+documentation
+assets
+**/.dart_tool
+**/build
+.idea
+.vscode
+.DS_Store

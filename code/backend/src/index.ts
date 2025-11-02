@@ -7,6 +7,7 @@ import topicsRoutes from "@modules/topics/topics.routes";
 import usersRoutes from "@modules/users/users.routes";
 import statsRoutes from "@modules/stats/stats.routes";
 import authGuardPlugin from "@plugins/auth-guard";
+import defaultAdminPlugin from "@plugins/default-admin";
 import corsPlugin from "@plugins/cors";
 import dbPlugin from "@plugins/database";
 import jwtPlugin from "@plugins/jwt";
@@ -38,6 +39,7 @@ async function startApp(): Promise<void> {
     await app.register(dbPlugin);
     await app.register(jwtPlugin);
     await app.register(authGuardPlugin);
+    await app.register(defaultAdminPlugin);
 
     app.setErrorHandler((err: unknown, request: FastifyRequest, reply: FastifyReply) => {
         if (err instanceof RequestError) {

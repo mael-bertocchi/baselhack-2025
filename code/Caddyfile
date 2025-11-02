@@ -1,0 +1,16 @@
+:80 {
+    encode gzip zstd
+
+    @api path /api*
+    handle @api {
+        reverse_proxy backend:8080
+    }
+
+    handle_path /agent/* {
+        reverse_proxy agent:8000
+    }
+
+    handle {
+        reverse_proxy frontend:80
+    }
+}

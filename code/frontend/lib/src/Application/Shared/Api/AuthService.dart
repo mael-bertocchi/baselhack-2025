@@ -7,7 +7,7 @@ import 'package:alignify/src/routes/ApiRoutes.dart';
 import 'package:alignify/src/Application/Shared/Models/Models.dart';
 
 class AuthService extends ChangeNotifier {
-  static String get baseUrl => dotenv.env['API_URL']!;
+  static String get baseUrl => dotenv.env['API_URL'] ?? '/api';
   
   User? _currentUser;
   String? _accessToken;
