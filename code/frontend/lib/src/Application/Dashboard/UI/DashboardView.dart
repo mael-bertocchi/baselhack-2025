@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:alignify/l10n/app_localizations.dart';
-import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
 import 'package:alignify/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
 import 'Components/DeleteConfirmationDialog.dart';
-import '../Api/DashboardService.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -18,7 +19,7 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   final TextEditingController _searchController = TextEditingController();
-  final DashboardApiService _apiService = DashboardApiService();
+  final TopicService _apiService = TopicService();
   
   List<Topic> _topics = [];
   List<Topic> _filteredTopics = [];

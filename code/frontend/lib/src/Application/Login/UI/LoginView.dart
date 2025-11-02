@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:alignify/src/Application/Shared/UI/Components.dart';
 import 'package:alignify/src/theme/AppColors.dart';
-import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
 import 'package:alignify/src/routes/AppRoutes.dart';
 import 'package:alignify/l10n/app_localizations.dart';
 

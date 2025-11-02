@@ -2,58 +2,10 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'package:alignify/src/routes/ApiRoutes.dart';
-import 'package:alignify/src/Application/Login/Api/TokenStorage.dart';
-import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
+import 'TokenStorage.dart';
 
-/// Model pour un utilisateur dans la liste de gestion
-class UserAccount {
-  final String id;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final Role role;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-
-  UserAccount({
-    required this.id,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.role,
-    required this.createdAt,
-    required this.updatedAt,
-  });
-
-  factory UserAccount.fromJson(Map<String, dynamic> json) {
-    return UserAccount(
-      id: json['_id'] as String,
-      firstName: json['firstName'] as String,
-      lastName: json['lastName'] as String,
-      email: json['email'] as String,
-      role: _parseRole(json['role'] as String),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
-    );
-  }
-
-  static Role _parseRole(String roleStr) {
-    switch (roleStr.toLowerCase()) {
-      case 'administrator':
-        return Role.administrator;
-      case 'manager':
-        return Role.manager;
-      case 'user':
-        return Role.user;
-      default:
-        return Role.user;
-    }
-  }
-
-  String get fullName => '$firstName $lastName';
-}
-
-/// Service pour gérer les utilisateurs
+/// Service for managing user accounts
 class UserManagementService {
   // Singleton pattern
   static final UserManagementService _instance = UserManagementService._internal();
@@ -62,10 +14,9 @@ class UserManagementService {
 
   static String get baseUrl => dotenv.env['API_URL']!;
 
-  /// Récupère la liste de tous les utilisateurs
+  /// Get all users
   Future<List<UserAccount>> getAllUsers() async {
     try {
-      // Récupérer le token d'authentification
       final token = await TokenStorage.instance.getAccessToken();
       if (token == null) {
         throw Exception('User not authenticated');
@@ -93,10 +44,9 @@ class UserManagementService {
     }
   }
 
-  /// Change le mot de passe d'un utilisateur
+  /// Change user password
   Future<UserAccount> changePassword(String userId, String newPassword) async {
     try {
-      // Récupérer le token d'authentification
       final token = await TokenStorage.instance.getAccessToken();
       if (token == null) {
         throw Exception('User not authenticated');
@@ -126,10 +76,9 @@ class UserManagementService {
     }
   }
 
-  /// Change le rôle d'un utilisateur
+  /// Change user role
   Future<UserAccount> changeRole(String userId, Role newRole) async {
     try {
-      // Récupérer le token d'authentification
       final token = await TokenStorage.instance.getAccessToken();
       if (token == null) {
         throw Exception('User not authenticated');
@@ -173,7 +122,7 @@ class UserManagementService {
     }
   }
 
-  /// Crée un nouvel utilisateur
+  /// Create a new user
   Future<void> createUser({
     required String firstName,
     required String lastName,
@@ -182,7 +131,6 @@ class UserManagementService {
     required String confirmPassword,
   }) async {
     try {
-      // Récupérer le token d'authentification
       final token = await TokenStorage.instance.getAccessToken();
       if (token == null) {
         throw Exception('User not authenticated');
@@ -215,10 +163,9 @@ class UserManagementService {
     }
   }
 
-  /// Supprime un utilisateur
+  /// Delete a user
   Future<void> deleteUser(String userId) async {
     try {
-      // Récupérer le token d'authentification
       final token = await TokenStorage.instance.getAccessToken();
       if (token == null) {
         throw Exception('User not authenticated');

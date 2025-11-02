@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
-import '../Api/UserManagementService.dart';
-import '../../Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/UserManagementService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
+import '../../../routes/AppRoutes.dart';
 
 class ManageAccountsView extends StatefulWidget {
   const ManageAccountsView({super.key});
@@ -121,7 +123,12 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
         surfaceTintColor: Colors.transparent,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              AppRoutes.dashboard,
+              (route) => false,
+            );
+          },
         ),
         title: Text(
           l10n.manageAccounts,
@@ -427,87 +434,112 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
                       width: 1,
                     ),
                   ),
-                  child: DropdownButton<Role>(
-                    value: user.role,
-                    underline: const SizedBox(),
-                    isDense: true,
-                    icon: Icon(
-                      Icons.arrow_drop_down,
-                      color: _getRoleColor(user.role),
-                      size: 20,
-                    ),
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: _getRoleColor(user.role),
-                    ),
-                    borderRadius: BorderRadius.circular(6),
-                    dropdownColor: AppColors.white,
-                    items: [
-                      DropdownMenuItem(
-                        value: Role.user,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.person,
-                              size: 16,
-                              color: _getRoleColor(Role.user),
+                  child: AuthService.instance.currentUser?.email == user.email
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                _getRoleDisplay(context, user.role),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: _getRoleColor(user.role),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : DropdownButton<Role>(
+                          value: user.role,
+                          disabledHint: Text(
+                            _getRoleDisplay(context, user.role),
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w600,
+                              color: _getRoleColor(user.role).withOpacity(0.6),
                             ),
-                            const SizedBox(width: 8),
-                            Text(
-                              _getRoleDisplay(context, Role.user),
-                              style: TextStyle(
-                                color: _getRoleColor(Role.user),
+                          ),
+                          underline: const SizedBox(),
+                          isDense: true,
+                          icon: Icon(
+                            Icons.arrow_drop_down,
+                            color: _getRoleColor(user.role),
+                            size: 20,
+                          ),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: _getRoleColor(user.role),
+                          ),
+                          borderRadius: BorderRadius.circular(6),
+                          dropdownColor: AppColors.white,
+                          items: [
+                            DropdownMenuItem(
+                              value: Role.user,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.person,
+                                    size: 16,
+                                    color: _getRoleColor(Role.user),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getRoleDisplay(context, Role.user),
+                                    style: TextStyle(
+                                      color: _getRoleColor(Role.user),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: Role.manager,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.business_center,
+                                    size: 16,
+                                    color: _getRoleColor(Role.manager),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getRoleDisplay(context, Role.manager),
+                                    style: TextStyle(
+                                      color: _getRoleColor(Role.manager),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: Role.administrator,
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.admin_panel_settings,
+                                    size: 16,
+                                    color: _getRoleColor(Role.administrator),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    _getRoleDisplay(context, Role.administrator),
+                                    style: TextStyle(
+                                      color: _getRoleColor(Role.administrator),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
+                          onChanged: (Role? newRole) {
+                            if (newRole != null && newRole != user.role) {
+                              _handleRoleChange(user, newRole, l10n);
+                            }
+                          },
                         ),
-                      ),
-                      DropdownMenuItem(
-                        value: Role.manager,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.business_center,
-                              size: 16,
-                              color: _getRoleColor(Role.manager),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              _getRoleDisplay(context, Role.manager),
-                              style: TextStyle(
-                                color: _getRoleColor(Role.manager),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      DropdownMenuItem(
-                        value: Role.administrator,
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.admin_panel_settings,
-                              size: 16,
-                              color: _getRoleColor(Role.administrator),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              _getRoleDisplay(context, Role.administrator),
-                              style: TextStyle(
-                                color: _getRoleColor(Role.administrator),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                    onChanged: (Role? newRole) {
-                      if (newRole != null && newRole != user.role) {
-                        _handleRoleChange(user, newRole, l10n);
-                      }
-                    },
-                  ),
                 ),
                 Text(
                   '${l10n.joinedOn} ${_formatDate(user.createdAt)}',
@@ -610,87 +642,110 @@ class _ManageAccountsViewState extends State<ManageAccountsView> {
                             width: 1,
                           ),
                         ),
-                        child: DropdownButton<Role>(
-                          value: user.role,
-                          underline: const SizedBox(),
-                          isDense: true,
-                          icon: Icon(
-                            Icons.arrow_drop_down,
-                            color: _getRoleColor(user.role),
-                            size: 20,
-                          ),
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                            color: _getRoleColor(user.role),
-                          ),
-                          borderRadius: BorderRadius.circular(6),
-                          dropdownColor: AppColors.white,
-                          items: [
-                            DropdownMenuItem(
-                              value: Role.user,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.person,
-                                    size: 16,
-                                    color: _getRoleColor(Role.user),
+                        child: AuthService.instance.currentUser?.email == user.email
+                            ? Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon( 
+                                      Icons.admin_panel_settings,
+                                      size: 16,
+                                      color: _getRoleColor(user.role),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      _getRoleDisplay(context, user.role),
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w600,
+                                        color: _getRoleColor(user.role),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : DropdownButton<Role>(
+                                value: user.role,
+                                underline: const SizedBox(),
+                                isDense: true,
+                                icon: Icon(
+                                  Icons.arrow_drop_down,
+                                  color: _getRoleColor(user.role),
+                                  size: 20,
+                                ),
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: _getRoleColor(user.role),
+                                ),
+                                borderRadius: BorderRadius.circular(6),
+                                dropdownColor: AppColors.white,
+                                items: [
+                                  DropdownMenuItem(
+                                    value: Role.user,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.person,
+                                          size: 16,
+                                          color: _getRoleColor(Role.user),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          _getRoleDisplay(context, Role.user),
+                                          style: TextStyle(
+                                            color: _getRoleColor(Role.user),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    _getRoleDisplay(context, Role.user),
-                                    style: TextStyle(
-                                      color: _getRoleColor(Role.user),
+                                  DropdownMenuItem(
+                                    value: Role.manager,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.business_center,
+                                          size: 16,
+                                          color: _getRoleColor(Role.manager),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          _getRoleDisplay(context, Role.manager),
+                                          style: TextStyle(
+                                            color: _getRoleColor(Role.manager),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  DropdownMenuItem(
+                                    value: Role.administrator,
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.admin_panel_settings,
+                                          size: 16,
+                                          color: _getRoleColor(Role.administrator),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        Text(
+                                          _getRoleDisplay(context, Role.administrator),
+                                          style: TextStyle(
+                                            color: _getRoleColor(Role.administrator),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
+                                onChanged: (Role? newRole) {
+                                  if (newRole != null && newRole != user.role) {
+                                    _handleRoleChange(user, newRole, l10n);
+                                  }
+                                },
                               ),
-                            ),
-                            DropdownMenuItem(
-                              value: Role.manager,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.business_center,
-                                    size: 16,
-                                    color: _getRoleColor(Role.manager),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    _getRoleDisplay(context, Role.manager),
-                                    style: TextStyle(
-                                      color: _getRoleColor(Role.manager),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            DropdownMenuItem(
-                              value: Role.administrator,
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.admin_panel_settings,
-                                    size: 16,
-                                    color: _getRoleColor(Role.administrator),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    _getRoleDisplay(context, Role.administrator),
-                                    style: TextStyle(
-                                      color: _getRoleColor(Role.administrator),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                          onChanged: (Role? newRole) {
-                            if (newRole != null && newRole != user.role) {
-                              _handleRoleChange(user, newRole, l10n);
-                            }
-                          },
-                        ),
                       ),
                       const SizedBox(width: 12),
                       Text(

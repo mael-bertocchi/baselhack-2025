@@ -3,12 +3,10 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
-import '../../Dashboard/UI/Components/TopicCard.dart';
-import 'Idea.dart';
-import '../../Dashboard/Api/TopicSubmissionService.dart';
-import '../../Dashboard/Api/DashboardService.dart';
-import '../../Dashboard/Api/TopicResultService.dart';
-import '../../Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
+import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import '../../../routes/AppRoutes.dart';
 
 // Alias temporaire pour rétrocompatibilité
 typedef Survey = Topic;
@@ -27,9 +25,7 @@ class TopicDetailView extends StatefulWidget {
 
 class TopicDetailViewState extends State<TopicDetailView> {
   final TextEditingController _ideaController = TextEditingController();
-  final TopicSubmissionService _submissionService = TopicSubmissionService();
-  final DashboardApiService _dashboardService = DashboardApiService();
-  final TopicResultService _topicResultService = TopicResultService();
+  final TopicService _topicService = TopicService();
   
   Topic? _topic;
   List<Idea> _ideas = [];
@@ -56,7 +52,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
     try {
       // Load topic data first
-      final topic = await _dashboardService.getTopicById(widget.topicId);
+      final topic = await _topicService.getTopicById(widget.topicId);
       
       if (topic == null) {
         if (!mounted) return;
@@ -70,8 +66,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
       
       // Load submissions and AI summary in parallel
       final results = await Future.wait([
-        _submissionService.getSubmissions(widget.topicId),
-        _topicResultService.getTopicResult(widget.topicId).catchError((_) => null),
+        _topicService.getSubmissions(widget.topicId),
+        _topicService.getTopicResult(widget.topicId).catchError((_) => null),
       ]);
       
       setState(() {
@@ -128,7 +124,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
     });
 
     try {
-      final result = await _topicResultService.analyzeTopic(widget.topicId);
+      final result = await _topicService.analyzeTopic(widget.topicId);
 
       setState(() {
         _aiSummary = result;
@@ -172,7 +168,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
     });
 
     try {
-      final newIdea = await _submissionService.submitIdea(
+      final newIdea = await _topicService.submitIdea(
         widget.topicId,
         _ideaController.text.trim(),
       );
@@ -349,7 +345,12 @@ class TopicDetailViewState extends State<TopicDetailView> {
                 children: [
                   // Bouton Back to Surveys
                   InkWell(
-                    onTap: () => Navigator.of(context).pop(),
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoutes.dashboard,
+                        (route) => false,
+                      );
+                    },
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [

@@ -3,9 +3,9 @@ import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
 import '../../../widgets/SharedAppBar.dart';
-import '../Api/CreateTopicService.dart';
-import '../../Login/Api/AuthService.dart';
-import 'Components/CustomTextField.dart';
+import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'Components/FormTextField.dart';
 import 'Components/DateTimePickerField.dart';
 
 class CreateTopicView extends StatefulWidget {
@@ -17,7 +17,7 @@ class CreateTopicView extends StatefulWidget {
 
 class _CreateTopicViewState extends State<CreateTopicView> {
   final _formKey = GlobalKey<FormState>();
-  final _createTopicService = CreateTopicService();
+  final _topicService = TopicService();
   
   // Controllers
   final _titleController = TextEditingController();
@@ -132,7 +132,7 @@ class _CreateTopicViewState extends State<CreateTopicView> {
         throw Exception(l10n.userNotAuthenticated);
       }
 
-      await _createTopicService.createTopic(
+      await _topicService.createTopic(
         title: _titleController.text.trim(),
         shortDescription: _shortDescriptionController.text.trim(),
         description: _descriptionController.text.trim(),
@@ -353,7 +353,7 @@ class _CreateTopicViewState extends State<CreateTopicView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Title field
-                          CustomTextField(
+                          FormTextField(
                             label: l10n.title,
                             hint: l10n.titleHint,
                             controller: _titleController,
@@ -365,7 +365,7 @@ class _CreateTopicViewState extends State<CreateTopicView> {
                           const SizedBox(height: 24),
 
                           // Short description field
-                          CustomTextField(
+                          FormTextField(
                             label: l10n.shortDescription,
                             hint: l10n.shortDescriptionHint,
                             controller: _shortDescriptionController,
@@ -378,7 +378,7 @@ class _CreateTopicViewState extends State<CreateTopicView> {
                           const SizedBox(height: 24),
 
                           // Description field
-                          CustomTextField(
+                          FormTextField(
                             label: l10n.fullDescription,
                             hint: l10n.fullDescriptionHint,
                             controller: _descriptionController,

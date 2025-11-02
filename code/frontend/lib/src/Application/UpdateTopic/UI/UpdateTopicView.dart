@@ -3,11 +3,10 @@ import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../routes/AppRoutes.dart';
 import '../../../widgets/SharedAppBar.dart';
-import '../Api/UpdateTopicService.dart';
-import '../../CreateTopic/UI/Components/CustomTextField.dart';
+import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
+import '../../CreateTopic/UI/Components/FormTextField.dart';
 import '../../CreateTopic/UI/Components/DateTimePickerField.dart';
-import '../../Dashboard/UI/Components/TopicCard.dart';
-import '../../Dashboard/Api/DashboardService.dart';
 
 class UpdateTopicView extends StatefulWidget {
   final String topicId;
@@ -23,8 +22,7 @@ class UpdateTopicView extends StatefulWidget {
 
 class _UpdateTopicViewState extends State<UpdateTopicView> {
   final _formKey = GlobalKey<FormState>();
-  final _updateTopicService = UpdateTopicService();
-  final _dashboardService = DashboardApiService();
+  final _topicService = TopicService();
   
   // Controllers
   late final TextEditingController _titleController;
@@ -68,7 +66,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
     });
 
     try {
-      final topic = await _dashboardService.getTopicById(widget.topicId);
+      final topic = await _topicService.getTopicById(widget.topicId);
       
       if (topic == null) {
         if (!mounted) return;
@@ -190,7 +188,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
     setState(() => _isSubmitting = true);
 
     try {
-      await _updateTopicService.updateTopic(
+      await _topicService.updateTopic(
         id: _topic!.id!,
         title: _titleController.text.trim(),
         shortDescription: _shortDescriptionController.text.trim(),
@@ -473,7 +471,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Title field
-                          CustomTextField(
+                          FormTextField(
                             label: l10n.title,
                             hint: l10n.titleHint,
                             controller: _titleController,
@@ -485,7 +483,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                           const SizedBox(height: 24),
 
                           // Short description field
-                          CustomTextField(
+                          FormTextField(
                             label: l10n.shortDescription,
                             hint: l10n.shortDescriptionHint,
                             controller: _shortDescriptionController,
@@ -498,7 +496,7 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
                           const SizedBox(height: 24),
 
                           // Description field
-                          CustomTextField(
+                          FormTextField(
                             label: l10n.fullDescription,
                             hint: l10n.fullDescriptionHint,
                             controller: _descriptionController,

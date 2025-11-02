@@ -4,70 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'TokenStorage.dart';
 import 'package:alignify/src/routes/ApiRoutes.dart';
-
-/// Role enum matching backend UserRole type
-enum Role { administrator, manager, user }
-
-/// Extension to convert backend role strings to Role enum
-extension RoleExtension on String {
-  Role toRole() {
-    switch (toLowerCase()) {
-      case 'administrator':
-        return Role.administrator;
-      case 'manager':
-        return Role.manager;
-      case 'user':
-      default:
-        return Role.user;
-    }
-  }
-}
-
-/// User model matching backend response
-class User {
-  final String id;
-  final String email;
-  final String firstName;
-  final String lastName;
-  final Role role;
-
-  const User({
-    required this.id,
-    required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.role,
-  });
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    // Handle both 'id' (from auth endpoints) and '_id' (from MongoDB documents)
-    final String userId;
-    if (json.containsKey('id')) {
-      userId = json['id'] as String;
-    } else if (json.containsKey('_id')) {
-      // MongoDB _id can be either a string or an object with $oid
-      final idValue = json['_id'];
-      if (idValue is String) {
-        userId = idValue;
-      } else if (idValue is Map && idValue.containsKey('\$oid')) {
-        userId = idValue['\$oid'] as String;
-      } else {
-        userId = idValue.toString();
-      }
-    } else {
-      throw ArgumentError('User JSON must contain either "id" or "_id"');
-    }
-    
-    return User(
-      id: userId,
-      email: json['email'] as String,
-      firstName: json['firstName'] as String? ?? '',
-      lastName: json['lastName'] as String? ?? '',
-      role: (json['role'] as String? ?? 'User').toRole(),
-    );
-  }
-}
-
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
 
 class AuthService extends ChangeNotifier {
   static String get baseUrl => dotenv.env['API_URL']!;
@@ -126,7 +63,6 @@ class AuthService extends ChangeNotifier {
   Future<void> loadUserInfo() async {
     if (_accessToken == null) return;
     
-    // Uncomment and use the real HTTP request when backend is available:
     final response = await http.get(
       Uri.parse('$baseUrl${ApiRoutes.userMe}'),
       headers: {
