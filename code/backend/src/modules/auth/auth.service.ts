@@ -1,10 +1,10 @@
 import { RequestError } from '@core/errors';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@plugins/jwt';
+import { RefreshBody, SigninBody, SignupBody } from "@modules/auth/auth.models";
 import { User } from '@modules/users/users.model';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@plugins/jwt';
 import bcrypt from 'bcrypt';
-import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { RefreshBody, SigninBody, SignupBody } from "./auth.types";
+import { Collection, WithId } from 'mongodb';
 
 /**
  * @function getUsersCollection

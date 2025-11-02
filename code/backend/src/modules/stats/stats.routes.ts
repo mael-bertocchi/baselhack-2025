@@ -6,10 +6,18 @@ import { FastifyInstance } from 'fastify';
  * @description This function handles the stats routes
  */
 async function statsRoutes(app: FastifyInstance): Promise<void> {
-    app.get('/nbTopics', statsController.nbTopics);
-    app.get('/nbUsers', statsController.nbUsers);
-    app.get('/nbSubmission', statsController.nbSubmission);
-    app.get('/sortTopics', statsController.sortTopics);
+    app.get('/nbTopics', {
+        onRequest: [app.authGuard('User')]
+    }, statsController.nbTopics);
+    app.get('/nbUsers', {
+        onRequest: [app.authGuard('User')]
+    }, statsController.nbUsers);
+    app.get('/nbSubmission', {
+        onRequest: [app.authGuard('User')]
+    }, statsController.nbSubmission);
+    app.get('/sortTopics', {
+        onRequest: [app.authGuard('User')]
+    }, statsController.sortTopics);
 }
 
 export default statsRoutes;

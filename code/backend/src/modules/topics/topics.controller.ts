@@ -1,6 +1,6 @@
+import topicsService from '@modules/topics/topics.service';
+import { CreateBody, SubmissionBody, TopicParams } from '@modules/topics/topics.types';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { TopicParams, CreateBody, SubmissionBody } from './topics.types';
-import topicsService from './topics.service';
 
 /**
  * @function getAllTopics
@@ -33,10 +33,6 @@ async function getTopicById(request: FastifyRequest<{ Params: TopicParams }>, re
  * @description Delete a topic by the id given on the url
  */
 async function deleteTopicById(request: FastifyRequest<{ Params: TopicParams }>, reply: FastifyReply): Promise<void> {
-    if (request.authUser?.payload.role === 'User') {
-        throw new Error('Only administrators can delete topics');
-    }
-
     await topicsService.deleteTopicById(request.params.id, request.server);
 
     reply.status(200).send({
@@ -62,10 +58,6 @@ async function createTopic(request: FastifyRequest<{ Body: CreateBody }>, reply:
  * @description Modify an existing topic
  */
 async function modifyTopic(request: FastifyRequest<{ Params: TopicParams, Body: CreateBody }>, reply: FastifyReply): Promise<void> {
-    if (request.authUser?.payload.role === 'User') {
-        throw new Error('Only administrators can delete topics');
-    }
-
     const result = await topicsService.modifyTopic(request.params.id, request.body, request.server);
 
     reply.status(200).send({

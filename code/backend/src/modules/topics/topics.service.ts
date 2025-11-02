@@ -1,8 +1,8 @@
 import { RequestError } from '@core/errors';
-import { Collection, WithId } from 'mongodb';
+import { Submission, Summary, Topic, TopicStatus } from '@modules/topics/topics.model';
+import { CreateBody, SubmissionBody } from '@modules/topics/topics.types';
 import { FastifyInstance } from 'fastify';
-import { Topic, TopicStatus, Summary, Submission } from '@modules/topics/topics.model';
-import { CreateBody, SubmissionBody } from './topics.types';
+import { Collection, WithId } from 'mongodb';
 
 /**
  * @function getTopicsCollection

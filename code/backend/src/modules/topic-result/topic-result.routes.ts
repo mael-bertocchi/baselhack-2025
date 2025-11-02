@@ -7,15 +7,15 @@ import { FastifyInstance } from 'fastify';
  */
 async function topicResultRoutes(app: FastifyInstance): Promise<void> {
     app.get('/', {
-        onRequest: [app.authGuard]
+        onRequest: [app.authGuard('Manager')]
     }, topicResultController.getAllTopicResults);
 
     app.get('/:id', {
-        onRequest: [app.authGuard]
+        onRequest: [app.authGuard('Manager')]
     }, topicResultController.getTopicResultById as any);
 
     app.post('/analyze/:topicId', {
-        onRequest: [app.authGuard]
+        onRequest: [app.authGuard('Manager')]
     }, topicResultController.analyzeTopic as any);
 }
 

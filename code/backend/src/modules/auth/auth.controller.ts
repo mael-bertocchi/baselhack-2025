@@ -1,7 +1,7 @@
 import { RequestError } from '@core/errors';
+import { RefreshBody, SigninBody, SignupBody } from '@modules/auth/auth.models';
+import authService from '@modules/auth/auth.service';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { SigninBody, SignupBody, RefreshBody } from './auth.types';
-import authService from './auth.service';
 
 /**
  * @function signin

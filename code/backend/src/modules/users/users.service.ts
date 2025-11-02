@@ -1,12 +1,11 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import { RequestError } from '@core/errors';
-import { Collection, WithId } from 'mongodb';
-import { FastifyInstance } from 'fastify';
+import { Maybe } from '@core/models';
+import { AuthenticatedUser } from '@modules/auth/auth.models';
 import { User } from '@modules/users/users.model';
-import { AuthenticatedUser } from '@modules/auth/auth.types';
-import { PasswordBody, RoleBody } from './users.types';
+import { PasswordBody, RoleBody } from '@modules/users/users.types';
 import bcrypt from 'bcrypt';
-
+import { FastifyInstance, FastifyRequest } from 'fastify';
+import { Collection, WithId } from 'mongodb';
 
 /**
  * @function getUsersCollection
@@ -29,7 +28,7 @@ function getUsersCollection(fastify: FastifyInstance): Collection<User> {
 async function getCurrentUser(authUser: AuthenticatedUser, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
-    const user: WithId<User> | null = await usersCollection.findOne({ _id: new (fastify.mongo).ObjectId(authUser.id) });
+    const user: Maybe<WithId<User>> = await usersCollection.findOne({ _id: new (fastify.mongo).ObjectId(authUser.id) });
 
     if (!user) {
         throw new RequestError('User not found', 404);
@@ -57,7 +56,7 @@ async function getUsers(request: FastifyRequest, fastify: FastifyInstance) {
 async function changePassword(id: string, data: PasswordBody, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
-    const user: WithId<User> | null = await usersCollection.findOne({
+    const user: Maybe<WithId<User>> = await usersCollection.findOne({
         _id: new (fastify.mongo).ObjectId(id)
     });
 
@@ -83,8 +82,8 @@ async function changePassword(id: string, data: PasswordBody, fastify: FastifyIn
 async function changeRole(id: string, data: RoleBody, fastify: FastifyInstance) {
     const usersCollection = getUsersCollection(fastify);
 
-    const user: WithId<User> | null = await usersCollection.findOne({ 
-        _id: new (fastify.mongo).ObjectId(id) 
+    const user: Maybe<WithId<User>> = await usersCollection.findOne({
+        _id: new (fastify.mongo).ObjectId(id)
     });
 
     if (!user) {

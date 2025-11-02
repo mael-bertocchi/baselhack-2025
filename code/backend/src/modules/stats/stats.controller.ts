@@ -1,6 +1,5 @@
-import { Result } from './../../../node_modules/arg/index.d';
+import statsService from '@modules/stats/stats.service';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import statsService from './stats.service';
 
 /**
  * @function nbTopics

@@ -1,5 +1,3 @@
-import { Maybe } from '@core/models';
-
 /**
  * @interface Submission
  * @description Represents a user's submission or opinion on a topic.

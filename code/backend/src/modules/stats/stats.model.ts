@@ -1,5 +1,3 @@
-import { Maybe } from '@core/models';
-
 /**
  * @type TopicStatus
  * @description Represents the current state of a topic discussion.

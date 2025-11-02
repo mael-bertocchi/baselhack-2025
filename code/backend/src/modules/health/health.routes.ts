@@ -7,7 +7,7 @@ import { FastifyInstance } from 'fastify';
  */
 async function healthRoutes(app: FastifyInstance): Promise<void> {
     app.get('/', {
-        onRequest: [app.authGuard]
+        onRequest: [app.authGuard('User')]
     }, healthController.checkAppHealth);
 }
 

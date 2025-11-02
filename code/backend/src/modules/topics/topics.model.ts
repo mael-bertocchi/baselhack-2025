@@ -1,5 +1,3 @@
-import { Maybe } from '@core/models';
-
 /**
  * @type TopicStatus
  * @description Represents the current state of a topic discussion.
@@ -22,6 +20,10 @@ export interface Topic {
     updatedAt: Date; /*!> Timestamp of the last topic update */
 };
 
+/**
+ * @interface Summary
+ * @description Represents a summary of a discussion topic.
+ */
 export interface Summary {
     title: string; /*!> Title of the discussion topic */
     short_description: string; /*!> Short description providing context */
@@ -34,10 +36,13 @@ export interface Summary {
     authorId: string; /*!> Identifier of the user who created the topic */
 };
 
+/**
+ * @interface Submission
+ * @description Represents a submission made to a discussion topic.
+ */
 export interface Submission {
     topicId: string; /*!> Identifier of the related topic */
     createdAt: Date; /*!> Timestamp when the submission was created */
     updatedAt: Date; /*!> Timestamp when the submission was last updated */
     text: string; /*!> The textual content of the submission */
 };
-

@@ -1,8 +1,8 @@
 import authController from '@modules/auth/auth.controller';
+import { refreshSchema } from '@modules/auth/schemas/refresh.schema';
+import { signinSchema } from '@modules/auth/schemas/signin.schema';
+import { signupSchema } from '@modules/auth/schemas/signup.schema';
 import { FastifyInstance } from 'fastify';
-import { signinSchema } from './schemas/signin.schema';
-import { signupSchema } from './schemas/signup.schema';
-import { refreshSchema } from './schemas/refresh.schema';
 
 /**
  * @function authRoutes

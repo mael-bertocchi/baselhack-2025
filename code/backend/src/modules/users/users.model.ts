@@ -1,5 +1,3 @@
-import { Maybe } from '@core/models';
-
 /**
  * @type UserRole
  * @description Represents the possible roles a user can have in the system.

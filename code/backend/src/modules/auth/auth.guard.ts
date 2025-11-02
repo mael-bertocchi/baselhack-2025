@@ -1,6 +1,7 @@
 import { RequestError } from '@core/errors';
+import { AuthenticatedUser } from '@modules/auth/auth.models';
+import { UserRole } from '@modules/users/users.model';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import { AuthenticatedUser } from './auth.types';
 
 function extractTokenFromAuthorizationHeader(request: FastifyRequest): string | null {
     const authorization = request.headers['authorization'] ?? request.headers['Authorization'];
@@ -22,7 +23,17 @@ function getAccessToken(request: FastifyRequest): string | null {
     return extractTokenFromAuthorizationHeader(request);
 }
 
-export async function jwtGuard(request: FastifyRequest, _reply: FastifyReply): Promise<void> {
+const ROLE_ORDER: UserRole[] = ['User', 'Manager', 'Administrator'];
+
+function isValidUserRole(val: unknown): val is UserRole {
+    return val === 'Administrator' || val === 'Manager' || val === 'User';
+}
+
+function roleSatisfies(userRole: UserRole, minRole: UserRole): boolean {
+    return ROLE_ORDER.indexOf(userRole) >= ROLE_ORDER.indexOf(minRole);
+}
+
+async function verifyAndAttach(request: FastifyRequest): Promise<AuthenticatedUser> {
     const token = getAccessToken(request);
 
     if (!token) {
@@ -59,6 +70,22 @@ export async function jwtGuard(request: FastifyRequest, _reply: FastifyReply): P
     };
 
     request.authUser = authUser;
+    return authUser;
+}
+
+export function jwtGuard(minRole: UserRole): (request: FastifyRequest, reply: FastifyReply) => Promise<void> {
+    return async function (request: FastifyRequest, _reply: FastifyReply): Promise<void> {
+        const authUser: AuthenticatedUser = await verifyAndAttach(request);
+        const roleRaw: any = (authUser.payload as Record<string, unknown>)?.role;
+
+        if (typeof roleRaw !== 'string' || !isValidUserRole(roleRaw)) {
+            throw new RequestError('Forbidden: invalid user role', 403);
+        }
+
+        if (!roleSatisfies(roleRaw as UserRole, minRole)) {
+            throw new RequestError('Forbidden: insufficient role', 403);
+        }
+    };
 }
 
 export default jwtGuard;

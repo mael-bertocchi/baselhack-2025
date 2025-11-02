@@ -1,23 +1,24 @@
-import { Result } from './../../../node_modules/arg/index.d';
+import usersService from '@modules/users/users.service';
+import { PasswordBody, RoleBody, UserParams } from '@modules/users/users.types';
 import { FastifyReply, FastifyRequest } from 'fastify';
-import usersService from './users.service';
-import { PasswordBody, RoleBody, UserParams } from './users.types';
 
 /**
  * @function getCurrentUser
  * @description Return the logged in user information
  */
 async function getCurrentUser(request: FastifyRequest, reply: FastifyReply): Promise<void> {
-    if (!request.authUser) {
-        throw new Error('User is not authenticated');
+    if (request.authUser) {
+        const result = await usersService.getCurrentUser(request.authUser, request.server);
+
+        reply.status(200).send({
+            message: 'Successfully retrieved logged user',
+            data: result
+        });
+    } else {
+        reply.status(501).send({
+            message: 'No logged user found',
+        });
     }
-
-    const result = await usersService.getCurrentUser(request.authUser, request.server);
-
-    reply.status(200).send({
-        message: 'Successfully retrieved logged user',
-        data: result
-    });
 }
 
 /**
@@ -56,12 +57,12 @@ async function changeRole(
     request: FastifyRequest<{
         Body: RoleBody,
         Params: { id: string }
-    }>, 
+    }>,
     reply: FastifyReply
 ): Promise<void> {
     const result = await usersService.changeRole(
         request.params.id,
-        request.body, 
+        request.body,
         request.server
     );
 
@@ -76,10 +77,6 @@ async function changeRole(
  * @description Delete a user by id
  */
 async function deleteUser(request: FastifyRequest<{ Params: UserParams }>, reply: FastifyReply): Promise<void> {
-    if (request.authUser?.payload.role !== 'Administrator') {
-        throw new Error('Only administrators can delete users');
-    }
-
     await usersService.deleteUser(request.params.id, request.server);
 
     reply.status(200).send({
