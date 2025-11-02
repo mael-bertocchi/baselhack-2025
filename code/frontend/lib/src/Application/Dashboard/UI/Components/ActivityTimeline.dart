@@ -40,16 +40,16 @@ class ActivityTimeline extends StatelessWidget {
         // Header
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.notifications_active,
               color: AppColors.pink,
-              size: 20,
+              size: 22,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Text(
               l10n.activityAlerts,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
@@ -60,11 +60,11 @@ class ActivityTimeline extends StatelessWidget {
         Text(
           l10n.importantUpdatesNotifications,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: AppColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         
         // Alert Cards
         _buildAlertCard(

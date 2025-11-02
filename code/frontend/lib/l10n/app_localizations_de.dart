@@ -555,4 +555,101 @@ class AppLocalizationsDe extends AppLocalizations {
   String topicsLowEngagement(int count) {
     return '$count Themen mit geringem Engagement';
   }
+
+  @override
+  String get topicAnalytics => 'Themenanalyse';
+
+  @override
+  String get detailedInsightsEngagement => 'Detaillierte Einblicke und Engagement-Metriken';
+
+  @override
+  String get refresh => 'Aktualisieren';
+
+  @override
+  String get engagementOverviewTitle => 'Engagement-Übersicht';
+
+  @override
+  String get keyMetricsForTopic => 'Wichtige Kennzahlen für dieses Thema';
+
+  @override
+  String get totalSubmissions => 'Gesamte Beiträge';
+
+  @override
+  String get avgPerDay => 'Durchschn. pro Tag';
+
+  @override
+  String get daysActive => 'Aktive Tage';
+
+  @override
+  String get aiAnalysis => 'KI-Analyse';
+
+  @override
+  String get complete => 'Abgeschlossen';
+
+  @override
+  String get pending => 'Ausstehend';
+
+  @override
+  String get topicProgress => 'Themenfortschritt';
+
+  @override
+  String get topicPeriodEnded => 'Themenzeitraum ist beendet';
+
+  @override
+  String daysElapsed(int active, int total) {
+    return '$active von $total Tagen vergangen';
+  }
+
+  @override
+  String get submissionTimeline => 'Beitrags-Zeitlinie';
+
+  @override
+  String get dailySubmissionActivity => 'Tägliche Beitragsaktivität im Zeitverlauf';
+
+  @override
+  String get noSubmissionData => 'Noch keine Beitragsdaten';
+
+  @override
+  String get peak => 'Spitze';
+
+  @override
+  String get average => 'Durchschnitt';
+
+  @override
+  String get totalDays => 'Gesamttage';
+
+  @override
+  String get participationInsights => 'Teilnahme-Einblicke';
+
+  @override
+  String get whenUsersEngage => 'Wann Benutzer am meisten engagieren';
+
+  @override
+  String get mostActiveHour => 'Aktivste Stunde';
+
+  @override
+  String get uniqueParticipants => 'Eindeutige Teilnehmer';
+
+  @override
+  String get engagementRate => 'Engagement-Rate';
+
+  @override
+  String perDay(String rate) {
+    return '$rate/Tag';
+  }
+
+  @override
+  String get activityByDayOfWeek => 'Aktivität nach Wochentag';
+
+  @override
+  String get commonThemes => 'Häufige Themen';
+
+  @override
+  String get mostFrequentWords => 'Häufigste Wörter in Beiträgen';
+
+  @override
+  String get noThemesDetected => 'Noch keine Themen erkannt';
+
+  @override
+  String get topWordsExcludingCommon => 'Top 10 Wörter (ohne häufige Wörter)';
 }

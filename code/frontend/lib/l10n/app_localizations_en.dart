@@ -555,4 +555,101 @@ class AppLocalizationsEn extends AppLocalizations {
   String topicsLowEngagement(int count) {
     return '$count topics with low engagement';
   }
+
+  @override
+  String get topicAnalytics => 'Topic Analytics';
+
+  @override
+  String get detailedInsightsEngagement => 'Detailed insights and engagement metrics';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get engagementOverviewTitle => 'Engagement Overview';
+
+  @override
+  String get keyMetricsForTopic => 'Key metrics for this topic';
+
+  @override
+  String get totalSubmissions => 'Total Submissions';
+
+  @override
+  String get avgPerDay => 'Avg. per Day';
+
+  @override
+  String get daysActive => 'Days Active';
+
+  @override
+  String get aiAnalysis => 'AI Analysis';
+
+  @override
+  String get complete => 'Complete';
+
+  @override
+  String get pending => 'Pending';
+
+  @override
+  String get topicProgress => 'Topic Progress';
+
+  @override
+  String get topicPeriodEnded => 'Topic period has ended';
+
+  @override
+  String daysElapsed(int active, int total) {
+    return '$active of $total days elapsed';
+  }
+
+  @override
+  String get submissionTimeline => 'Submission Timeline';
+
+  @override
+  String get dailySubmissionActivity => 'Daily submission activity over time';
+
+  @override
+  String get noSubmissionData => 'No submission data yet';
+
+  @override
+  String get peak => 'Peak';
+
+  @override
+  String get average => 'Average';
+
+  @override
+  String get totalDays => 'Total Days';
+
+  @override
+  String get participationInsights => 'Participation Insights';
+
+  @override
+  String get whenUsersEngage => 'When users engage most';
+
+  @override
+  String get mostActiveHour => 'Most Active Hour';
+
+  @override
+  String get uniqueParticipants => 'Unique Participants';
+
+  @override
+  String get engagementRate => 'Engagement Rate';
+
+  @override
+  String perDay(String rate) {
+    return '$rate/day';
+  }
+
+  @override
+  String get activityByDayOfWeek => 'Activity by Day of Week';
+
+  @override
+  String get commonThemes => 'Common Themes';
+
+  @override
+  String get mostFrequentWords => 'Most frequent words in submissions';
+
+  @override
+  String get noThemesDetected => 'No themes detected yet';
+
+  @override
+  String get topWordsExcludingCommon => 'Top 10 words (excluding common words)';
 }

@@ -555,4 +555,101 @@ class AppLocalizationsFr extends AppLocalizations {
   String topicsLowEngagement(int count) {
     return '$count sujets avec faible engagement';
   }
+
+  @override
+  String get topicAnalytics => 'Analyses du Sujet';
+
+  @override
+  String get detailedInsightsEngagement => 'Analyses détaillées et métriques d\'engagement';
+
+  @override
+  String get refresh => 'Actualiser';
+
+  @override
+  String get engagementOverviewTitle => 'Vue d\'ensemble de l\'engagement';
+
+  @override
+  String get keyMetricsForTopic => 'Indicateurs clés pour ce sujet';
+
+  @override
+  String get totalSubmissions => 'Total des soumissions';
+
+  @override
+  String get avgPerDay => 'Moy. par jour';
+
+  @override
+  String get daysActive => 'Jours actifs';
+
+  @override
+  String get aiAnalysis => 'Analyse IA';
+
+  @override
+  String get complete => 'Terminé';
+
+  @override
+  String get pending => 'En attente';
+
+  @override
+  String get topicProgress => 'Progression du sujet';
+
+  @override
+  String get topicPeriodEnded => 'La période du sujet est terminée';
+
+  @override
+  String daysElapsed(int active, int total) {
+    return '$active jours sur $total écoulés';
+  }
+
+  @override
+  String get submissionTimeline => 'Chronologie des soumissions';
+
+  @override
+  String get dailySubmissionActivity => 'Activité quotidienne des soumissions';
+
+  @override
+  String get noSubmissionData => 'Aucune donnée de soumission';
+
+  @override
+  String get peak => 'Pic';
+
+  @override
+  String get average => 'Moyenne';
+
+  @override
+  String get totalDays => 'Total de jours';
+
+  @override
+  String get participationInsights => 'Analyse de participation';
+
+  @override
+  String get whenUsersEngage => 'Quand les utilisateurs s\'engagent le plus';
+
+  @override
+  String get mostActiveHour => 'Heure la plus active';
+
+  @override
+  String get uniqueParticipants => 'Participants uniques';
+
+  @override
+  String get engagementRate => 'Taux d\'engagement';
+
+  @override
+  String perDay(String rate) {
+    return '$rate/jour';
+  }
+
+  @override
+  String get activityByDayOfWeek => 'Activité par jour de la semaine';
+
+  @override
+  String get commonThemes => 'Thèmes communs';
+
+  @override
+  String get mostFrequentWords => 'Mots les plus fréquents dans les soumissions';
+
+  @override
+  String get noThemesDetected => 'Aucun thème détecté';
+
+  @override
+  String get topWordsExcludingCommon => 'Top 10 des mots (hors mots courants)';
 }

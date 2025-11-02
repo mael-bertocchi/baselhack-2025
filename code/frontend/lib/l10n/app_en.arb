@@ -943,5 +943,173 @@
         "type": "int"
       }
     }
+  },
+
+  "topicAnalytics": "Topic Analytics",
+  "@topicAnalytics": {
+    "description": "Topic analytics section title"
+  },
+
+  "detailedInsightsEngagement": "Detailed insights and engagement metrics",
+  "@detailedInsightsEngagement": {
+    "description": "Topic analytics section subtitle"
+  },
+
+  "refresh": "Refresh",
+  "@refresh": {
+    "description": "Refresh button tooltip"
+  },
+
+  "engagementOverviewTitle": "Engagement Overview",
+  "@engagementOverviewTitle": {
+    "description": "Engagement overview card title"
+  },
+
+  "keyMetricsForTopic": "Key metrics for this topic",
+  "@keyMetricsForTopic": {
+    "description": "Engagement overview subtitle"
+  },
+
+  "totalSubmissions": "Total Submissions",
+  "@totalSubmissions": {
+    "description": "Total submissions metric"
+  },
+
+  "avgPerDay": "Avg. per Day",
+  "@avgPerDay": {
+    "description": "Average per day metric"
+  },
+
+  "daysActive": "Days Active",
+  "@daysActive": {
+    "description": "Days active metric"
+  },
+
+  "aiAnalysis": "AI Analysis",
+  "@aiAnalysis": {
+    "description": "AI analysis status"
+  },
+
+  "complete": "Complete",
+  "@complete": {
+    "description": "Complete status"
+  },
+
+  "pending": "Pending",
+  "@pending": {
+    "description": "Pending status"
+  },
+
+  "topicProgress": "Topic Progress",
+  "@topicProgress": {
+    "description": "Topic progress label"
+  },
+
+  "topicPeriodEnded": "Topic period has ended",
+  "@topicPeriodEnded": {
+    "description": "Topic ended message"
+  },
+
+  "daysElapsed": "{active} of {total} days elapsed",
+  "@daysElapsed": {
+    "description": "Days elapsed message",
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "submissionTimeline": "Submission Timeline",
+  "@submissionTimeline": {
+    "description": "Submission timeline chart title"
+  },
+
+  "dailySubmissionActivity": "Daily submission activity over time",
+  "@dailySubmissionActivity": {
+    "description": "Submission timeline subtitle"
+  },
+
+  "noSubmissionData": "No submission data yet",
+  "@noSubmissionData": {
+    "description": "No submission data message"
+  },
+
+  "peak": "Peak",
+  "@peak": {
+    "description": "Peak value label"
+  },
+
+  "average": "Average",
+  "@average": {
+    "description": "Average value label"
+  },
+
+  "totalDays": "Total Days",
+  "@totalDays": {
+    "description": "Total days label"
+  },
+
+  "participationInsights": "Participation Insights",
+  "@participationInsights": {
+    "description": "Participation insights title"
+  },
+
+  "whenUsersEngage": "When users engage most",
+  "@whenUsersEngage": {
+    "description": "Participation insights subtitle"
+  },
+
+  "mostActiveHour": "Most Active Hour",
+  "@mostActiveHour": {
+    "description": "Most active hour label"
+  },
+
+  "uniqueParticipants": "Unique Participants",
+  "@uniqueParticipants": {
+    "description": "Unique participants label"
+  },
+
+  "engagementRate": "Engagement Rate",
+  "@engagementRate": {
+    "description": "Engagement rate label"
+  },
+
+  "perDay": "{rate}/day",
+  "@perDay": {
+    "description": "Per day format",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+
+  "activityByDayOfWeek": "Activity by Day of Week",
+  "@activityByDayOfWeek": {
+    "description": "Activity by day of week title"
+  },
+
+  "commonThemes": "Common Themes",
+  "@commonThemes": {
+    "description": "Common themes title"
+  },
+
+  "mostFrequentWords": "Most frequent words in submissions",
+  "@mostFrequentWords": {
+    "description": "Common themes subtitle"
+  },
+
+  "noThemesDetected": "No themes detected yet",
+  "@noThemesDetected": {
+    "description": "No themes message"
+  },
+
+  "topWordsExcludingCommon": "Top 10 words (excluding common words)",
+  "@topWordsExcludingCommon": {
+    "description": "Word cloud footer info"
   }
 }

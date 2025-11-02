@@ -943,5 +943,173 @@
         "type": "int"
       }
     }
+  },
+
+  "topicAnalytics": "Themenanalyse",
+  "@topicAnalytics": {
+    "description": "Topic analytics section title"
+  },
+
+  "detailedInsightsEngagement": "Detaillierte Einblicke und Engagement-Metriken",
+  "@detailedInsightsEngagement": {
+    "description": "Topic analytics section subtitle"
+  },
+
+  "refresh": "Aktualisieren",
+  "@refresh": {
+    "description": "Refresh button tooltip"
+  },
+
+  "engagementOverviewTitle": "Engagement-Übersicht",
+  "@engagementOverviewTitle": {
+    "description": "Engagement overview card title"
+  },
+
+  "keyMetricsForTopic": "Wichtige Kennzahlen für dieses Thema",
+  "@keyMetricsForTopic": {
+    "description": "Engagement overview subtitle"
+  },
+
+  "totalSubmissions": "Gesamte Beiträge",
+  "@totalSubmissions": {
+    "description": "Total submissions metric"
+  },
+
+  "avgPerDay": "Durchschn. pro Tag",
+  "@avgPerDay": {
+    "description": "Average per day metric"
+  },
+
+  "daysActive": "Aktive Tage",
+  "@daysActive": {
+    "description": "Days active metric"
+  },
+
+  "aiAnalysis": "KI-Analyse",
+  "@aiAnalysis": {
+    "description": "AI analysis status"
+  },
+
+  "complete": "Abgeschlossen",
+  "@complete": {
+    "description": "Complete status"
+  },
+
+  "pending": "Ausstehend",
+  "@pending": {
+    "description": "Pending status"
+  },
+
+  "topicProgress": "Themenfortschritt",
+  "@topicProgress": {
+    "description": "Topic progress label"
+  },
+
+  "topicPeriodEnded": "Themenzeitraum ist beendet",
+  "@topicPeriodEnded": {
+    "description": "Topic ended message"
+  },
+
+  "daysElapsed": "{active} von {total} Tagen vergangen",
+  "@daysElapsed": {
+    "description": "Days elapsed message",
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "submissionTimeline": "Beitrags-Zeitlinie",
+  "@submissionTimeline": {
+    "description": "Submission timeline chart title"
+  },
+
+  "dailySubmissionActivity": "Tägliche Beitragsaktivität im Zeitverlauf",
+  "@dailySubmissionActivity": {
+    "description": "Submission timeline subtitle"
+  },
+
+  "noSubmissionData": "Noch keine Beitragsdaten",
+  "@noSubmissionData": {
+    "description": "No submission data message"
+  },
+
+  "peak": "Spitze",
+  "@peak": {
+    "description": "Peak value label"
+  },
+
+  "average": "Durchschnitt",
+  "@average": {
+    "description": "Average value label"
+  },
+
+  "totalDays": "Gesamttage",
+  "@totalDays": {
+    "description": "Total days label"
+  },
+
+  "participationInsights": "Teilnahme-Einblicke",
+  "@participationInsights": {
+    "description": "Participation insights title"
+  },
+
+  "whenUsersEngage": "Wann Benutzer am meisten engagieren",
+  "@whenUsersEngage": {
+    "description": "Participation insights subtitle"
+  },
+
+  "mostActiveHour": "Aktivste Stunde",
+  "@mostActiveHour": {
+    "description": "Most active hour label"
+  },
+
+  "uniqueParticipants": "Eindeutige Teilnehmer",
+  "@uniqueParticipants": {
+    "description": "Unique participants label"
+  },
+
+  "engagementRate": "Engagement-Rate",
+  "@engagementRate": {
+    "description": "Engagement rate label"
+  },
+
+  "perDay": "{rate}/Tag",
+  "@perDay": {
+    "description": "Per day format",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+
+  "activityByDayOfWeek": "Aktivität nach Wochentag",
+  "@activityByDayOfWeek": {
+    "description": "Activity by day of week title"
+  },
+
+  "commonThemes": "Häufige Themen",
+  "@commonThemes": {
+    "description": "Common themes title"
+  },
+
+  "mostFrequentWords": "Häufigste Wörter in Beiträgen",
+  "@mostFrequentWords": {
+    "description": "Common themes subtitle"
+  },
+
+  "noThemesDetected": "Noch keine Themen erkannt",
+  "@noThemesDetected": {
+    "description": "No themes message"
+  },
+
+  "topWordsExcludingCommon": "Top 10 Wörter (ohne häufige Wörter)",
+  "@topWordsExcludingCommon": {
+    "description": "Word cloud footer info"
   }
 }

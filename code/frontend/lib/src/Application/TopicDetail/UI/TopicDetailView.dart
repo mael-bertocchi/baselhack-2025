@@ -7,6 +7,7 @@ import 'package:alignify/src/Application/Shared/Models/Models.dart';
 import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
 import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
 import '../../../routes/AppRoutes.dart';
+import 'Components/TopicAnalyticsSection.dart';
 
 // Alias temporaire pour rétrocompatibilité
 typedef Survey = Topic;
@@ -33,6 +34,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
   bool _isLoading = true;
   bool _isSubmitting = false;
   bool _isAnalyzing = false;
+  bool _isAiSummaryExpanded = true; // State for AI summary collapse/expand
   String? _error;
   
   static const int maxIdeaLength = 1000;
@@ -684,6 +686,18 @@ class TopicDetailViewState extends State<TopicDetailView> {
               ),
               const SizedBox(height: 40),
 
+              // Analytics Section (for admins and managers)
+              if (AuthService.instance.currentUser?.role == Role.administrator || 
+                  AuthService.instance.currentUser?.role == Role.manager) ...[
+                TopicAnalyticsSection(
+                  topic: _topic!,
+                  submissions: _ideas,
+                  aiSummary: _aiSummary,
+                  onRefresh: _loadTopicAndSubmissions,
+                ),
+                const SizedBox(height: 40),
+              ],
+
               // AI-Generated Summary Card
               if (_aiSummary != null)
                 Container(
@@ -714,131 +728,158 @@ class TopicDetailViewState extends State<TopicDetailView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: AppColors.blue.withValues(alpha: 0.1),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.auto_awesome,
-                                color: AppColors.blue,
-                                size: 28,
-                              ),
-                            ),
-                            const SizedBox(width: 16),
-                            const Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'AI-Generated Summary',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.textPrimary,
-                                    ),
-                                  ),
-                                  SizedBox(height: 4),
-                                  Text(
-                                    'Automated analysis of all submitted ideas and patterns',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: AppColors.textSecondary,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        const Divider(color: Color(0xFFBFDBFE)),
-                        const SizedBox(height: 24),
-                        MarkdownBody(
-                          data: _aiSummary!.content,
-                          selectable: true,
-                          styleSheet: MarkdownStyleSheet(
-                            p: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.textSecondary,
-                              height: 1.6,
-                            ),
-                            strong: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
-                            h1: const TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
-                            h2: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                              color: AppColors.textPrimary,
-                            ),
-                            h3: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.textPrimary,
-                            ),
-                            listBullet: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.blue,
-                            ),
-                            blockquote: const TextStyle(
-                              fontSize: 16,
-                              color: AppColors.textSecondary,
-                              fontStyle: FontStyle.italic,
-                            ),
-                            blockquoteDecoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.5),
-                              borderRadius: BorderRadius.circular(4),
-                              border: const Border(
-                                left: BorderSide(
-                                  color: AppColors.blue,
-                                  width: 4,
-                                ),
-                              ),
-                            ),
-                            code: TextStyle(
-                              fontSize: 15,
-                              backgroundColor: Colors.white.withValues(alpha: 0.7),
-                              color: AppColors.blue,
-                              fontFamily: 'monospace',
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.7),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
+                        // Header with collapse button
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              _isAiSummaryExpanded = !_isAiSummaryExpanded;
+                            });
+                          },
+                          borderRadius: BorderRadius.circular(8),
                           child: Row(
                             children: [
-                              const Icon(
-                                Icons.info_outline,
-                                size: 18,
-                                color: AppColors.blue,
+                              Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  color: AppColors.blue.withValues(alpha: 0.1),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Icon(
+                                  Icons.auto_awesome,
+                                  color: AppColors.blue,
+                                  size: 28,
+                                ),
                               ),
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: Text(
-                                  'Last updated: ${_formatDate(_aiSummary!.updatedAt)}',
-                                  style: const TextStyle(
-                                    fontSize: 13,
+                              const SizedBox(width: 16),
+                              const Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'AI-Generated Summary',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w800,
+                                        color: AppColors.textPrimary,
+                                      ),
+                                    ),
+                                    SizedBox(height: 4),
+                                    Text(
+                                      'Automated analysis of all submitted ideas and patterns',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        color: AppColors.textSecondary,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Icon(
+                                _isAiSummaryExpanded ? Icons.expand_less : Icons.expand_more,
+                                color: AppColors.textSecondary,
+                                size: 28,
+                              ),
+                            ],
+                          ),
+                        ),
+                        
+                        // Animated collapsible content
+                        AnimatedCrossFade(
+                          firstChild: Column(
+                            children: [
+                              const SizedBox(height: 24),
+                              const Divider(color: Color(0xFFBFDBFE)),
+                              const SizedBox(height: 24),
+                              MarkdownBody(
+                                data: _aiSummary!.content,
+                                selectable: true,
+                                styleSheet: MarkdownStyleSheet(
+                                  p: const TextStyle(
+                                    fontSize: 16,
                                     color: AppColors.textSecondary,
+                                    height: 1.6,
                                   ),
+                                  strong: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                  h1: const TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                  h2: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                  h3: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textPrimary,
+                                  ),
+                                  listBullet: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.blue,
+                                  ),
+                                  blockquote: const TextStyle(
+                                    fontSize: 16,
+                                    color: AppColors.textSecondary,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                  blockquoteDecoration: BoxDecoration(
+                                    color: Colors.white.withValues(alpha: 0.5),
+                                    borderRadius: BorderRadius.circular(4),
+                                    border: const Border(
+                                      left: BorderSide(
+                                        color: AppColors.blue,
+                                        width: 4,
+                                      ),
+                                    ),
+                                  ),
+                                  code: TextStyle(
+                                    fontSize: 15,
+                                    backgroundColor: Colors.white.withValues(alpha: 0.7),
+                                    color: AppColors.blue,
+                                    fontFamily: 'monospace',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.7),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.info_outline,
+                                      size: 18,
+                                      color: AppColors.blue,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        'Last updated: ${_formatDate(_aiSummary!.updatedAt)}',
+                                        style: const TextStyle(
+                                          fontSize: 13,
+                                          color: AppColors.textSecondary,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
                           ),
+                          secondChild: const SizedBox.shrink(),
+                          crossFadeState: _isAiSummaryExpanded 
+                              ? CrossFadeState.showFirst 
+                              : CrossFadeState.showSecond,
+                          duration: const Duration(milliseconds: 300),
                         ),
                       ],
                     ),

@@ -40,16 +40,16 @@ class EngagementMetrics extends StatelessWidget {
         // Chart title
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.trending_up,
               color: AppColors.blue,
-              size: 20,
+              size: 22,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Text(
               l10n.engagementOverview,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
@@ -60,11 +60,11 @@ class EngagementMetrics extends StatelessWidget {
         Text(
           l10n.platformActivityMetrics,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: AppColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 24),
         
         // Metrics Grid
         Row(

@@ -42,17 +42,17 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
       width: double.infinity,
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFFE5E7EB),
-          width: 1,
+          color: AppColors.blue.withOpacity(0.3),
+          width: 2,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
+            color: AppColors.blue.withOpacity(0.15),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
@@ -70,14 +70,26 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
             child: Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: AppColors.blue.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
+                    gradient: LinearGradient(
+                      colors: [
+                        AppColors.blue,
+                        AppColors.blue.withOpacity(0.8),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.blue.withOpacity(0.3),
+                        blurRadius: 8,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
                   ),
                   child: const Icon(
                     Icons.analytics,
-                    color: AppColors.blue,
+                    color: Colors.white,
                     size: 24,
                   ),
                 ),
@@ -89,8 +101,8 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
                       Text(
                         AppLocalizations.of(context)!.analyticsDashboard,
                         style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
                         ),
                       ),
@@ -108,7 +120,7 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
                 Icon(
                   _isExpanded ? Icons.expand_less : Icons.expand_more,
                   color: AppColors.textSecondary,
-                  size: 24,
+                  size: 28,
                 ),
               ],
             ),
@@ -207,16 +219,16 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
         // Chart title
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.bar_chart,
               color: AppColors.blue,
-              size: 20,
+              size: 22,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Text(
               l10n.mostPopularTopics,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
@@ -227,11 +239,11 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
         Text(
           l10n.topicsWithMostSubmissions,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: AppColors.textSecondary,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 24),
         
         // Chart content
         if (displayData.isEmpty)
@@ -419,16 +431,16 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
         // Chart title
         Row(
           children: [
-            const Icon(
+            Icon(
               Icons.pie_chart,
               color: AppColors.pink,
-              size: 20,
+              size: 22,
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Text(
               l10n.topicStatusDistribution,
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: AppColors.textPrimary,
               ),
@@ -439,7 +451,7 @@ class _DashboardChartsSectionState extends State<DashboardChartsSection> {
         Text(
           l10n.topicLifecycleOverview,
           style: const TextStyle(
-            fontSize: 12,
+            fontSize: 13,
             color: AppColors.textSecondary,
           ),
         ),

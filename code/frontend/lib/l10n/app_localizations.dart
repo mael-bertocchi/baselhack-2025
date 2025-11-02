@@ -1140,6 +1140,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} topics with low engagement'**
   String topicsLowEngagement(int count);
+
+  /// Topic analytics section title
+  ///
+  /// In en, this message translates to:
+  /// **'Topic Analytics'**
+  String get topicAnalytics;
+
+  /// Topic analytics section subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Detailed insights and engagement metrics'**
+  String get detailedInsightsEngagement;
+
+  /// Refresh button tooltip
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// Engagement overview card title
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement Overview'**
+  String get engagementOverviewTitle;
+
+  /// Engagement overview subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Key metrics for this topic'**
+  String get keyMetricsForTopic;
+
+  /// Total submissions metric
+  ///
+  /// In en, this message translates to:
+  /// **'Total Submissions'**
+  String get totalSubmissions;
+
+  /// Average per day metric
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. per Day'**
+  String get avgPerDay;
+
+  /// Days active metric
+  ///
+  /// In en, this message translates to:
+  /// **'Days Active'**
+  String get daysActive;
+
+  /// AI analysis status
+  ///
+  /// In en, this message translates to:
+  /// **'AI Analysis'**
+  String get aiAnalysis;
+
+  /// Complete status
+  ///
+  /// In en, this message translates to:
+  /// **'Complete'**
+  String get complete;
+
+  /// Pending status
+  ///
+  /// In en, this message translates to:
+  /// **'Pending'**
+  String get pending;
+
+  /// Topic progress label
+  ///
+  /// In en, this message translates to:
+  /// **'Topic Progress'**
+  String get topicProgress;
+
+  /// Topic ended message
+  ///
+  /// In en, this message translates to:
+  /// **'Topic period has ended'**
+  String get topicPeriodEnded;
+
+  /// Days elapsed message
+  ///
+  /// In en, this message translates to:
+  /// **'{active} of {total} days elapsed'**
+  String daysElapsed(int active, int total);
+
+  /// Submission timeline chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Submission Timeline'**
+  String get submissionTimeline;
+
+  /// Submission timeline subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Daily submission activity over time'**
+  String get dailySubmissionActivity;
+
+  /// No submission data message
+  ///
+  /// In en, this message translates to:
+  /// **'No submission data yet'**
+  String get noSubmissionData;
+
+  /// Peak value label
+  ///
+  /// In en, this message translates to:
+  /// **'Peak'**
+  String get peak;
+
+  /// Average value label
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get average;
+
+  /// Total days label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Days'**
+  String get totalDays;
+
+  /// Participation insights title
+  ///
+  /// In en, this message translates to:
+  /// **'Participation Insights'**
+  String get participationInsights;
+
+  /// Participation insights subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'When users engage most'**
+  String get whenUsersEngage;
+
+  /// Most active hour label
+  ///
+  /// In en, this message translates to:
+  /// **'Most Active Hour'**
+  String get mostActiveHour;
+
+  /// Unique participants label
+  ///
+  /// In en, this message translates to:
+  /// **'Unique Participants'**
+  String get uniqueParticipants;
+
+  /// Engagement rate label
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement Rate'**
+  String get engagementRate;
+
+  /// Per day format
+  ///
+  /// In en, this message translates to:
+  /// **'{rate}/day'**
+  String perDay(String rate);
+
+  /// Activity by day of week title
+  ///
+  /// In en, this message translates to:
+  /// **'Activity by Day of Week'**
+  String get activityByDayOfWeek;
+
+  /// Common themes title
+  ///
+  /// In en, this message translates to:
+  /// **'Common Themes'**
+  String get commonThemes;
+
+  /// Common themes subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Most frequent words in submissions'**
+  String get mostFrequentWords;
+
+  /// No themes message
+  ///
+  /// In en, this message translates to:
+  /// **'No themes detected yet'**
+  String get noThemesDetected;
+
+  /// Word cloud footer info
+  ///
+  /// In en, this message translates to:
+  /// **'Top 10 words (excluding common words)'**
+  String get topWordsExcludingCommon;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

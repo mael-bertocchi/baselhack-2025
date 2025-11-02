@@ -943,5 +943,173 @@
         "type": "int"
       }
     }
+  },
+
+  "topicAnalytics": "Analyses du Sujet",
+  "@topicAnalytics": {
+    "description": "Topic analytics section title"
+  },
+
+  "detailedInsightsEngagement": "Analyses détaillées et métriques d'engagement",
+  "@detailedInsightsEngagement": {
+    "description": "Topic analytics section subtitle"
+  },
+
+  "refresh": "Actualiser",
+  "@refresh": {
+    "description": "Refresh button tooltip"
+  },
+
+  "engagementOverviewTitle": "Vue d'ensemble de l'engagement",
+  "@engagementOverviewTitle": {
+    "description": "Engagement overview card title"
+  },
+
+  "keyMetricsForTopic": "Indicateurs clés pour ce sujet",
+  "@keyMetricsForTopic": {
+    "description": "Engagement overview subtitle"
+  },
+
+  "totalSubmissions": "Total des soumissions",
+  "@totalSubmissions": {
+    "description": "Total submissions metric"
+  },
+
+  "avgPerDay": "Moy. par jour",
+  "@avgPerDay": {
+    "description": "Average per day metric"
+  },
+
+  "daysActive": "Jours actifs",
+  "@daysActive": {
+    "description": "Days active metric"
+  },
+
+  "aiAnalysis": "Analyse IA",
+  "@aiAnalysis": {
+    "description": "AI analysis status"
+  },
+
+  "complete": "Terminé",
+  "@complete": {
+    "description": "Complete status"
+  },
+
+  "pending": "En attente",
+  "@pending": {
+    "description": "Pending status"
+  },
+
+  "topicProgress": "Progression du sujet",
+  "@topicProgress": {
+    "description": "Topic progress label"
+  },
+
+  "topicPeriodEnded": "La période du sujet est terminée",
+  "@topicPeriodEnded": {
+    "description": "Topic ended message"
+  },
+
+  "daysElapsed": "{active} jours sur {total} écoulés",
+  "@daysElapsed": {
+    "description": "Days elapsed message",
+    "placeholders": {
+      "active": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+
+  "submissionTimeline": "Chronologie des soumissions",
+  "@submissionTimeline": {
+    "description": "Submission timeline chart title"
+  },
+
+  "dailySubmissionActivity": "Activité quotidienne des soumissions",
+  "@dailySubmissionActivity": {
+    "description": "Submission timeline subtitle"
+  },
+
+  "noSubmissionData": "Aucune donnée de soumission",
+  "@noSubmissionData": {
+    "description": "No submission data message"
+  },
+
+  "peak": "Pic",
+  "@peak": {
+    "description": "Peak value label"
+  },
+
+  "average": "Moyenne",
+  "@average": {
+    "description": "Average value label"
+  },
+
+  "totalDays": "Total de jours",
+  "@totalDays": {
+    "description": "Total days label"
+  },
+
+  "participationInsights": "Analyse de participation",
+  "@participationInsights": {
+    "description": "Participation insights title"
+  },
+
+  "whenUsersEngage": "Quand les utilisateurs s'engagent le plus",
+  "@whenUsersEngage": {
+    "description": "Participation insights subtitle"
+  },
+
+  "mostActiveHour": "Heure la plus active",
+  "@mostActiveHour": {
+    "description": "Most active hour label"
+  },
+
+  "uniqueParticipants": "Participants uniques",
+  "@uniqueParticipants": {
+    "description": "Unique participants label"
+  },
+
+  "engagementRate": "Taux d'engagement",
+  "@engagementRate": {
+    "description": "Engagement rate label"
+  },
+
+  "perDay": "{rate}/jour",
+  "@perDay": {
+    "description": "Per day format",
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      }
+    }
+  },
+
+  "activityByDayOfWeek": "Activité par jour de la semaine",
+  "@activityByDayOfWeek": {
+    "description": "Activity by day of week title"
+  },
+
+  "commonThemes": "Thèmes communs",
+  "@commonThemes": {
+    "description": "Common themes title"
+  },
+
+  "mostFrequentWords": "Mots les plus fréquents dans les soumissions",
+  "@mostFrequentWords": {
+    "description": "Common themes subtitle"
+  },
+
+  "noThemesDetected": "Aucun thème détecté",
+  "@noThemesDetected": {
+    "description": "No themes message"
+  },
+
+  "topWordsExcludingCommon": "Top 10 des mots (hors mots courants)",
+  "@topWordsExcludingCommon": {
+    "description": "Word cloud footer info"
   }
 }
