@@ -46,7 +46,7 @@ async function nbSubmission(request: FastifyRequest, reply: FastifyReply): Promi
 
 /**
  * @function sortTopics
- * @description Return the logged in user information
+ * @description Returns a sorted list of topics with their submission counts
  */
 async function sortTopics(request: FastifyRequest, reply: FastifyReply): Promise<void> {
 

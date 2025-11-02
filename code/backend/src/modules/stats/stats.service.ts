@@ -1,8 +1,8 @@
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { Topic, User } from '@modules/stats/stats.model';
-import { Submission } from '@modules/submissions/submissions.model';
-import { TopicWithSubmissionCount } from './stats.types'
+import { Topic, User } from './stats.model';
+import { Submission } from '../submissions/submissions.model';
+import { TopicWithSubmissionCount } from './stats.types';
 
 
 /**
@@ -110,7 +110,7 @@ async function sortTopics(fastify: FastifyInstance): Promise<TopicWithSubmission
         })
     );
 
-    // Trier par nombre de submissions décroissant
+    // Sort by descending submission count
     topicsWithCounts.sort((a, b) => b.submissionCount - a.submissionCount);
 
     return topicsWithCounts;
