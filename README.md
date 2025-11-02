@@ -29,6 +29,29 @@ cp code/agent/.env.example code/agent/.env
 docker compose up --build
 ```
 
+## Continuous Deployment
+
+Pushes to the `main` branch can be deployed automatically to a Docker host through the GitHub Actions workflow in `.github/workflows/deploy-production.yml`. The workflow connects to the server over SSH and runs `docker compose up -d --build --remove-orphans` inside the `code/` directory.
+
+### One-time server preparation
+
+1. Install Docker, the Docker Compose plugin, and Git on the target server.
+2. Clone this repository to the directory you want to run in production (that directory becomes `PROD_APP_DIR`).
+3. Create the production `.env` files and the `secrets/` folder directly on the server; they stay outside of version control.
+4. Ensure the SSH user used for deployment can run Docker commands (e.g., add it to the `docker` group).
+
+### Required GitHub secrets
+
+Add the following secrets (repository or organization level) before enabling the workflow:
+
+- `PROD_SSH_HOST`: Public hostname or IP of the server.
+- `PROD_SSH_USER`: SSH user with access to the repository directory and Docker.
+- `PROD_SSH_KEY`: Private SSH key (OpenSSH format) matching a deploy/public key on the server.
+- `PROD_SSH_PORT` (optional): SSH port if different from `22`.
+- `PROD_APP_DIR`: Absolute path to the repository directory on the server (e.g., `/opt/baselhack-2025`).
+
+After the secrets are configured, every push to `main` (or a manual `workflow_dispatch`) will fetch the latest code on the server and rebuild/restart the stack.
+
 ## Contributors
 
 - [Enzo Lorenzini](https://github.com/Enzolorenzini)

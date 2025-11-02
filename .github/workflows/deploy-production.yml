@@ -1,0 +1,43 @@
+name: Deploy production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    if: github.ref == 'refs/heads/main'
+    env:
+      PROD_APP_DIR: ${{ secrets.PROD_APP_DIR }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.PROD_SSH_HOST }}
+          username: ${{ secrets.PROD_SSH_USER }}
+          key: ${{ secrets.PROD_SSH_KEY }}
+          port: ${{ secrets.PROD_SSH_PORT || '22' }}
+          script_stop: true
+          envs: PROD_APP_DIR
+          command_timeout: 40m
+          script: |
+            set -euo pipefail
+            cd "${PROD_APP_DIR}"
+            git fetch --prune origin main
+            git checkout main
+            git reset --hard origin/main
+            git submodule update --init --recursive
+            cd code
+            docker compose up -d --build --remove-orphans
