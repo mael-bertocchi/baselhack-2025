@@ -79,13 +79,14 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
       }
       
       // Pre-fill form with existing topic data
+      // Add 1 hour to dates from backend (UTC) to display in GMT+1
       setState(() {
         _topic = topic;
         _titleController.text = topic.title;
         _shortDescriptionController.text = topic.shortDescription;
         _descriptionController.text = topic.description;
-        _startDate = topic.startDate;
-        _endDate = topic.endDate;
+        _startDate = topic.startDate.add(const Duration(hours: 1));
+        _endDate = topic.endDate.add(const Duration(hours: 1));
         _isLoading = false;
       });
     } catch (e) {
@@ -188,13 +189,18 @@ class _UpdateTopicViewState extends State<UpdateTopicView> {
     setState(() => _isSubmitting = true);
 
     try {
+      // Convert local time (GMT+1) to UTC by subtracting 1 hour before sending
+      // This way, the backend stores the correct local time as UTC
+      final startDateUtc = _startDate!;
+      final endDateUtc = _endDate!;
+
       await _topicService.updateTopic(
         id: _topic!.id!,
         title: _titleController.text.trim(),
         shortDescription: _shortDescriptionController.text.trim(),
         description: _descriptionController.text.trim(),
-        startDate: _startDate!,
-        endDate: _endDate!,
+        startDate: startDateUtc,
+        endDate: endDateUtc,
         authorId: _topic!.authorId,
       );
 

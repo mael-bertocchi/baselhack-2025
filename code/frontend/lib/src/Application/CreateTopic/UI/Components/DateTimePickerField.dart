@@ -148,6 +148,7 @@ class _DateTimePickerFieldState extends State<DateTimePickerField> {
       _selectedTime!.minute,
     );
 
+    // Display the local time as entered by the user
     return '${dateFormat.format(dateTime)} at ${timeFormat.format(dateTime)}';
   }
 

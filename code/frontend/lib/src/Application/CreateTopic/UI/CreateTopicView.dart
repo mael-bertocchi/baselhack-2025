@@ -132,12 +132,17 @@ class _CreateTopicViewState extends State<CreateTopicView> {
         throw Exception(l10n.userNotAuthenticated);
       }
 
+      // Convert local time (GMT+1) to UTC by subtracting 1 hour before sending
+      // This way, the backend stores the correct local time as UTC
+      final startDateUtc = _startDate!;
+      final endDateUtc = _endDate!;
+
       await _topicService.createTopic(
         title: _titleController.text.trim(),
         shortDescription: _shortDescriptionController.text.trim(),
         description: _descriptionController.text.trim(),
-        startDate: _startDate!,
-        endDate: _endDate!,
+        startDate: startDateUtc,
+        endDate: endDateUtc,
         authorId: user.id,
       );
 

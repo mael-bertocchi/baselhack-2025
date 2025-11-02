@@ -555,6 +555,29 @@
     }
   },
 
+  "at": "um",
+  "@at": {
+    "description": "Time separator (at)"
+  },
+
+  "ago": "",
+  "@ago": {
+    "description": "Time ago suffix"
+  },
+
+  "monthJan": "Jan",
+  "monthFeb": "Feb",
+  "monthMar": "Mär",
+  "monthApr": "Apr",
+  "monthMay": "Mai",
+  "monthJun": "Jun",
+  "monthJul": "Jul",
+  "monthAug": "Aug",
+  "monthSep": "Sep",
+  "monthOct": "Okt",
+  "monthNov": "Nov",
+  "monthDec": "Dez",
+
   "startDate": "Startdatum",
   "@startDate": {
     "description": "Start date label"

@@ -68,8 +68,17 @@ class _TopicCardState extends State<TopicCard> {
   }
 
   String _formatDate(DateTime date) {
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+    final l10n = AppLocalizations.of(context)!;
+    final months = [
+      l10n.monthJan, l10n.monthFeb, l10n.monthMar, l10n.monthApr,
+      l10n.monthMay, l10n.monthJun, l10n.monthJul, l10n.monthAug,
+      l10n.monthSep, l10n.monthOct, l10n.monthNov, l10n.monthDec
+    ];
+    // Convert to GMT+1
+    final localDate = date.toUtc().add(const Duration(hours: 1));
+    final hour = localDate.hour.toString().padLeft(2, '0');
+    final minute = localDate.minute.toString().padLeft(2, '0');
+    return '${months[localDate.month - 1]} ${localDate.day}, ${localDate.year} ${l10n.at} $hour:$minute';
   }
 
   String _getStatusDisplayText(BuildContext context) {

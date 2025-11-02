@@ -327,6 +327,48 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get at => 'à';
+
+  @override
+  String get ago => '';
+
+  @override
+  String get monthJan => 'Jan';
+
+  @override
+  String get monthFeb => 'Fév';
+
+  @override
+  String get monthMar => 'Mar';
+
+  @override
+  String get monthApr => 'Avr';
+
+  @override
+  String get monthMay => 'Mai';
+
+  @override
+  String get monthJun => 'Juin';
+
+  @override
+  String get monthJul => 'Juil';
+
+  @override
+  String get monthAug => 'Août';
+
+  @override
+  String get monthSep => 'Sep';
+
+  @override
+  String get monthOct => 'Oct';
+
+  @override
+  String get monthNov => 'Nov';
+
+  @override
+  String get monthDec => 'Déc';
+
+  @override
   String get startDate => 'Date de début';
 
   @override

@@ -214,15 +214,24 @@ class TopicDetailViewState extends State<TopicDetailView> {
   }
 
   String _getTimeAgo(DateTime date) {
+    final l10n = AppLocalizations.of(context)!;
     final now = DateTime.now();
     final difference = now.difference(date);
 
     if (difference.inDays > 0) {
-      return '${difference.inDays}d ago';
+      final hours = difference.inHours % 24;
+      if (hours > 0) {
+        return '${l10n.daysShort(difference.inDays)} ${l10n.hoursShort(hours)} ${l10n.ago}'.trim();
+      }
+      return '${l10n.daysShort(difference.inDays)} ${l10n.ago}'.trim();
     } else if (difference.inHours > 0) {
-      return '${difference.inHours}h ago';
+      final minutes = difference.inMinutes % 60;
+      if (minutes > 0) {
+        return '${l10n.hoursShort(difference.inHours)} ${l10n.minutesShort(minutes)} ${l10n.ago}'.trim();
+      }
+      return '${l10n.hoursShort(difference.inHours)} ${l10n.ago}'.trim();
     } else if (difference.inMinutes > 0) {
-      return '${difference.inMinutes}m ago';
+      return '${l10n.minutesShort(difference.inMinutes)} ${l10n.ago}'.trim();
     } else {
       final l10n = AppLocalizations.of(context)!;
       return l10n.justNow;
@@ -264,8 +273,17 @@ class TopicDetailViewState extends State<TopicDetailView> {
   }
 
   String _formatDate(DateTime date) {
-    final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return '${months[date.month - 1]} ${date.day}, ${date.year}';
+    final l10n = AppLocalizations.of(context)!;
+    final months = [
+      l10n.monthJan, l10n.monthFeb, l10n.monthMar, l10n.monthApr,
+      l10n.monthMay, l10n.monthJun, l10n.monthJul, l10n.monthAug,
+      l10n.monthSep, l10n.monthOct, l10n.monthNov, l10n.monthDec
+    ];
+    // Convert to GMT+1
+    final localDate = date.toUtc().add(const Duration(hours: 1));
+    final hour = localDate.hour.toString().padLeft(2, '0');
+    final minute = localDate.minute.toString().padLeft(2, '0');
+    return '${months[localDate.month - 1]} ${localDate.day}, ${localDate.year} ${l10n.at} $hour:$minute';
   }
 
   String _getStatusDisplayText() {
