@@ -22,19 +22,17 @@ class EngagementMetrics extends StatelessWidget {
     // Calculate metrics
     final avgSubmissionsPerTopic = topics.isEmpty ? 0.0 : totalSubmissions / topics.length;
     
-    // Calculate AI summary percentage: topics with AI results / total topics with submissions
-    final topicsWithResults = topics.where((t) => t.hasAiResult).length;
+    // AI Summary Coverage: percentage of "Active" topics that have an AI result text
+    final activeTopics = topics.where((t) => t.statusDisplay == 'Active').toList();
+    final activeTopicsWithAiResult = activeTopics.where((t) => t.hasAiResult).length;
+    final aiSummaryCoverage = activeTopics.isEmpty ? 0.0 : (activeTopicsWithAiResult / activeTopics.length);
+    
+    // Pending Summary: Amount of remaining "Active" topics that don't have an AI result text
+    final pendingSummary = activeTopics.where((t) => !t.hasAiResult).length;
+    
+    // Topic Participation: percentage of topics (any status) that have at least one submission
     final topicsWithSubmissions = topics.where((t) => (t.nbSubmissions ?? 0) > 0).length;
-    final aiSummaryRate = topicsWithSubmissions > 0 ? (topicsWithResults / topicsWithSubmissions) : 0.0;
-    
-    final participationRate = topics.isEmpty ? 0.0 : (topicsWithSubmissions / topics.length);
-    
-    // Calculate active topics without AI summary (active + has submissions + no AI result)
-    final activeTopicsUnsummarized = topics.where((t) => 
-      t.statusDisplay == 'Active' && 
-      (t.nbSubmissions ?? 0) > 0 && 
-      !t.hasAiResult
-    ).length;
+    final topicParticipation = topics.isEmpty ? 0.0 : (topicsWithSubmissions / topics.length);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,25 +69,25 @@ class EngagementMetrics extends StatelessWidget {
         // Metrics Grid
         Row(
           children: [
-            // Circular Progress - AI Summary Rate
+            // Circular Progress - AI Summary Coverage
             Expanded(
               child: _buildCircularMetric(
                 context,
                 l10n.aiSummaryCoverage,
-                aiSummaryRate,
-                '${(aiSummaryRate * 100).toStringAsFixed(0)}%',
+                aiSummaryCoverage,
+                '${(aiSummaryCoverage * 100).toStringAsFixed(0)}%',
                 Icons.auto_awesome,
                 AppColors.pink,
               ),
             ),
             const SizedBox(width: 16),
-            // Circular Progress - Participation
+            // Circular Progress - Topic Participation
             Expanded(
               child: _buildCircularMetric(
                 context,
                 l10n.topicParticipation,
-                participationRate,
-                '${(participationRate * 100).toStringAsFixed(0)}%',
+                topicParticipation,
+                '${(topicParticipation * 100).toStringAsFixed(0)}%',
                 Icons.groups,
                 AppColors.blue,
               ),
@@ -105,7 +103,7 @@ class EngagementMetrics extends StatelessWidget {
               child: _buildStatItem(
                 Icons.pending_actions,
                 l10n.pendingSummary,
-                activeTopicsUnsummarized.toString(),
+                pendingSummary.toString(),
                 const Color(0xFFF59E0B),
               ),
             ),

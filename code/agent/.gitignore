@@ -3,7 +3,7 @@
 .env.production
 .env.local
 .env
-.pem
+*.pem
 
 # Python virtual environment
 .venv/

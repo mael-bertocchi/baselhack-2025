@@ -15,22 +15,24 @@ class ActivityTimeline extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     
-    // Calculate recent activity (last 7 days simulation)
-    final recentTopics = topics.where((t) {
-      final now = DateTime.now();
-      final daysDiff = now.difference(t.createdAt).inDays;
-      return daysDiff <= 7;
+    // Activity Alerts: New Topics --> amount of topics (all kind) that have createdAt in the last week
+    final now = DateTime.now();
+    final oneWeekAgo = now.subtract(const Duration(days: 7));
+    final newTopics = topics.where((t) {
+      return t.createdAt.isAfter(oneWeekAgo);
     }).length;
     
+    // Activity Alerts: Closing Soon --> amount of "Active" topics that end in less than 3 days
+    final threeDaysFromNow = now.add(const Duration(days: 3));
     final closingSoon = topics.where((t) {
-      final now = DateTime.now();
-      final daysUntilEnd = t.endDate.difference(now).inDays;
-      return daysUntilEnd >= 0 && daysUntilEnd <= 3 && t.statusDisplay == 'Active';
+      return t.statusDisplay == 'Active' && 
+             t.endDate.isAfter(now) && 
+             t.endDate.isBefore(threeDaysFromNow);
     }).length;
     
-    final needsAttention = topics.where((t) {
-      return t.statusDisplay == 'Active' && (t.nbSubmissions ?? 0) < 3;
-    }).length;
+    // Activity Alerts: Needs Attention --> topics that have at least 50% less attention than the median,
+    // and that are at least 30% of their lifetime
+    final needsAttention = _calculateNeedsAttention(topics);
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +70,7 @@ class ActivityTimeline extends StatelessWidget {
         _buildAlertCard(
           Icons.fiber_new,
           l10n.newTopics,
-          l10n.createdThisWeek(recentTopics),
+          l10n.createdThisWeek(newTopics),
           const Color(0xFF10B981),
         ),
         const SizedBox(height: 12),
@@ -146,5 +148,57 @@ class ActivityTimeline extends StatelessWidget {
         ],
       ),
     );
+  }
+  
+  /// Calculate topics that need attention:
+  /// Topics that have at least 50% less attention than the median,
+  /// and that are at least 30% of their lifetime
+  int _calculateNeedsAttention(List<Topic> topics) {
+    final now = DateTime.now();
+    
+    // Filter only active topics
+    final activeTopics = topics.where((t) => t.statusDisplay == 'Active').toList();
+    
+    if (activeTopics.isEmpty) return 0;
+    
+    // Calculate median number of submissions
+    final submissionCounts = activeTopics
+        .map((t) => t.nbSubmissions ?? 0)
+        .toList()
+      ..sort();
+    
+    final median = submissionCounts.isEmpty 
+        ? 0.0 
+        : submissionCounts.length.isOdd
+            ? submissionCounts[submissionCounts.length ~/ 2].toDouble()
+            : (submissionCounts[submissionCounts.length ~/ 2 - 1] + 
+               submissionCounts[submissionCounts.length ~/ 2]) / 2.0;
+    
+    // Threshold: 50% less than median
+    final attentionThreshold = median * 0.5;
+    
+    // Count topics that need attention
+    int count = 0;
+    for (final topic in activeTopics) {
+      final submissions = topic.nbSubmissions ?? 0;
+      
+      // Check if submissions are at least 50% less than median
+      if (submissions < attentionThreshold) {
+        // Check if topic is at least 30% through its lifetime
+        final totalDuration = topic.endDate.difference(topic.startDate).inDays;
+        final elapsedDuration = now.difference(topic.startDate).inDays;
+        
+        if (totalDuration > 0) {
+          final lifetimeProgress = elapsedDuration / totalDuration;
+          
+          // If at least 30% of lifetime has passed
+          if (lifetimeProgress >= 0.3) {
+            count++;
+          }
+        }
+      }
+    }
+    
+    return count;
   }
 }
