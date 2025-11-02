@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:alignify/src/routes/AppRoutes.dart';
 import 'package:alignify/l10n/app_localizations.dart';
-import '../Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
 
 /// A wrapper widget that checks authentication before showing content.
 /// Redirects to login if user is not authenticated.

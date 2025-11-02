@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../theme/AppColors.dart';
 import '../Application/Dashboard/UI/Components/ProfileMenu.dart';
+import '../routes/AppRoutes.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
 
 /// Shared AppBar component used across the application
 /// Provides consistent branding and profile menu functionality
@@ -86,6 +88,23 @@ class _SharedAppBarState extends State<SharedAppBar> {
     final screenWidth = MediaQuery.of(context).size.width;
     final isMobile = screenWidth < 600;
     final horizontalPadding = isMobile ? 16.0 : MediaQuery.of(context).size.width * 0.1;
+    final user = AuthService.instance.currentUser;
+    
+    // Get user initials
+    String initials = '';
+    if (user != null) {
+      final firstName = user.firstName.trim();
+      final lastName = user.lastName.trim();
+      if (firstName.isNotEmpty && lastName.isNotEmpty) {
+        initials = firstName[0].toUpperCase() + lastName[0].toUpperCase();
+      } else if (firstName.isNotEmpty) {
+        initials = firstName[0].toUpperCase();
+      } else if (lastName.isNotEmpty) {
+        initials = lastName[0].toUpperCase();
+      } else if (user.email.isNotEmpty) {
+        initials = user.email[0].toUpperCase();
+      }
+    }
     
     return AppBar(
       backgroundColor: AppColors.white,
@@ -99,12 +118,20 @@ class _SharedAppBarState extends State<SharedAppBar> {
         ),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                'assets/alignify_logo.png',
-                height: isMobile ? 80 : 130,
-                fit: BoxFit.cover,
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  AppRoutes.dashboard,
+                  (route) => false,
+                );
+              },
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: Image.asset(
+                  'assets/alignify_logo.png',
+                  height: isMobile ? 80 : 130,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             const SizedBox(width: 12),
@@ -118,9 +145,27 @@ class _SharedAppBarState extends State<SharedAppBar> {
           ),
           child: IconButton(
             key: _profileButtonKey,
-            icon: const CircleAvatar(
-              backgroundColor: AppColors.background,
-              child: Icon(Icons.person, color: AppColors.textSecondary),
+            icon: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.blue,
+                  width: 1,
+                ),
+              ),
+              child: CircleAvatar(
+                backgroundColor: AppColors.background,
+                child: initials.isNotEmpty
+                    ? Text(
+                        initials,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
+                      )
+                    : const Icon(Icons.person, color: AppColors.textSecondary),
+              ),
             ),
             onPressed: _toggleProfileMenu,
           ),

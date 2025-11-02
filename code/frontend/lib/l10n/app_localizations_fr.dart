@@ -287,7 +287,16 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noIdeasYet => 'Pas encore d\'idées';
 
   @override
-  String get beFirstToShare => 'Soyez le premier à partager vos pensées !';
+  String get beFirstToShare => 'Soyez le premier à partager vos idées !';
+
+  @override
+  String get generateAiSummary => 'Générer le résumé IA';
+
+  @override
+  String get analyzing => 'Analyse en cours...';
+
+  @override
+  String get noIdeasToAnalyze => 'Aucune idée à analyser';
 
   @override
   String timeAgo(String time) {
@@ -473,5 +482,77 @@ class AppLocalizationsFr extends AppLocalizations {
   String get yourContributions => 'Vos contributions';
 
   @override
+  String get totalContributions => 'Total des contributions';
+
+  @override
   String get totalParticipants => 'Total des participants';
+
+  @override
+  String get mostPopularTopics => 'Sujets les plus populaires';
+
+  @override
+  String get topicsWithMostSubmissions => 'Sujets avec le plus de contributions';
+
+  @override
+  String get noDataAvailable => 'Aucune donnée disponible';
+
+  @override
+  String get analyticsDashboard => 'Tableau de bord analytique';
+
+  @override
+  String get keyMetricsInsights => 'Indicateurs clés et analyses';
+
+  @override
+  String get topicStatusDistribution => 'Répartition des statuts';
+
+  @override
+  String get topicLifecycleOverview => 'Vue d\'ensemble du cycle de vie';
+
+  @override
+  String get engagementOverview => 'Vue d\'ensemble de l\'engagement';
+
+  @override
+  String get platformActivityMetrics => 'Métriques d\'activité de la plateforme';
+
+  @override
+  String get aiSummaryCoverage => 'Couverture\nrésumé IA';
+
+  @override
+  String get topicParticipation => 'Participation\naux sujets';
+
+  @override
+  String get pendingSummary => 'Résumé en attente';
+
+  @override
+  String get avgPerTopic => 'Moy. par sujet';
+
+  @override
+  String get activityAlerts => 'Alertes d\'activité';
+
+  @override
+  String get importantUpdatesNotifications => 'Mises à jour et notifications importantes';
+
+  @override
+  String get newTopics => 'Nouveaux sujets';
+
+  @override
+  String createdThisWeek(int count) {
+    return '$count créés cette semaine';
+  }
+
+  @override
+  String get closingSoon => 'Bientôt fermés';
+
+  @override
+  String topicsEndingInDays(int count) {
+    return '$count sujets se terminent dans 3 jours';
+  }
+
+  @override
+  String get needsAttention => 'Nécessite attention';
+
+  @override
+  String topicsLowEngagement(int count) {
+    return '$count sujets avec faible engagement';
+  }
 }

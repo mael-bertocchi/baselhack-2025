@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:alignify/l10n/app_localizations.dart';
 import '../../../../theme/AppColors.dart';
-import '../../../Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
 import '../../../Common/LocaleProvider.dart';
 import '../../../../routes/AppRoutes.dart';
 
@@ -71,6 +72,22 @@ class ProfileMenu extends StatelessWidget {
             ? '${user.firstName} ${user.lastName}'.trim()
             : user.email
         : l10n.user;
+    
+    // Get user initials
+    String initials = '';
+    if (user != null) {
+      final firstName = user.firstName.trim();
+      final lastName = user.lastName.trim();
+      if (firstName.isNotEmpty && lastName.isNotEmpty) {
+        initials = firstName[0].toUpperCase() + lastName[0].toUpperCase();
+      } else if (firstName.isNotEmpty) {
+        initials = firstName[0].toUpperCase();
+      } else if (lastName.isNotEmpty) {
+        initials = lastName[0].toUpperCase();
+      } else if (user.email.isNotEmpty) {
+        initials = user.email[0].toUpperCase();
+      }
+    }
 
     return Consumer<LocaleProvider>(
       builder: (context, localeProvider, child) {
@@ -103,14 +120,23 @@ class ProfileMenu extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const CircleAvatar(
+                    CircleAvatar(
                       backgroundColor: AppColors.background,
                       radius: 20,
-                      child: Icon(
-                        Icons.person,
-                        color: AppColors.textSecondary,
-                        size: 24,
-                      ),
+                      child: initials.isNotEmpty
+                          ? Text(
+                              initials,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textPrimary,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.person,
+                              color: AppColors.textSecondary,
+                              size: 24,
+                            ),
                     ),
                     const SizedBox(width: 12),
                     Expanded(

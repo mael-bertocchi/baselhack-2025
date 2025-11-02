@@ -485,6 +485,21 @@
     "description": "Be first to share message"
   },
 
+  "generateAiSummary": "Generate AI Summary",
+  "@generateAiSummary": {
+    "description": "Generate AI summary button"
+  },
+
+  "analyzing": "Analyzing...",
+  "@analyzing": {
+    "description": "Analyzing state for AI summary"
+  },
+
+  "noIdeasToAnalyze": "No ideas to analyze",
+  "@noIdeasToAnalyze": {
+    "description": "Message when there are no ideas to analyze"
+  },
+
   "timeAgo": "{time} ago",
   "@timeAgo": {
     "description": "Time ago format",
@@ -800,8 +815,133 @@
     "description": "Your contributions stat label"
   },
 
+  "totalContributions": "Total Contributions",
+  "@totalContributions": {
+    "description": "Total contributions stat label"
+  },
+
   "totalParticipants": "Total Participants",
   "@totalParticipants": {
     "description": "Total participants stat label"
+  },
+
+  "mostPopularTopics": "Most Popular Topics",
+  "@mostPopularTopics": {
+    "description": "Most popular topics chart title"
+  },
+
+  "topicsWithMostSubmissions": "Topics with the most contributions",
+  "@topicsWithMostSubmissions": {
+    "description": "Most popular topics chart subtitle"
+  },
+
+  "noDataAvailable": "No data available",
+  "@noDataAvailable": {
+    "description": "No data available message"
+  },
+
+  "analyticsDashboard": "Analytics Dashboard",
+  "@analyticsDashboard": {
+    "description": "Analytics dashboard title"
+  },
+
+  "keyMetricsInsights": "Key metrics and insights",
+  "@keyMetricsInsights": {
+    "description": "Analytics dashboard subtitle"
+  },
+
+  "topicStatusDistribution": "Topic Status Distribution",
+  "@topicStatusDistribution": {
+    "description": "Status distribution chart title"
+  },
+
+  "topicLifecycleOverview": "Overview of topic lifecycle",
+  "@topicLifecycleOverview": {
+    "description": "Status distribution chart subtitle"
+  },
+
+  "engagementOverview": "Engagement Overview",
+  "@engagementOverview": {
+    "description": "Engagement metrics chart title"
+  },
+
+  "platformActivityMetrics": "Platform activity metrics",
+  "@platformActivityMetrics": {
+    "description": "Engagement metrics chart subtitle"
+  },
+
+  "aiSummaryCoverage": "AI Summary\nCoverage",
+  "@aiSummaryCoverage": {
+    "description": "AI summary coverage metric label"
+  },
+
+  "topicParticipation": "Topic\nParticipation",
+  "@topicParticipation": {
+    "description": "Topic participation metric label"
+  },
+
+  "pendingSummary": "Pending Summary",
+  "@pendingSummary": {
+    "description": "Pending AI summary metric label"
+  },
+
+  "avgPerTopic": "Avg per Topic",
+  "@avgPerTopic": {
+    "description": "Average per topic metric label"
+  },
+
+  "activityAlerts": "Activity Alerts",
+  "@activityAlerts": {
+    "description": "Activity alerts chart title"
+  },
+
+  "importantUpdatesNotifications": "Important updates & notifications",
+  "@importantUpdatesNotifications": {
+    "description": "Activity alerts chart subtitle"
+  },
+
+  "newTopics": "New Topics",
+  "@newTopics": {
+    "description": "New topics alert label"
+  },
+
+  "createdThisWeek": "{count} created this week",
+  "@createdThisWeek": {
+    "description": "Topics created this week",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "closingSoon": "Closing Soon",
+  "@closingSoon": {
+    "description": "Closing soon alert label"
+  },
+
+  "topicsEndingInDays": "{count} topics ending in 3 days",
+  "@topicsEndingInDays": {
+    "description": "Topics ending soon",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "needsAttention": "Needs Attention",
+  "@needsAttention": {
+    "description": "Needs attention alert label"
+  },
+
+  "topicsLowEngagement": "{count} topics with low engagement",
+  "@topicsLowEngagement": {
+    "description": "Topics with low engagement",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

@@ -485,6 +485,21 @@
     "description": "Be first to share message"
   },
 
+  "generateAiSummary": "KI-Zusammenfassung generieren",
+  "@generateAiSummary": {
+    "description": "Generate AI summary button"
+  },
+
+  "analyzing": "Wird analysiert...",
+  "@analyzing": {
+    "description": "Analyzing state for AI summary"
+  },
+
+  "noIdeasToAnalyze": "Keine Ideen zu analysieren",
+  "@noIdeasToAnalyze": {
+    "description": "Message when there are no ideas to analyze"
+  },
+
   "timeAgo": "Vor {time}",
   "@timeAgo": {
     "description": "Time ago format",
@@ -800,8 +815,133 @@
     "description": "Your contributions stat label"
   },
 
+  "totalContributions": "Gesamtbeiträge",
+  "@totalContributions": {
+    "description": "Total contributions stat label"
+  },
+
   "totalParticipants": "Gesamtteilnehmer",
   "@totalParticipants": {
     "description": "Total participants stat label"
+  },
+
+  "mostPopularTopics": "Beliebteste Themen",
+  "@mostPopularTopics": {
+    "description": "Most popular topics chart title"
+  },
+
+  "topicsWithMostSubmissions": "Themen mit den meisten Beiträgen",
+  "@topicsWithMostSubmissions": {
+    "description": "Most popular topics chart subtitle"
+  },
+
+  "noDataAvailable": "Keine Daten verfügbar",
+  "@noDataAvailable": {
+    "description": "No data available message"
+  },
+
+  "analyticsDashboard": "Analyse-Dashboard",
+  "@analyticsDashboard": {
+    "description": "Analytics dashboard title"
+  },
+
+  "keyMetricsInsights": "Wichtige Kennzahlen und Einblicke",
+  "@keyMetricsInsights": {
+    "description": "Analytics dashboard subtitle"
+  },
+
+  "topicStatusDistribution": "Themenstatusverteilung",
+  "@topicStatusDistribution": {
+    "description": "Status distribution chart title"
+  },
+
+  "topicLifecycleOverview": "Übersicht über den Themenzyklus",
+  "@topicLifecycleOverview": {
+    "description": "Status distribution chart subtitle"
+  },
+
+  "engagementOverview": "Engagement-Übersicht",
+  "@engagementOverview": {
+    "description": "Engagement metrics chart title"
+  },
+
+  "platformActivityMetrics": "Plattform-Aktivitätsmetriken",
+  "@platformActivityMetrics": {
+    "description": "Engagement metrics chart subtitle"
+  },
+
+  "aiSummaryCoverage": "KI-Zusammen-\nfassungsabdeckung",
+  "@aiSummaryCoverage": {
+    "description": "AI summary coverage metric label"
+  },
+
+  "topicParticipation": "Themen-\nteilnahme",
+  "@topicParticipation": {
+    "description": "Topic participation metric label"
+  },
+
+  "pendingSummary": "Ausstehende Zusammenfassung",
+  "@pendingSummary": {
+    "description": "Pending AI summary metric label"
+  },
+
+  "avgPerTopic": "Durchschn. pro Thema",
+  "@avgPerTopic": {
+    "description": "Average per topic metric label"
+  },
+
+  "activityAlerts": "Aktivitätswarnungen",
+  "@activityAlerts": {
+    "description": "Activity alerts chart title"
+  },
+
+  "importantUpdatesNotifications": "Wichtige Updates und Benachrichtigungen",
+  "@importantUpdatesNotifications": {
+    "description": "Activity alerts chart subtitle"
+  },
+
+  "newTopics": "Neue Themen",
+  "@newTopics": {
+    "description": "New topics alert label"
+  },
+
+  "createdThisWeek": "{count} diese Woche erstellt",
+  "@createdThisWeek": {
+    "description": "Topics created this week",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "closingSoon": "Bald geschlossen",
+  "@closingSoon": {
+    "description": "Closing soon alert label"
+  },
+
+  "topicsEndingInDays": "{count} Themen enden in 3 Tagen",
+  "@topicsEndingInDays": {
+    "description": "Topics ending soon",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "needsAttention": "Erfordert Aufmerksamkeit",
+  "@needsAttention": {
+    "description": "Needs attention alert label"
+  },
+
+  "topicsLowEngagement": "{count} Themen mit geringem Engagement",
+  "@topicsLowEngagement": {
+    "description": "Topics with low engagement",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

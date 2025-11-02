@@ -4,7 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 
 import 'package:alignify/front.dart';
-import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
 import 'package:alignify/src/Application/Common/LocaleProvider.dart';
 
 // Conditional import for web URL strategy

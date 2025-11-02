@@ -3,12 +3,10 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:alignify/l10n/app_localizations.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
-import '../../Dashboard/UI/Components/TopicCard.dart';
-import 'Idea.dart';
-import '../../Dashboard/Api/TopicSubmissionService.dart';
-import '../../Dashboard/Api/DashboardService.dart';
-import '../../Dashboard/Api/TopicResultService.dart';
-import '../../Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
+import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import '../../../routes/AppRoutes.dart';
 
 // Alias temporaire pour rétrocompatibilité
 typedef Survey = Topic;
@@ -27,9 +25,7 @@ class TopicDetailView extends StatefulWidget {
 
 class TopicDetailViewState extends State<TopicDetailView> {
   final TextEditingController _ideaController = TextEditingController();
-  final TopicSubmissionService _submissionService = TopicSubmissionService();
-  final DashboardApiService _dashboardService = DashboardApiService();
-  final TopicResultService _topicResultService = TopicResultService();
+  final TopicService _topicService = TopicService();
   
   Topic? _topic;
   List<Idea> _ideas = [];
@@ -56,7 +52,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
 
     try {
       // Load topic data first
-      final topic = await _dashboardService.getTopicById(widget.topicId);
+      final topic = await _topicService.getTopicById(widget.topicId);
       
       if (topic == null) {
         if (!mounted) return;
@@ -70,8 +66,8 @@ class TopicDetailViewState extends State<TopicDetailView> {
       
       // Load submissions and AI summary in parallel
       final results = await Future.wait([
-        _submissionService.getSubmissions(widget.topicId),
-        _topicResultService.getTopicResult(widget.topicId).catchError((_) => null),
+        _topicService.getSubmissions(widget.topicId),
+        _topicService.getTopicResult(widget.topicId).catchError((_) => null),
       ]);
       
       setState(() {
@@ -106,13 +102,29 @@ class TopicDetailViewState extends State<TopicDetailView> {
     super.dispose();
   }
 
+  /// Check if current user can edit this topic
+  bool _canEditTopic() {
+    final currentUser = AuthService.instance.currentUser;
+    return currentUser?.role == Role.administrator || 
+           currentUser?.role == Role.manager;
+  }
+
+  /// Navigate to edit topic page
+  void _navigateToEditTopic() {
+    if (_topic?.id != null) {
+      Navigator.of(context)
+          .pushNamed('/topics/${_topic!.id}/edit')
+          .then((_) => _loadTopicAndSubmissions()); // Reload topic after edit
+    }
+  }
+
   Future<void> _triggerAIAnalysis() async {
     setState(() {
       _isAnalyzing = true;
     });
 
     try {
-      final result = await _topicResultService.analyzeTopic(widget.topicId);
+      final result = await _topicService.analyzeTopic(widget.topicId);
 
       setState(() {
         _aiSummary = result;
@@ -156,7 +168,7 @@ class TopicDetailViewState extends State<TopicDetailView> {
     });
 
     try {
-      final newIdea = await _submissionService.submitIdea(
+      final newIdea = await _topicService.submitIdea(
         widget.topicId,
         _ideaController.text.trim(),
       );
@@ -327,28 +339,58 @@ class TopicDetailViewState extends State<TopicDetailView> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Bouton Back to Surveys
-              InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.arrow_back,
-                      color: AppColors.blue,
-                      size: 20,
+              // Header with Back button and Edit button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Bouton Back to Surveys
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        AppRoutes.dashboard,
+                        (route) => false,
+                      );
+                    },
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.arrow_back,
+                          color: AppColors.blue,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.backToSurveys,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: AppColors.blue,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      l10n.backToSurveys,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.blue,
-                        fontWeight: FontWeight.w600,
+                  ),
+                  // Edit button for admins and managers
+                  if (_canEditTopic())
+                    ElevatedButton.icon(
+                      onPressed: () => _navigateToEditTopic(),
+                      icon: const Icon(Icons.edit_outlined, size: 18),
+                      label: Text(l10n.editTopic),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.blue,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
               const SizedBox(height: 32),
 
@@ -1138,9 +1180,13 @@ class TopicDetailViewState extends State<TopicDetailView> {
       return null;
     }
 
+    final l10n = AppLocalizations.of(context)!;
+    final hasIdeas = _ideas.isNotEmpty;
+    final isDisabled = _isAnalyzing || !hasIdeas;
+
     return FloatingActionButton.extended(
-      onPressed: _isAnalyzing ? null : _triggerAIAnalysis,
-      backgroundColor: _isAnalyzing ? AppColors.textSecondary : AppColors.blue,
+      onPressed: isDisabled ? null : _triggerAIAnalysis,
+      backgroundColor: isDisabled ? AppColors.textSecondary : AppColors.blue,
       foregroundColor: AppColors.white,
       icon: _isAnalyzing
           ? const SizedBox(
@@ -1152,7 +1198,11 @@ class TopicDetailViewState extends State<TopicDetailView> {
               ),
             )
           : const Icon(Icons.auto_awesome),
-      label: Text(_isAnalyzing ? 'Analyzing...' : 'Generate AI Summary'),
+      label: Text(_isAnalyzing 
+          ? l10n.analyzing 
+          : hasIdeas 
+              ? l10n.generateAiSummary 
+              : l10n.noIdeasToAnalyze),
     );
   }
 

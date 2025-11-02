@@ -480,9 +480,24 @@
     "description": "No ideas message"
   },
 
-  "beFirstToShare": "Soyez le premier à partager vos pensées !",
+  "beFirstToShare": "Soyez le premier à partager vos idées !",
   "@beFirstToShare": {
     "description": "Be first to share message"
+  },
+
+  "generateAiSummary": "Générer le résumé IA",
+  "@generateAiSummary": {
+    "description": "Generate AI summary button"
+  },
+
+  "analyzing": "Analyse en cours...",
+  "@analyzing": {
+    "description": "Analyzing state for AI summary"
+  },
+
+  "noIdeasToAnalyze": "Aucune idée à analyser",
+  "@noIdeasToAnalyze": {
+    "description": "Message when there are no ideas to analyze"
   },
 
   "timeAgo": "Il y a {time}",
@@ -800,8 +815,133 @@
     "description": "Your contributions stat label"
   },
 
+  "totalContributions": "Total des contributions",
+  "@totalContributions": {
+    "description": "Total contributions stat label"
+  },
+
   "totalParticipants": "Total des participants",
   "@totalParticipants": {
     "description": "Total participants stat label"
+  },
+
+  "mostPopularTopics": "Sujets les plus populaires",
+  "@mostPopularTopics": {
+    "description": "Most popular topics chart title"
+  },
+
+  "topicsWithMostSubmissions": "Sujets avec le plus de contributions",
+  "@topicsWithMostSubmissions": {
+    "description": "Most popular topics chart subtitle"
+  },
+
+  "noDataAvailable": "Aucune donnée disponible",
+  "@noDataAvailable": {
+    "description": "No data available message"
+  },
+
+  "analyticsDashboard": "Tableau de bord analytique",
+  "@analyticsDashboard": {
+    "description": "Analytics dashboard title"
+  },
+
+  "keyMetricsInsights": "Indicateurs clés et analyses",
+  "@keyMetricsInsights": {
+    "description": "Analytics dashboard subtitle"
+  },
+
+  "topicStatusDistribution": "Répartition des statuts",
+  "@topicStatusDistribution": {
+    "description": "Status distribution chart title"
+  },
+
+  "topicLifecycleOverview": "Vue d'ensemble du cycle de vie",
+  "@topicLifecycleOverview": {
+    "description": "Status distribution chart subtitle"
+  },
+
+  "engagementOverview": "Vue d'ensemble de l'engagement",
+  "@engagementOverview": {
+    "description": "Engagement metrics chart title"
+  },
+
+  "platformActivityMetrics": "Métriques d'activité de la plateforme",
+  "@platformActivityMetrics": {
+    "description": "Engagement metrics chart subtitle"
+  },
+
+  "aiSummaryCoverage": "Couverture\nrésumé IA",
+  "@aiSummaryCoverage": {
+    "description": "AI summary coverage metric label"
+  },
+
+  "topicParticipation": "Participation\naux sujets",
+  "@topicParticipation": {
+    "description": "Topic participation metric label"
+  },
+
+  "pendingSummary": "Résumé en attente",
+  "@pendingSummary": {
+    "description": "Pending AI summary metric label"
+  },
+
+  "avgPerTopic": "Moy. par sujet",
+  "@avgPerTopic": {
+    "description": "Average per topic metric label"
+  },
+
+  "activityAlerts": "Alertes d'activité",
+  "@activityAlerts": {
+    "description": "Activity alerts chart title"
+  },
+
+  "importantUpdatesNotifications": "Mises à jour et notifications importantes",
+  "@importantUpdatesNotifications": {
+    "description": "Activity alerts chart subtitle"
+  },
+
+  "newTopics": "Nouveaux sujets",
+  "@newTopics": {
+    "description": "New topics alert label"
+  },
+
+  "createdThisWeek": "{count} créés cette semaine",
+  "@createdThisWeek": {
+    "description": "Topics created this week",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "closingSoon": "Bientôt fermés",
+  "@closingSoon": {
+    "description": "Closing soon alert label"
+  },
+
+  "topicsEndingInDays": "{count} sujets se terminent dans 3 jours",
+  "@topicsEndingInDays": {
+    "description": "Topics ending soon",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+
+  "needsAttention": "Nécessite attention",
+  "@needsAttention": {
+    "description": "Needs attention alert label"
+  },
+
+  "topicsLowEngagement": "{count} sujets avec faible engagement",
+  "@topicsLowEngagement": {
+    "description": "Topics with low engagement",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

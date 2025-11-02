@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:alignify/src/routes/AppRoutes.dart';
-import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
 
 /// A route wrapper that enforces authentication and role-based access control.
 ///

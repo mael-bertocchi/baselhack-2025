@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final int? maxLines;
   final int? minLines;
+  final int? maxLength;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
   final bool readOnly;
@@ -38,6 +39,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType,
     this.maxLines = 1,
     this.minLines,
+    this.maxLength,
     this.onChanged,
     this.onTap,
     this.readOnly = false,
@@ -66,6 +68,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
         _isFocused = _focusNode.hasFocus;
       });
     });
+    
+    // Add listener to controller to update character count
+    if (widget.controller != null && widget.maxLength != null) {
+      widget.controller!.addListener(() {
+        setState(() {});
+      });
+    }
   }
 
   @override
@@ -92,13 +101,27 @@ class _CustomTextFieldState extends State<CustomTextField> {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (widget.labelText != null) ...[
-          Text(
-            widget.labelText!,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: Color(0xFF1F2937),
-            ),
+          Row(
+            children: [
+              if (widget.prefixIcon != null) ...[
+                IconTheme(
+                  data: const IconThemeData(
+                    size: 16,
+                    color: Color(0xFF6B7280),
+                  ),
+                  child: widget.prefixIcon!,
+                ),
+                const SizedBox(width: 8),
+              ],
+              Text(
+                widget.labelText!,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF1F2937),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
         ],
@@ -120,6 +143,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: widget.keyboardType,
             maxLines: widget.maxLines,
             minLines: widget.minLines,
+            maxLength: widget.maxLength,
             onChanged: widget.onChanged,
             onTap: widget.onTap,
             readOnly: widget.readOnly,
@@ -136,9 +160,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 color: Color(0xFF9CA3AF),
                 fontSize: 15,
               ),
-              prefixIcon: widget.prefixIcon,
               suffixIcon: widget.suffixIcon,
               border: InputBorder.none,
+              counterText: '',
               contentPadding: widget.contentPadding ??
                   const EdgeInsets.symmetric(
                     horizontal: 16,
@@ -147,6 +171,24 @@ class _CustomTextFieldState extends State<CustomTextField> {
             ),
           ),
         ),
+        // Character counter
+        if (widget.maxLength != null && widget.errorText == null) ...[
+          const SizedBox(height: 6),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                '${widget.controller?.text.length ?? 0}/${widget.maxLength}',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: (widget.controller?.text.length ?? 0) > widget.maxLength!
+                      ? const Color(0xFFEF4444)
+                      : const Color(0xFF9CA3AF),
+                ),
+              ),
+            ],
+          ),
+        ],
         if (widget.errorText != null) ...[
           const SizedBox(height: 6),
           Row(

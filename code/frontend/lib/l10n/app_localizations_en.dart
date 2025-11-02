@@ -290,6 +290,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get beFirstToShare => 'Be the first to share your thoughts!';
 
   @override
+  String get generateAiSummary => 'Generate AI Summary';
+
+  @override
+  String get analyzing => 'Analyzing...';
+
+  @override
+  String get noIdeasToAnalyze => 'No ideas to analyze';
+
+  @override
   String timeAgo(String time) {
     return '$time ago';
   }
@@ -473,5 +482,77 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourContributions => 'Your Contributions';
 
   @override
+  String get totalContributions => 'Total Contributions';
+
+  @override
   String get totalParticipants => 'Total Participants';
+
+  @override
+  String get mostPopularTopics => 'Most Popular Topics';
+
+  @override
+  String get topicsWithMostSubmissions => 'Topics with the most contributions';
+
+  @override
+  String get noDataAvailable => 'No data available';
+
+  @override
+  String get analyticsDashboard => 'Analytics Dashboard';
+
+  @override
+  String get keyMetricsInsights => 'Key metrics and insights';
+
+  @override
+  String get topicStatusDistribution => 'Topic Status Distribution';
+
+  @override
+  String get topicLifecycleOverview => 'Overview of topic lifecycle';
+
+  @override
+  String get engagementOverview => 'Engagement Overview';
+
+  @override
+  String get platformActivityMetrics => 'Platform activity metrics';
+
+  @override
+  String get aiSummaryCoverage => 'AI Summary\nCoverage';
+
+  @override
+  String get topicParticipation => 'Topic\nParticipation';
+
+  @override
+  String get pendingSummary => 'Pending Summary';
+
+  @override
+  String get avgPerTopic => 'Avg per Topic';
+
+  @override
+  String get activityAlerts => 'Activity Alerts';
+
+  @override
+  String get importantUpdatesNotifications => 'Important updates & notifications';
+
+  @override
+  String get newTopics => 'New Topics';
+
+  @override
+  String createdThisWeek(int count) {
+    return '$count created this week';
+  }
+
+  @override
+  String get closingSoon => 'Closing Soon';
+
+  @override
+  String topicsEndingInDays(int count) {
+    return '$count topics ending in 3 days';
+  }
+
+  @override
+  String get needsAttention => 'Needs Attention';
+
+  @override
+  String topicsLowEngagement(int count) {
+    return '$count topics with low engagement';
+  }
 }

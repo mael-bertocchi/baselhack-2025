@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:alignify/l10n/app_localizations.dart';
-import 'package:alignify/src/Application/Login/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/AuthService.dart';
+import 'package:alignify/src/Application/Shared/Api/TopicService.dart';
+import 'package:alignify/src/Application/Shared/Models/Models.dart';
 import 'package:alignify/src/routes/AppRoutes.dart';
 import '../../../theme/AppColors.dart';
 import '../../../widgets/SharedAppBar.dart';
 import 'Components/StatCard.dart';
 import 'Components/TopicCard.dart';
 import 'Components/DeleteConfirmationDialog.dart';
-import '../Api/DashboardService.dart';
+import 'Components/PopularTopicsChart.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -18,12 +20,20 @@ class DashboardView extends StatefulWidget {
 
 class _DashboardViewState extends State<DashboardView> {
   final TextEditingController _searchController = TextEditingController();
-  final DashboardApiService _apiService = DashboardApiService();
+  final TopicService _apiService = TopicService();
   
   List<Topic> _topics = [];
   List<Topic> _filteredTopics = [];
   bool _isLoading = true;
   String? _errorMessage;
+  
+  // Statistiques
+  int _nbTopics = 0;
+  int _nbUsers = 0;
+  int _nbSubmissions = 0;
+  
+  // Popular topics data
+  List<Map<String, dynamic>> _popularTopics = [];
   
   // Variables de filtre et tri
   String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Scheduled', 'Archived'
@@ -33,6 +43,8 @@ class _DashboardViewState extends State<DashboardView> {
     super.initState();
     _searchController.addListener(_applyFilters);
     _loadTopics();
+    _loadStats();
+    _loadPopularTopics();
   }
 
   Future<void> _loadTopics() async {
@@ -53,6 +65,30 @@ class _DashboardViewState extends State<DashboardView> {
         _errorMessage = 'Failed to load topics: ${e.toString()}';
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _loadStats() async {
+    try {
+      final stats = await _apiService.getDashboardStats();
+      setState(() {
+        _nbTopics = stats['nbTopics'] ?? 0;
+        _nbUsers = stats['nbUsers'] ?? 0;
+        _nbSubmissions = stats['nbSubmissions'] ?? 0;
+      });
+    } catch (e) {
+      print('Error loading stats: $e');
+    }
+  }
+
+  Future<void> _loadPopularTopics() async {
+    try {
+      final sortedTopics = await _apiService.getSortedTopics();
+      setState(() {
+        _popularTopics = sortedTopics;
+      });
+    } catch (e) {
+      print('Error loading popular topics: $e');
     }
   }
 
@@ -248,9 +284,9 @@ class _DashboardViewState extends State<DashboardView> {
             backgroundColor = const Color(0xFFF3E8FF);
             textColor = const Color(0xFF7C3AED);
             break;
-          case 'Soon':
+          case 'Scheduled':
             backgroundColor = const Color(0xFFFCE7F3);
-            textColor = const Color(0xFFEC4899);
+            textColor = AppColors.pink;
             break;
           case 'Closed':
             backgroundColor = const Color(0xFFCCFBF1);
@@ -450,7 +486,7 @@ class _DashboardViewState extends State<DashboardView> {
                         Expanded(
                           child: StatCard(
                             label: l10n.activeTopics,
-                            value: '5',
+                            value: _nbTopics.toString(),
                             icon: Icons.trending_up,
                             iconColor: AppColors.blue,
                             borderColor: AppColors.blue,
@@ -459,8 +495,8 @@ class _DashboardViewState extends State<DashboardView> {
                         const SizedBox(width: 24),
                         Expanded(
                           child: StatCard(
-                            label: l10n.yourContributions,
-                            value: '12',
+                            label: l10n.totalContributions,
+                            value: _nbSubmissions.toString(),
                             icon: Icons.chat_bubble_outline,
                             iconColor: AppColors.pink,
                             borderColor: AppColors.pink,
@@ -470,7 +506,7 @@ class _DashboardViewState extends State<DashboardView> {
                         Expanded(
                           child: StatCard(
                             label: l10n.totalParticipants,
-                            value: '847',
+                            value: _nbUsers.toString(),
                             icon: Icons.people_outline,
                             iconColor: AppColors.blue,
                             borderColor: AppColors.blue,
@@ -483,15 +519,15 @@ class _DashboardViewState extends State<DashboardView> {
                       children: [
                         StatCard(
                           label: l10n.activeTopics,
-                          value: '5',
+                          value: _nbTopics.toString(),
                           icon: Icons.trending_up,
                           iconColor: AppColors.blue,
                           borderColor: AppColors.blue,
                         ),
                         const SizedBox(height: 16),
                         StatCard(
-                          label: l10n.yourContributions,
-                          value: '12',
+                          label: l10n.totalContributions,
+                          value: _nbSubmissions.toString(),
                           icon: Icons.chat_bubble_outline,
                           iconColor: AppColors.pink,
                           borderColor: AppColors.pink,
@@ -499,7 +535,7 @@ class _DashboardViewState extends State<DashboardView> {
                         const SizedBox(height: 16),
                         StatCard(
                           label: l10n.totalParticipants,
-                          value: '847',
+                          value: _nbUsers.toString(),
                           icon: Icons.people_outline,
                           iconColor: AppColors.blue,
                           borderColor: AppColors.blue,
@@ -510,6 +546,19 @@ class _DashboardViewState extends State<DashboardView> {
                 },
               ),
               const SizedBox(height: 40),
+
+              // Analytics Dashboard Section (collapsible, only for admin/manager)
+              if (AuthService.instance.currentUser?.role == Role.administrator || 
+                  AuthService.instance.currentUser?.role == Role.manager) ...[
+                DashboardChartsSection(
+                  topicsData: _popularTopics,
+                  allTopics: _topics,
+                  totalSubmissions: _nbSubmissions,
+                  totalUsers: _nbUsers,
+                  onTopicTap: (topicId) => _navigateToTopicDetails(topicId),
+                ),
+                const SizedBox(height: 40),
+              ],
 
               // Barre de recherche et filtres
               LayoutBuilder(

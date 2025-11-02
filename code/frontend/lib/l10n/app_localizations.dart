@@ -643,6 +643,24 @@ abstract class AppLocalizations {
   /// **'Be the first to share your thoughts!'**
   String get beFirstToShare;
 
+  /// Generate AI summary button
+  ///
+  /// In en, this message translates to:
+  /// **'Generate AI Summary'**
+  String get generateAiSummary;
+
+  /// Analyzing state for AI summary
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing...'**
+  String get analyzing;
+
+  /// Message when there are no ideas to analyze
+  ///
+  /// In en, this message translates to:
+  /// **'No ideas to analyze'**
+  String get noIdeasToAnalyze;
+
   /// Time ago format
   ///
   /// In en, this message translates to:
@@ -985,11 +1003,143 @@ abstract class AppLocalizations {
   /// **'Your Contributions'**
   String get yourContributions;
 
+  /// Total contributions stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Contributions'**
+  String get totalContributions;
+
   /// Total participants stat label
   ///
   /// In en, this message translates to:
   /// **'Total Participants'**
   String get totalParticipants;
+
+  /// Most popular topics chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Most Popular Topics'**
+  String get mostPopularTopics;
+
+  /// Most popular topics chart subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Topics with the most contributions'**
+  String get topicsWithMostSubmissions;
+
+  /// No data available message
+  ///
+  /// In en, this message translates to:
+  /// **'No data available'**
+  String get noDataAvailable;
+
+  /// Analytics dashboard title
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics Dashboard'**
+  String get analyticsDashboard;
+
+  /// Analytics dashboard subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Key metrics and insights'**
+  String get keyMetricsInsights;
+
+  /// Status distribution chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Topic Status Distribution'**
+  String get topicStatusDistribution;
+
+  /// Status distribution chart subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Overview of topic lifecycle'**
+  String get topicLifecycleOverview;
+
+  /// Engagement metrics chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Engagement Overview'**
+  String get engagementOverview;
+
+  /// Engagement metrics chart subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Platform activity metrics'**
+  String get platformActivityMetrics;
+
+  /// AI summary coverage metric label
+  ///
+  /// In en, this message translates to:
+  /// **'AI Summary\nCoverage'**
+  String get aiSummaryCoverage;
+
+  /// Topic participation metric label
+  ///
+  /// In en, this message translates to:
+  /// **'Topic\nParticipation'**
+  String get topicParticipation;
+
+  /// Pending AI summary metric label
+  ///
+  /// In en, this message translates to:
+  /// **'Pending Summary'**
+  String get pendingSummary;
+
+  /// Average per topic metric label
+  ///
+  /// In en, this message translates to:
+  /// **'Avg per Topic'**
+  String get avgPerTopic;
+
+  /// Activity alerts chart title
+  ///
+  /// In en, this message translates to:
+  /// **'Activity Alerts'**
+  String get activityAlerts;
+
+  /// Activity alerts chart subtitle
+  ///
+  /// In en, this message translates to:
+  /// **'Important updates & notifications'**
+  String get importantUpdatesNotifications;
+
+  /// New topics alert label
+  ///
+  /// In en, this message translates to:
+  /// **'New Topics'**
+  String get newTopics;
+
+  /// Topics created this week
+  ///
+  /// In en, this message translates to:
+  /// **'{count} created this week'**
+  String createdThisWeek(int count);
+
+  /// Closing soon alert label
+  ///
+  /// In en, this message translates to:
+  /// **'Closing Soon'**
+  String get closingSoon;
+
+  /// Topics ending soon
+  ///
+  /// In en, this message translates to:
+  /// **'{count} topics ending in 3 days'**
+  String topicsEndingInDays(int count);
+
+  /// Needs attention alert label
+  ///
+  /// In en, this message translates to:
+  /// **'Needs Attention'**
+  String get needsAttention;
+
+  /// Topics with low engagement
+  ///
+  /// In en, this message translates to:
+  /// **'{count} topics with low engagement'**
+  String topicsLowEngagement(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

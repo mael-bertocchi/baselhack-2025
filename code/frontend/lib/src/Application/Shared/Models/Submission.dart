@@ -29,3 +29,26 @@ class Idea {
     };
   }
 }
+
+class TopicResult {
+  final String topicId;
+  final String content;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+
+  const TopicResult({
+    required this.topicId,
+    required this.content,
+    required this.createdAt,
+    required this.updatedAt,
+  });
+
+  factory TopicResult.fromJson(Map<String, dynamic> json) {
+    return TopicResult(
+      topicId: json['topicId'] as String,
+      content: json['content'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
+    );
+  }
+}
