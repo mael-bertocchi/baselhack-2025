@@ -1,8 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:alignify/src/routes/ApiRoutes.dart';
 import 'package:alignify/src/Application/Shared/Models/Models.dart';
-import 'package:alignify/src/config/environment.dart';
 import 'TokenStorage.dart';
 import 'AuthService.dart';
 
@@ -14,7 +14,7 @@ class TopicService {
   factory TopicService() => _instance;
   TopicService._internal();
 
-  static String get baseUrl => Environment.apiUrl;
+  static String get baseUrl => dotenv.env['API_URL']!;
 
   /// Get access token for authentication
   Future<String?> _getAccessToken() async {

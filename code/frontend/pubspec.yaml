@@ -41,6 +41,7 @@ dependencies:
   moon_design: ^1.1.0
   http: ^1.5.0
   flutter_secure_storage: ^9.2.4
+  flutter_dotenv: ^6.0.0
   shared_preferences: ^2.5.3
   intl: ^0.20.2
   provider: ^6.1.2
@@ -70,6 +71,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - .env
     - assets/alignify_logo.png
     - assets/alignify_logo_icon.png
 

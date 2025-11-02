@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'dart:convert';
 import 'TokenStorage.dart';
 import 'package:alignify/src/routes/ApiRoutes.dart';
 import 'package:alignify/src/Application/Shared/Models/Models.dart';
-import 'package:alignify/src/config/environment.dart';
 
 class AuthService extends ChangeNotifier {
-  static String get baseUrl => Environment.apiUrl;
+  static String get baseUrl => dotenv.env['API_URL'] ?? '/api';
   
   User? _currentUser;
   String? _accessToken;
