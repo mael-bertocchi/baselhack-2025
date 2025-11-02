@@ -1,7 +1,8 @@
 import { Collection, WithId } from 'mongodb';
 import { FastifyInstance } from 'fastify';
-import { Topic, User } from '@modules/stats/stats.model';
-import { Submission } from '@modules/submissions/submissions.model';
+import { Topic, User } from './stats.model';
+import { Submission } from '../submissions/submissions.model';
+import { TopicWithSubmissionCount } from './stats.types';
 
 
 /**
@@ -74,7 +75,7 @@ function getSubmissionCollection(fastify: FastifyInstance): Collection<Submissio
 
 /**
  * @function nbSubmission
- * @description Return the good number of user
+ * @description Return the good number of submission
  */
 async function nbSubmission(fastify: FastifyInstance) {
     const submissionCollection = getSubmissionCollection(fastify);
@@ -84,8 +85,40 @@ async function nbSubmission(fastify: FastifyInstance) {
     return count;
 }
 
+/**
+ * @function sortTopics
+ * @description Return a sorted list of topics with their submission counts,
+ * ordered from most submissions to least
+ */
+async function sortTopics(fastify: FastifyInstance): Promise<TopicWithSubmissionCount[]> {
+    const submissionCollection = getSubmissionCollection(fastify);
+    const topicsCollection = getTopicsCollection(fastify);
+
+    const topics = await topicsCollection.find({ status: 'open' }).toArray();
+
+    const topicsWithCounts = await Promise.all(
+        topics.map(async (topic) => {
+            const submissionCount = await submissionCollection.countDocuments({
+                topicId: topic._id.toString()
+            });
+
+            return {
+                topicId: topic._id.toString(),
+                title: topic.title,
+                submissionCount
+            };
+        })
+    );
+
+    // Sort by descending submission count
+    topicsWithCounts.sort((a, b) => b.submissionCount - a.submissionCount);
+
+    return topicsWithCounts;
+}
+
 export default {
     nbTopics,
     nbUsers,
-    nbSubmission
+    nbSubmission,
+    sortTopics
 };

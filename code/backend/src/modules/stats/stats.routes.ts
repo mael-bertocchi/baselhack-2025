@@ -8,7 +8,8 @@ import { FastifyInstance } from 'fastify';
 async function statsRoutes(app: FastifyInstance): Promise<void> {
     app.get('/nbTopics', statsController.nbTopics);
     app.get('/nbUsers', statsController.nbUsers);
-    app.get('/nbSubmission', statsController.nbSubmission)
+    app.get('/nbSubmission', statsController.nbSubmission);
+    app.get('/sortTopics', statsController.sortTopics);
 }
 
 export default statsRoutes;
