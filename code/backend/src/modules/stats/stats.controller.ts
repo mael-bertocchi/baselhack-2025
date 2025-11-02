@@ -44,8 +44,23 @@ async function nbSubmission(request: FastifyRequest, reply: FastifyReply): Promi
     });
 }
 
+/**
+ * @function sortTopics
+ * @description Returns a sorted list of topics with their submission counts
+ */
+async function sortTopics(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+
+    const result = await statsService.sortTopics(request.server);
+
+    reply.status(200).send({
+        message: 'The count of Submission is good brother !',
+        data: result
+    });
+}
+
 export default {
     nbTopics,
     nbUsers,
-    nbSubmission
+    nbSubmission,
+    sortTopics
 };
