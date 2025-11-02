@@ -1399,6 +1399,18 @@ abstract class AppLocalizations {
   /// **'Total Days'**
   String get totalDays;
 
+  /// Key metrics section title
+  ///
+  /// In en, this message translates to:
+  /// **'Key Metrics'**
+  String get keyMetrics;
+
+  /// Count axis label
+  ///
+  /// In en, this message translates to:
+  /// **'Count'**
+  String get count;
+
   /// Participation insights title
   ///
   /// In en, this message translates to:

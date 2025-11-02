@@ -694,6 +694,12 @@ class AppLocalizationsDe extends AppLocalizations {
   String get totalDays => 'Gesamttage';
 
   @override
+  String get keyMetrics => 'Wichtige Metriken';
+
+  @override
+  String get count => 'Anzahl';
+
+  @override
   String get participationInsights => 'Teilnahme-Einblicke';
 
   @override

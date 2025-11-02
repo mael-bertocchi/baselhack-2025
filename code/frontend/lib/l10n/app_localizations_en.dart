@@ -694,6 +694,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get totalDays => 'Total Days';
 
   @override
+  String get keyMetrics => 'Key Metrics';
+
+  @override
+  String get count => 'Count';
+
+  @override
   String get participationInsights => 'Participation Insights';
 
   @override

@@ -1141,6 +1141,16 @@
     "description": "Total days label"
   },
 
+  "keyMetrics": "Key Metrics",
+  "@keyMetrics": {
+    "description": "Key metrics section title"
+  },
+
+  "count": "Count",
+  "@count": {
+    "description": "Count axis label"
+  },
+
   "participationInsights": "Participation Insights",
   "@participationInsights": {
     "description": "Participation insights title"

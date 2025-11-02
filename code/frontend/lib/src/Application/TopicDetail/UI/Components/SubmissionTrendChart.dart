@@ -105,20 +105,79 @@ class SubmissionTrendChart extends StatelessWidget {
         ),
         const SizedBox(height: 24),
         
-        // Chart
-        SizedBox(
-          height: 180,
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return CustomPaint(
-                size: Size(constraints.maxWidth, 180),
-                painter: LineChartPainter(
-                  data: paddedData,
-                  maxValue: maxCount > 0 ? maxCount : 1,
+        // Y-axis title
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Rotated Y-axis label
+            SizedBox(
+              width: 20,
+              child: RotatedBox(
+                quarterTurns: 3,
+                child: Text(
+                  l10n.count,
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
-              );
-            },
-          ),
+              ),
+            ),
+            const SizedBox(width: 4),
+            // Chart with axes
+            Expanded(
+              child: SizedBox(
+                height: 250,
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // Y-axis labels
+                        SizedBox(
+                          width: 35,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              _buildAxisLabel('${maxCount > 0 ? maxCount : 1}'),
+                              _buildAxisLabel('${((maxCount * 0.75).round())}'),
+                              _buildAxisLabel('${((maxCount * 0.5).round())}'),
+                              _buildAxisLabel('${((maxCount * 0.25).round())}'),
+                              _buildAxisLabel('0'),
+                              const SizedBox(height: 20), // Space for X-axis
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        // Chart area
+                        Expanded(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 180,
+                                child: CustomPaint(
+                                  size: Size(constraints.maxWidth - 67, 180),
+                                  painter: LineChartPainter(
+                                    data: paddedData,
+                                    maxValue: maxCount > 0 ? maxCount : 1,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              // X-axis labels
+                              _buildXAxisLabels(paddedData),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
         ),
         const SizedBox(height: 16),
         
@@ -184,7 +243,6 @@ class SubmissionTrendChart extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final totalSubmissions = data.fold<int>(0, (sum, entry) => sum + entry.value);
     final avgSubmissions = (totalSubmissions / data.length).toStringAsFixed(1);
-    final peakDay = data.reduce((a, b) => a.value > b.value ? a : b);
     
     return Container(
       padding: const EdgeInsets.all(16),
@@ -192,26 +250,80 @@ class SubmissionTrendChart extends StatelessWidget {
         color: const Color(0xFFF3F4F6),
         borderRadius: BorderRadius.circular(8),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildLegendItem(
-            label: l10n.peak,
-            value: '${peakDay.value}',
-            color: const Color(0xFF7C3AED),
+          // Title for stats
+          Text(
+            l10n.keyMetrics,
+            style: const TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textPrimary,
+            ),
           ),
-          _buildLegendItem(
-            label: l10n.average,
-            value: avgSubmissions,
-            color: AppColors.blue,
-          ),
-          _buildLegendItem(
-            label: l10n.totalDays,
-            value: '${data.length}',
-            color: AppColors.pink,
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildLegendItem(
+                label: l10n.peak,
+                value: '$maxCount',
+                color: const Color(0xFF7C3AED),
+              ),
+              _buildLegendItem(
+                label: l10n.average,
+                value: avgSubmissions,
+                color: AppColors.blue,
+              ),
+              _buildLegendItem(
+                label: l10n.totalDays,
+                value: '${data.length}',
+                color: AppColors.pink,
+              ),
+            ],
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildAxisLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 4),
+      child: Text(
+        text,
+        style: const TextStyle(
+          fontSize: 11,
+          color: AppColors.textSecondary,
+          fontWeight: FontWeight.w500,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildXAxisLabels(List<MapEntry<DateTime, int>> data) {
+    if (data.isEmpty) return const SizedBox.shrink();
+    
+    // Show first, middle, and last date
+    final dates = [
+      data.first.key,
+      if (data.length > 2) data[data.length ~/ 2].key,
+      if (data.length > 1) data.last.key,
+    ];
+    
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: dates.map((date) {
+        return Text(
+          '${date.day}/${date.month}',
+          style: const TextStyle(
+            fontSize: 11,
+            color: AppColors.textSecondary,
+            fontWeight: FontWeight.w500,
+          ),
+        );
+      }).toList(),
     );
   }
 
