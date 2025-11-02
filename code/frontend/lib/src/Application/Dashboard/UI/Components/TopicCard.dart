@@ -37,6 +37,7 @@ class Topic {
   final DateTime updatedAt;
   final TopicStatus status;
   final String authorId;
+  final int? nbSubmissions; // Nombre de soumissions
 
   const Topic({
     this.id,
@@ -49,6 +50,7 @@ class Topic {
     required this.updatedAt,
     required this.status,
     required this.authorId,
+    this.nbSubmissions,
   });
 
   /// Crée un Topic depuis un JSON
@@ -64,6 +66,7 @@ class Topic {
       updatedAt: DateTime.parse(json['updatedAt'] as String? ?? DateTime.now().toIso8601String()),
       status: TopicStatus.fromJson(json['status'] as String? ?? 'open'),
       authorId: json['authorId'] as String? ?? '',
+      nbSubmissions: json['nbSubmissions'] as int?,
     );
   }
 
@@ -80,6 +83,7 @@ class Topic {
       'updatedAt': updatedAt.toIso8601String(),
       'status': status.toJson(),
       'authorId': authorId,
+      if (nbSubmissions != null) 'nbSubmissions': nbSubmissions,
     };
   }
 
@@ -95,6 +99,7 @@ class Topic {
     DateTime? updatedAt,
     TopicStatus? status,
     String? authorId,
+    int? nbSubmissions,
   }) {
     return Topic(
       id: id ?? this.id,
@@ -107,6 +112,7 @@ class Topic {
       updatedAt: updatedAt ?? this.updatedAt,
       status: status ?? this.status,
       authorId: authorId ?? this.authorId,
+      nbSubmissions: nbSubmissions ?? this.nbSubmissions,
     );
   }
 
@@ -442,6 +448,40 @@ class _TopicCardState extends State<TopicCard> {
               // Footer avec auteur et bouton
               Row(
                 children: [
+                  // Nombre de soumissions
+                  if (widget.topic.nbSubmissions != null) ...[
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.blueBackground,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.chat_bubble_outline,
+                            size: 16,
+                            color: AppColors.blue,
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            '${widget.topic.nbSubmissions}',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.blue,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                  ],
+                  
                   // Auteur
                   Icon(
                     Icons.person_outline,

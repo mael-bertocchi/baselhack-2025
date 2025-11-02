@@ -985,6 +985,12 @@ abstract class AppLocalizations {
   /// **'Your Contributions'**
   String get yourContributions;
 
+  /// Total contributions stat label
+  ///
+  /// In en, this message translates to:
+  /// **'Total Contributions'**
+  String get totalContributions;
+
   /// Total participants stat label
   ///
   /// In en, this message translates to:

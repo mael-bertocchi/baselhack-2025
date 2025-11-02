@@ -25,6 +25,11 @@ class _DashboardViewState extends State<DashboardView> {
   bool _isLoading = true;
   String? _errorMessage;
   
+  // Statistiques
+  int _nbTopics = 0;
+  int _nbUsers = 0;
+  int _nbSubmissions = 0;
+  
   // Variables de filtre et tri
   String _selectedStatus = 'all'; // 'all', 'Active', 'Closed', 'Scheduled', 'Archived'
 
@@ -33,6 +38,7 @@ class _DashboardViewState extends State<DashboardView> {
     super.initState();
     _searchController.addListener(_applyFilters);
     _loadTopics();
+    _loadStats();
   }
 
   Future<void> _loadTopics() async {
@@ -53,6 +59,19 @@ class _DashboardViewState extends State<DashboardView> {
         _errorMessage = 'Failed to load topics: ${e.toString()}';
         _isLoading = false;
       });
+    }
+  }
+
+  Future<void> _loadStats() async {
+    try {
+      final stats = await _apiService.getDashboardStats();
+      setState(() {
+        _nbTopics = stats['nbTopics'] ?? 0;
+        _nbUsers = stats['nbUsers'] ?? 0;
+        _nbSubmissions = stats['nbSubmissions'] ?? 0;
+      });
+    } catch (e) {
+      print('Error loading stats: $e');
     }
   }
 
@@ -450,7 +469,7 @@ class _DashboardViewState extends State<DashboardView> {
                         Expanded(
                           child: StatCard(
                             label: l10n.activeTopics,
-                            value: '5',
+                            value: _nbTopics.toString(),
                             icon: Icons.trending_up,
                             iconColor: AppColors.blue,
                             borderColor: AppColors.blue,
@@ -459,8 +478,8 @@ class _DashboardViewState extends State<DashboardView> {
                         const SizedBox(width: 24),
                         Expanded(
                           child: StatCard(
-                            label: l10n.yourContributions,
-                            value: '12',
+                            label: l10n.totalContributions,
+                            value: _nbSubmissions.toString(),
                             icon: Icons.chat_bubble_outline,
                             iconColor: AppColors.pink,
                             borderColor: AppColors.pink,
@@ -470,7 +489,7 @@ class _DashboardViewState extends State<DashboardView> {
                         Expanded(
                           child: StatCard(
                             label: l10n.totalParticipants,
-                            value: '847',
+                            value: _nbUsers.toString(),
                             icon: Icons.people_outline,
                             iconColor: AppColors.blue,
                             borderColor: AppColors.blue,
@@ -483,15 +502,15 @@ class _DashboardViewState extends State<DashboardView> {
                       children: [
                         StatCard(
                           label: l10n.activeTopics,
-                          value: '5',
+                          value: _nbTopics.toString(),
                           icon: Icons.trending_up,
                           iconColor: AppColors.blue,
                           borderColor: AppColors.blue,
                         ),
                         const SizedBox(height: 16),
                         StatCard(
-                          label: l10n.yourContributions,
-                          value: '12',
+                          label: l10n.totalContributions,
+                          value: _nbSubmissions.toString(),
                           icon: Icons.chat_bubble_outline,
                           iconColor: AppColors.pink,
                           borderColor: AppColors.pink,
@@ -499,7 +518,7 @@ class _DashboardViewState extends State<DashboardView> {
                         const SizedBox(height: 16),
                         StatCard(
                           label: l10n.totalParticipants,
-                          value: '847',
+                          value: _nbUsers.toString(),
                           icon: Icons.people_outline,
                           iconColor: AppColors.blue,
                           borderColor: AppColors.blue,

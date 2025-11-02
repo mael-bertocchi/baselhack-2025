@@ -28,8 +28,8 @@ class UpdateTopicService {
         'title': title,
         'short_description': shortDescription,
         'description': description,
-        'startDate': startDate.toIso8601String(),
-        'endDate': endDate.toIso8601String(),
+        'startDate': startDate.toUtc().toIso8601String(),
+        'endDate': endDate.toUtc().toIso8601String(),
         'authorId': authorId,
       };
 

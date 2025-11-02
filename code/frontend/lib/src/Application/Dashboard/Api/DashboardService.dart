@@ -26,10 +26,32 @@ class DashboardApiService {
         final responseData = jsonDecode(response.body);
         final List<dynamic> topicsData = responseData['data'] as List<dynamic>;
         
-        // Mapper les données de l'API vers des objets Topic
-        return topicsData.map((topicJson) {
+        // Mapper les données de l'API vers des objets Topic avec le nombre de soumissions
+        final topics = await Future.wait(topicsData.map((topicJson) async {
+          final topicId = topicJson['_id'] as String;
+          
+          // Récupérer le nombre de soumissions pour ce topic
+          int nbSubmissions = 0;
+          try {
+            final submissionsResponse = await http.get(
+              Uri.parse('$baseUrl${ApiRoutes.topics}/$topicId/submissions'),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ${AuthService.instance.accessToken}'
+              },
+            );
+            
+            if (submissionsResponse.statusCode == 200) {
+              final submissionsData = jsonDecode(submissionsResponse.body);
+              final List<dynamic> submissions = submissionsData['data'] as List<dynamic>;
+              nbSubmissions = submissions.length;
+            }
+          } catch (e) {
+            print('Error fetching submissions for topic $topicId: $e');
+          }
+          
           return Topic(
-            id: topicJson['_id'] as String,
+            id: topicId,
             title: topicJson['title'] as String,
             shortDescription: topicJson['short_description'] as String,
             description: topicJson['description'] as String,
@@ -39,8 +61,11 @@ class DashboardApiService {
             updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
             status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
             authorId: topicJson['authorId'] as String,
+            nbSubmissions: nbSubmissions,
           );
-        }).toList();
+        }));
+        
+        return topics;
       } else {
         final error = jsonDecode(response.body);
         throw Exception(error['message'] ?? 'Failed to load topics');
@@ -66,25 +91,98 @@ class DashboardApiService {
     }
   }
 
-  /// Récupère les statistiques du dashboard
+  /// Récupère le nombre total de topics
+  Future<int> getNbTopics() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/v1/stats/nbTopics'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AuthService.instance.accessToken}'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['data'] as int;
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to fetch number of topics');
+      }
+    } catch (e) {
+      print('Error fetching nbTopics: $e');
+      return 0;
+    }
+  }
+
+  /// Récupère le nombre total d'utilisateurs
+  Future<int> getNbUsers() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/v1/stats/nbUsers'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AuthService.instance.accessToken}'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['data'] as int;
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to fetch number of users');
+      }
+    } catch (e) {
+      print('Error fetching nbUsers: $e');
+      return 0;
+    }
+  }
+
+  /// Récupère le nombre total de soumissions
+  Future<int> getNbSubmissions() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/v1/stats/nbSubmission'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${AuthService.instance.accessToken}'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        return responseData['data'] as int;
+      } else {
+        final error = jsonDecode(response.body);
+        throw Exception(error['message'] ?? 'Failed to fetch number of submissions');
+      }
+    } catch (e) {
+      print('Error fetching nbSubmissions: $e');
+      return 0;
+    }
+  }
+
+  /// Récupère toutes les statistiques du dashboard en parallèle
   Future<Map<String, int>> getDashboardStats() async {
     try {
-      // TODO: Créer une route API pour les stats
-      // Pour l'instant, on calcule depuis les topics
-      final topics = await getTopics();
-      final activeCount = topics.where((t) => t.isActive).length;
-      
+      final results = await Future.wait([
+        getNbTopics(),
+        getNbUsers(),
+        getNbSubmissions(),
+      ]);
+
       return {
-        'activeTopics': activeCount,
-        'userContributions': 0, // TODO: À implémenter avec l'API
-        'totalParticipants': 0, // TODO: À implémenter avec l'API
+        'nbTopics': results[0],
+        'nbUsers': results[1],
+        'nbSubmissions': results[2],
       };
     } catch (e) {
       print('Error fetching dashboard stats: $e');
       return {
-        'activeTopics': 0,
-        'userContributions': 0,
-        'totalParticipants': 0,
+        'nbTopics': 0,
+        'nbUsers': 0,
+        'nbSubmissions': 0,
       };
     }
   }
@@ -101,6 +199,26 @@ class DashboardApiService {
         final responseData = jsonDecode(response.body);
         final topicJson = responseData['data'] as Map<String, dynamic>;
         
+        // Récupérer le nombre de soumissions pour ce topic
+        int nbSubmissions = 0;
+        try {
+          final submissionsResponse = await http.get(
+            Uri.parse('$baseUrl${ApiRoutes.topics}/$id/submissions'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ${AuthService.instance.accessToken}'
+            },
+          );
+          
+          if (submissionsResponse.statusCode == 200) {
+            final submissionsData = jsonDecode(submissionsResponse.body);
+            final List<dynamic> submissions = submissionsData['data'] as List<dynamic>;
+            nbSubmissions = submissions.length;
+          }
+        } catch (e) {
+          print('Error fetching submissions for topic $id: $e');
+        }
+        
         return Topic(
           id: topicJson['_id'] as String,
           title: topicJson['title'] as String,
@@ -112,6 +230,7 @@ class DashboardApiService {
           updatedAt: DateTime.parse(topicJson['updatedAt'] as String),
           status: _mapApiStatusToTopicStatus(topicJson['status'] as String),
           authorId: topicJson['authorId'] as String,
+          nbSubmissions: nbSubmissions,
         );
       } else {
         return null;

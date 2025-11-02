@@ -800,6 +800,11 @@
     "description": "Your contributions stat label"
   },
 
+  "totalContributions": "Gesamtbeiträge",
+  "@totalContributions": {
+    "description": "Total contributions stat label"
+  },
+
   "totalParticipants": "Gesamtteilnehmer",
   "@totalParticipants": {
     "description": "Total participants stat label"

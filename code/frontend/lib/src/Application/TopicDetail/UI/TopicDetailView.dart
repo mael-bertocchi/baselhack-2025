@@ -106,6 +106,22 @@ class TopicDetailViewState extends State<TopicDetailView> {
     super.dispose();
   }
 
+  /// Check if current user can edit this topic
+  bool _canEditTopic() {
+    final currentUser = AuthService.instance.currentUser;
+    return currentUser?.role == Role.administrator || 
+           currentUser?.role == Role.manager;
+  }
+
+  /// Navigate to edit topic page
+  void _navigateToEditTopic() {
+    if (_topic?.id != null) {
+      Navigator.of(context)
+          .pushNamed('/topics/${_topic!.id}/edit')
+          .then((_) => _loadTopicAndSubmissions()); // Reload topic after edit
+    }
+  }
+
   Future<void> _triggerAIAnalysis() async {
     setState(() {
       _isAnalyzing = true;
@@ -327,28 +343,53 @@ class TopicDetailViewState extends State<TopicDetailView> {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Bouton Back to Surveys
-              InkWell(
-                onTap: () => Navigator.of(context).pop(),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.arrow_back,
-                      color: AppColors.blue,
-                      size: 20,
+              // Header with Back button and Edit button
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Bouton Back to Surveys
+                  InkWell(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.arrow_back,
+                          color: AppColors.blue,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          l10n.backToSurveys,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            color: AppColors.blue,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 8),
-                    Text(
-                      l10n.backToSurveys,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: AppColors.blue,
-                        fontWeight: FontWeight.w600,
+                  ),
+                  // Edit button for admins and managers
+                  if (_canEditTopic())
+                    ElevatedButton.icon(
+                      onPressed: () => _navigateToEditTopic(),
+                      icon: const Icon(Icons.edit_outlined, size: 18),
+                      label: Text(l10n.editTopic),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.blue,
+                        foregroundColor: AppColors.white,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 10,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 0,
                       ),
                     ),
-                  ],
-                ),
+                ],
               ),
               const SizedBox(height: 32),
 

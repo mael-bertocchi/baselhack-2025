@@ -473,5 +473,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get yourContributions => 'Your Contributions';
 
   @override
+  String get totalContributions => 'Total Contributions';
+
+  @override
   String get totalParticipants => 'Total Participants';
 }
